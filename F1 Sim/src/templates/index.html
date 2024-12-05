@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>F1 Career</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles/styles.css') }}">
+</head>
+<body>
+    <div class="footer-bar">
+        <button class="next-button" id="redirect-button">
+            <div class="next-button-text">
+                Start
+            </div>
+        </button>
+    </div>
+
+    <script>
+        document.getElementById('redirect-button').addEventListener('click', function() {
+            window.location.href = 'crea-pilota';
+        });
+    </script>
+</body>
+</html>

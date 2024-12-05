@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Classifica Costruttori</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles/styles.css') }}">
+</head>
+<body>
+    <h1 id="title">Classifica Mondiale Costruttori</h1>
+        <div class="results-column">
+            <ol class="race-results-wcc">
+                {% for team, points in teams %}
+                <li class="result-item-{{ team.nome }}">
+                    <div class="race-position">{{ loop.index }}</div>
+                    <div class="race-driver">
+                        <img src="{{ url_for('static', filename='images/logos/' ~ team.nome ~ '.png') }}"
+                             alt="{{ team }}" class="logo" draggable="false">
+                    </div>
+                    <span class="race-driver-name">{{ team.nome.replace('-', ' ').title() }}</span>
+                    <span class="race-points">{{ points }}</span>
+                </li>
+                {% endfor %}
+            </ol>
+        </div>
+    <div class="footer-bar">
+        <button class="back-button" id="redirect-button-back">
+            <div class="back-button-text">
+                Back
+            </div>
+        </button>
+
+        <button class="next-button" id="redirect-button-next">
+            <div class="next-button-text">
+                Next Race
+            </div>
+        </button>
+    </div>
+
+    <script>
+        document.getElementById('redirect-button-back').addEventListener('click', function() {
+            window.location.href = 'wdc-leaderboard';
+        });
+    </script>
+
+    <script>
+        document.getElementById('redirect-button-next').addEventListener('click', function() {
+            window.location.href = 'race';
+        });
+    </script>
+</body>
+</html>

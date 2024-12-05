@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Riepilogo Gare</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles/styles.css') }}">
+</head>
+<body>
+    <h1 id="title">Riepilogo Stagione {{ current_season }}</h1>
+    <div class="results-container-final">
+        <div class="results-column">
+            <ol class="race-results">
+                {% for gp, winner_data in races[:8] %}
+                <li class="result-item-{{ winner_data.winner_team }}">
+                    <div class="race-gp-name">{{ gp }}</div>
+                    <div class="race-driver">
+                        <img src="{{ url_for('static', filename='images/drivers/' ~ winner_data.winner_image ~ '.png') }}"
+                             alt="{{ winner_data.winner_name }}" class="race-driver-image" draggable="false">
+                        <img src="{{ url_for('static', filename='images/jackets/' ~ winner_data.winner_team ~ '-jacket.png') }}"
+                             alt="{{ winner_data.winner_team }}" class="race-driver-jacket" draggable="false">
+                    </div>
+                    <img src="{{ url_for('static', filename='images/logos/' ~ winner_data.winner_team ~ '.png') }}"
+                         alt="{{ winner_data.winner_team }}" class="race-driver-logo" draggable="false">
+                    <span class="race-driver-name">{{ winner_data.winner_name }}</span>
+                </li>
+                {% endfor %}
+            </ol>
+        </div>
+
+        <div class="results-column">
+            <ol class="race-results">
+                {% for gp, winner_data in races[8:16] %}
+                <li class="result-item-{{ winner_data.winner_team }}">
+                    <div class="race-gp-name">{{ gp }}</div>
+                    <div class="race-driver">
+                        <img src="{{ url_for('static', filename='images/drivers/' ~ winner_data.winner_image ~ '.png') }}"
+                             alt="{{ winner_data.winner_name }}" class="race-driver-image" draggable="false">
+                        <img src="{{ url_for('static', filename='images/jackets/' ~ winner_data.winner_team ~ '-jacket.png') }}"
+                             alt="{{ winner_data.winner_team }}" class="race-driver-jacket" draggable="false">
+                    </div>
+                    <img src="{{ url_for('static', filename='images/logos/' ~ winner_data.winner_team ~ '.png') }}"
+                         alt="{{ winner_data.winner_team }}" class="race-driver-logo" draggable="false">
+                    <span class="race-driver-name">{{ winner_data.winner_name }}</span>
+                </li>
+                {% endfor %}
+            </ol>
+        </div>
+
+        <div class="results-column">
+            <ol class="race-results">
+                {% for gp, winner_data in races[16:24] %}
+                <li class="result-item-{{ winner_data.winner_team }}">
+                    <div class="race-gp-name">{{ gp }}</div>
+                    <div class="race-driver">
+                        <img src="{{ url_for('static', filename='images/drivers/' ~ winner_data.winner_image ~ '.png') }}"
+                             alt="{{ winner_data.winner_name }}" class="race-driver-image" draggable="false">
+                        <img src="{{ url_for('static', filename='images/jackets/' ~ winner_data.winner_team ~ '-jacket.png') }}"
+                             alt="{{ winner_data.winner_team }}" class="race-driver-jacket" draggable="false">
+                    </div>
+                    <img src="{{ url_for('static', filename='images/logos/' ~ winner_data.winner_team ~ '.png') }}"
+                         alt="{{ winner_data.winner_team }}" class="race-driver-logo" draggable="false">
+                    <span class="race-driver-name">{{ winner_data.winner_name }}</span>
+                </li>
+                {% endfor %}
+            </ol>
+        </div>
+    </div>
+
+    <div class="footer-bar">
+        <button class="next-button" id="redirect-button">
+            <div class="next-button-text">
+                Season Recap
+            </div>
+        </button>
+    </div>
+
+    <script>
+        document.getElementById('redirect-button').addEventListener('click', function() {
+            window.location.href = 'season-winners';
+        });
+    </script>
+</body>
+</html>

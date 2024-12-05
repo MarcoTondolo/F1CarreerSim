@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Trasferimenti Piloti</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles/styles.css') }}">
+</head>
+<body>
+    <h1 id="title">Notizie Trasferimenti Piloti</h1>
+
+    <!-- Contenitore per i trasferimenti -->
+    {% if notizie_mercato %}
+        <ul>
+            {% for pilota, trasferimento in notizie_mercato.items() %}
+                <li>
+                    {{ trasferimento['driver'] }}
+                    {% if trasferimento['oldteam']|default('')|trim != "Svincolato" %}
+                        da {{ trasferimento['oldteam'].replace('-', ' ').title() }}
+                    {% endif %}
+                    in {{ trasferimento['newteam'].replace('-', ' ').title() }}
+
+                    {% if trasferimento['subsituted'] is not none %}
+                        (Sostituisce {{ trasferimento['subsituted'] }})
+                    {% endif %}
+                </li>
+            {% endfor %}
+        </ul>
+    {% else %}
+        <p>Non ci sono trasferimenti da mostrare al momento.</p>
+    {% endif %}
+
+    <div class="footer-bar">
+        <button class="next-button" id="redirect-button">
+            <div class="next-button-text">New Season</div>
+        </button>
+    </div>
+
+    <script>
+        document.getElementById('redirect-button').addEventListener('click', function() {
+            window.location.href = '/lineup';
+        });
+    </script>
+</body>
+</html>

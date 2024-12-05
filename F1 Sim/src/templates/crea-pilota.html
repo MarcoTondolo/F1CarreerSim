@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Crea Pilota</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles/styles.css') }}">
+</head>
+<body class="crea_pilota">
+    <h1>Crea il tuo pilota</h1>
+
+    <form action="{{ url_for('aggiungi_pilota') }}" method="POST">
+        <div class="form__group field">
+          <input type="text" class="form__field" placeholder="Name" name="name" id="name" required />
+          <label for="name" class="form__label">Name</label>
+        </div>
+
+        <div class="footer-bar">
+            <button type="submit" class="next-button" id="redirect-button">
+                <div class="next-button-text">
+                    Crea Pilota
+                </div>
+            </button>
+        </div>
+
+        <h2>Seleziona un team</h2>
+        <div class="teams-selection">
+            {% for team in teams %}
+                <div class="team-option">
+                    <label for="team_{{ loop.index }}">
+                        <!-- Visualizza l'immagine del team -->
+                        <img src="{{ url_for('static', filename='images/logos/' ~ team.nome ~ '.png') }}" alt="{{ team.nome }}" class="team-image">
+
+                        <!-- Mostra il nome del team -->
+                        <div class="team-name">{{ team.nome.replace('-', ' ').title() }}</div>
+                    </label>
+                    <!-- Input nascosto per selezionare il team -->
+                    <input type="radio" id="team_{{ loop.index }}" name="team" value="{{ team.nome }}" required>
+                </div>
+            {% endfor %}
+        </div>
+    </form>
+</body>
+</html>

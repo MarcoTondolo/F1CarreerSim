@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Season {{year}} Winners</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles/styles.css') }}">
+</head>
+<body>
+    <h1>Vincitori della stagione {{year}}</h1>
+
+    <div class="winners-container">
+        <!-- Vincitore Piloti -->
+        <section class="winner">
+            <h2 class="winner-text">Campione Piloti</h2>
+            <div class="winner-driver-container">
+                <img src="{{ url_for('static', filename='images/drivers/' ~ driver_winner.image ~ '.png') }}" alt="{{ driver_winner.nome }}" class="winner-driver-image">
+                <img src="{{ url_for('static', filename='images/jackets/' ~ driver_winner.scuderia ~ '-jacket.png') }}" alt="{{ driver_winner.scuderia }} Jacket" class="winner-driver-jacket">
+            </div>
+            <h3 class="winner-text">{{ driver_winner.nome }}</h3>
+            <p class="winner-text">{{ driver_winner.punti }} Points</p>
+        </section>
+
+        <!-- Vincitore Costruttori -->
+        <section class="winner">
+            <h2 class="winner-text">Campione Costruttori</h2>
+            <img src="{{ url_for('static', filename='images/logos/' ~ team_winner.nome ~ '.png') }}" alt="{{ team_winner.nome }}" class="winner-team-logo">
+            <h3 class="winner-text">{{ team_winner.nome | replace('-', ' ') | title }}</h3>
+            <p class="winner-text">{{ team_winner_points }} Points</p>
+        </section>
+    </div>
+
+    <div class="footer-bar">
+        <button class="next-button" id="redirect-button">
+            <div class="next-button-text">
+                Offers
+            </div>
+        </button>
+    </div>
+
+    <script>
+        document.getElementById('redirect-button').addEventListener('click', function() {
+            window.location.href = 'offers';
+        });
+    </script>
+</body>
+</html>

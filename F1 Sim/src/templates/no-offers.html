@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles/styles.css') }}">
+    <title>Offers</title>
+</head>
+<body>
+    <form action="{{ url_for('lineup.transfers') }}" method="POST">
+
+        <h2>Nessuna offerta</h2>
+        <div class="footer-bar">
+            <button type="submit" class="next-button" id="redirect-button">
+                <div class="next-button-text">
+                    Next
+                </div>
+            </button>
+        </div>
+    </form>
+</body>
+</html>
