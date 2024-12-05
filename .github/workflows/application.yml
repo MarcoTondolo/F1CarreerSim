@@ -43,15 +43,6 @@ jobs:
 
     - name: Install Python Dependencies
       run: |
-        pip install flet
-
-    - name: Build and Run Flet Web App
-      run: |
-        echo "Building and running Flet web app..."
-        flet run src/app.py --web
-
-    - name: Install Python Dependencies
-      run: |
         python -m pip install --upgrade pip
         pip install -r requirements.txt
 
