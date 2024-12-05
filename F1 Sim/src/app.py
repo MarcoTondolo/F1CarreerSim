@@ -62,7 +62,7 @@ def crea_piloti():
 @app.route('/')
 def index():
     global first_start
-    if(first_start):
+    if first_start:
         crea_piloti()
         first_start = False
     return render_template("index.html")
