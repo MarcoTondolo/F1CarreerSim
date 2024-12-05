@@ -51,11 +51,20 @@ jobs:
       with:
         flutter-version: ${{ env.FLUTTER_VERSION }}
 
+    - name: Install Flet CLI
+      run: |
+        pip install flet
+
     - name: Flet Build Web
       run: |
             echo "GITHUB_REPOSITORY: ${GITHUB_REPOSITORY}, USER: ${GITHUB_REPOSITORY%/*}, PROJECT_BASE_URL: ${GITHUB_REPOSITORY#*/}"
             flutter config --no-analytics
             flet build web --base-url ${GITHUB_REPOSITORY#*/} --route-url-strategy hash
+
+    - name: Build and Run Flet Web App
+      run: |
+        echo "Building and running Flet web app..."
+        flet run src/app.py --web
 
     - name: Upload Artifact
       uses: actions/upload-pages-artifact@v3
