@@ -1,5 +1,5 @@
 from flask import Flask, render_template, request, redirect, url_for
-from lineup import (lineup_blueprint, Pilota, Scuderia, Giocatore, scuderie_piloti, scuderie, piloti,
+from lineup import (lineup_blueprint, Pilota, Scuderia, scuderie_piloti, scuderie, piloti,
                     piloti_svincolati, nomi_piloti_svincolati_iniziali, giocatore)
 import random
 

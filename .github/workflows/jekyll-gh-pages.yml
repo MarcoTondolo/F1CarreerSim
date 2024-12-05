@@ -43,7 +43,7 @@ jobs:
           # Version range or exact version of Python or PyPy to use, using SemVer's version range syntax. Reads from .python-version if unset.
           python-version: 3.12 # optional
           # File containing the Python version to use. Example: .python-version
-          python-version-file: 3.12 # optional
+          python-version-file: python-3.12.0-win32-x86.zip # optional
           # Used to specify a package manager for caching in the default directory. Supported values: pip, pipenv, poetry.
           cache: pip # optional
           # The target architecture (x86, x64, arm64) of the Python or PyPy interpreter.

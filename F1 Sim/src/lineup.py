@@ -1,7 +1,5 @@
-from random import randint, shuffle
-
+from random import randint
 from flask import Blueprint, render_template, request, session
-import random
 import datetime
 
 lineup_blueprint = Blueprint('lineup', __name__)
