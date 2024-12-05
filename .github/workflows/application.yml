@@ -47,7 +47,7 @@ jobs:
 
     - name: Run Flet application
       run: |
-        flet run src.app  # Specifica il percorso del file app.py
+        flet run src/app.py
 
     - name: Install Python Dependencies
       run: |
