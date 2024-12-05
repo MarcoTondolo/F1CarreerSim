@@ -45,9 +45,10 @@ jobs:
       run: |
         pip install flet
 
-    - name: Run Flet application
+    - name: Build and Run Flet Web App
       run: |
-        flet run src/app.py
+        echo "Building and running Flet web app..."
+        flet run src/app.py --web
 
     - name: Install Python Dependencies
       run: |
