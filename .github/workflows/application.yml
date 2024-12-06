@@ -41,10 +41,8 @@ jobs:
 
       - name: Build Flask App (Generate Static Files)
         run: |
-          # Aggiungi il codice per generare una versione statica del sito
-          # Esegui il rendering dei template in file statici (HTML, CSS, JS)
-          # Esegui ad esempio:
-          flask build --output-dir build/web
+            # Congela l'app Flask in file statici
+            flask freeze
 
       - name: Upload Artifact
         uses: actions/upload-pages-artifact@v3
