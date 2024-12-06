@@ -1,8 +1,6 @@
-from flask import Flask, render_template, request, redirect, url_for
-from flask_frozen import Freezer
-from lineup import (lineup_blueprint, Pilota, Scuderia, scuderie_piloti, scuderie, piloti,
-                    piloti_svincolati, nomi_piloti_svincolati_iniziali, giocatore)
 import random
+from flask import Flask, render_template, request, redirect, url_for
+from lineup import (lineup_blueprint, Pilota, Scuderia, scuderie_piloti, nomi_piloti_svincolati_iniziali)
 
 app = Flask(__name__)
 app.secret_key = 'your_secret_key'
@@ -93,7 +91,3 @@ def aggiungi_pilota():
 
 if __name__ == '__main__':
     app.run(debug=True)
-
-# Congelamento del sito in una versione statica
-if __name__ == '__main__':
-    Freezer.freeze()
