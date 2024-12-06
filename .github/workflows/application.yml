@@ -42,7 +42,7 @@ jobs:
       - name: Build Flask App (Generate Static Files)
         run: |
             # Congela l'app Flask in file statici
-            flask freeze
+            flask --app src.app freeze
 
       - name: Upload Artifact
         uses: actions/upload-pages-artifact@v3
