@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Season {{year}} Winners</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles/styles.css') }}">
+</head>
+<style>
+    @media (max-width: 1080px) {
+        .winners-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center; /* Centra il contenuto orizzontalmente */
+        }
+
+        h1,
+        .winner-text {
+            font-size: 4rem; /* Riduci la dimensione del testo per schermi più piccoli */
+        }
+
+        h1 {
+            color: red;
+        }
+
+        .winner-driver-container {
+            width: 400px; /* Imposta una larghezza fissa per le immagini */
+            height: 400px; /* Imposta una altezza fissa per le immagini */
+        }
+
+        .winner-driver-image,
+        .winner-driver-jacket {
+            width: 400px; /* Imposta una larghezza fissa per le immagini */
+            height: 400px; /* Imposta una altezza fissa per le immagini */
+        }
+
+        .winner-team-logo {
+            width: 300px; /* Imposta una larghezza fissa per il logo */
+            height: 300px; /* Imposta una altezza fissa per il logo */
+            object-fit: contain; /* Mantiene il logo proporzionato */
+        }
+
+        .winner {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            gap: 15px;
+        }
+
+        .winner-driver-container {
+            display: flex;
+            flex-direction: row;
+            gap: 15px;
+        }
+
+        .winner-team-logo {
+            width: 200px;
+            height: 200px;
+        }
+    }
+</style>
+<body>
+    <h1>Vincitori della stagione {{year}}</h1>
+
+    <div class="winners-container">
+        <!-- Vincitore Piloti -->
+        <section class="winner">
+            <h2 class="winner-text">Campione Piloti</h2>
+            <div class="winner-driver-container">
+                <img src="{{ url_for('static', filename='images/drivers/' ~ driver_winner.image ~ '.png') }}" alt="{{ driver_winner.nome }}" class="winner-driver-image">
+                <img src="{{ url_for('static', filename='images/jackets/' ~ driver_winner.scuderia ~ '-jacket.png') }}" alt="{{ driver_winner.scuderia }} Jacket" class="winner-driver-jacket">
+            </div>
+            <h3 class="winner-text">{{ driver_winner.nome }}</h3>
+            <p class="winner-text">{{ driver_winner.punti }} Points</p>
+        </section>
+
+        <!-- Vincitore Costruttori -->
+        <section class="winner">
+            <h2 class="winner-text">Campione Costruttori</h2>
+            <img src="{{ url_for('static', filename='images/logos/' ~ team_winner.nome ~ '.png') }}" alt="{{ team_winner.nome }}" class="winner-team-logo">
+            <h3 class="winner-text">{{ team_winner.nome | replace('-', ' ') | title }}</h3>
+            <p class="winner-text">{{ team_winner_points }} Points</p>
+        </section>
+    </div>
+
+    <div class="footer-bar">
+        <button class="next-button" id="redirect-button">
+            <div class="next-button-text">
+                Offers
+            </div>
+        </button>
+    </div>
+
+    <script>
+        document.getElementById('redirect-button').addEventListener('click', function() {
+            window.location.href = 'offers';
+        });
+    </script>
+</body>
+</html>

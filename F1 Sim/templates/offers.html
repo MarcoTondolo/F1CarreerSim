@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles/styles.css') }}">
+    <title>Offers</title>
+</head>
+<style>
+    @media (max-width: 1080px) {
+        .teams-selection {
+            display: flex;
+            flex-direction: column; /* Imposta la direzione in colonna */
+            align-items: center; /* Centra gli elementi orizzontalmente */
+        }
+
+        .team-option {
+            display: flex;
+            flex-direction: column; /* Imposta la direzione in colonna */
+            align-items: center; /* Centra gli elementi orizzontalmente */
+            margin-bottom: 20px; /* Aggiungi margine tra le opzioni del team */
+        }
+
+        .team-image {
+            width: 200px;
+            height: 200px;
+            object-fit: contain;
+            display: block;
+            margin: 0 auto;
+        }
+
+        .team-name {
+            font-size: 1.2rem;
+            text-align: center; /* Centra il nome del team */
+        }
+
+        h1 {
+            margin-bottom: 20px;
+            color: red;
+        }
+
+        h2 {
+            text-align: center;
+            margin-top: 30px;
+            margin-bottom: 20px;
+        }
+
+        h2, h1, .team-name {
+           font-size: 5rem;
+        }
+        h2 {
+            color: red;
+        }
+    }
+</style>
+<body>
+<form action="{{ url_for('lineup.transfers') }}" method="POST">
+
+    <h2>Seleziona un team</h2>
+    <div class="teams-selection">
+        {% for team in offerte_giocatore %}
+        <div class="team-option">
+            <label for="team_{{ loop.index }}">
+                <!-- Visualizza l'immagine del team -->
+                <img src="{{ url_for('static', filename='images/logos/' ~ team.nome ~ '.png') }}" alt="{{ team.nome }}" class="team-image">
+
+                <!-- Mostra il nome del team -->
+                <div class="team-name">{{ team.nome.replace('-', ' ').title() }}</div>
+            </label>
+            <!-- Input radio per selezionare il team -->
+            <input type="radio" id="team_{{ loop.index }}" name="team" value="{{ team.nome }}" required>
+        </div>
+        {% endfor %}
+    </div>
+
+    <div class="footer-bar">
+        <button type="submit" class="next-button" id="redirect-button">
+            <div class="next-button-text">
+                Next
+            </div>
+        </button>
+    </div>
+</form>
+</body>
+</html>

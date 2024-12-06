@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>F1 Race Simulation</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles/styles.css') }}">
+</head>
+<style>
+    @media (max-width: 1080px) {
+        .race-driver-name,
+        .race-points,
+        .race-position,
+        h1,
+        title{
+            font-size: 3rem;
+        }
+
+        .results-column {
+            flex: 1;
+            gap: 0;
+        }
+
+        .race-driver-image,
+        .race-driver-jacket {
+            width: 100px;
+            height: 100px;
+        }
+        .race-driver-logo {
+            width: 70px;
+            height: 70px;
+        }
+        .result-item-ferrari,
+        .result-item-haas,
+        .result-item-racing-bulls,
+        .result-item-red-bull,
+        .result-item-mclaren,
+        .result-item-mercedes,
+        .result-item-williams,
+        .result-item-alpine,
+        .result-item-aston-martin,
+        .result-item-sauber,
+        .result-item-transfer {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin: 3px 0;
+            border-radius: 5px;
+            height: 150px;
+        }
+    }
+</style>
+<body>
+    <h1 id="title">Risultati del GP {{ race_name }}</h1>
+
+    <!-- Contenitore per i risultati divisi -->
+    <div class="results-container">
+        <!-- Prime 10 posizioni -->
+        <div class="results-column">
+            <ol class="race-results">
+                {% for driver in race_results[:10] %}
+                <li class="result-item-{{ driver.scuderia }}">
+                    <div class="race-position">{{ loop.index }}</div>
+                    <div class="race-driver">
+                        <img src="{{ url_for('static', filename='images/drivers/' ~ driver.image ~ '.png') }}"
+                             alt="{{ driver.nome }}" class="race-driver-image" draggable="false">
+                        <img src="{{ url_for('static', filename='images/jackets/' ~ driver.scuderia ~ '-jacket.png') }}"
+                             alt="{{ driver.scuderia }}" class="race-driver-jacket" draggable="false">
+                    </div>
+                    <img src="{{ url_for('static', filename='images/logos/' ~ driver.scuderia ~ '.png') }}"
+                         alt="{{ driver.logo }}" class="race-driver-logo" draggable="false">
+                    <span class="race-driver-name">{{ driver.nome }}</span>
+                    <span class="race-points">{{ driver.punti_gara }}</span>
+                </li>
+                {% endfor %}
+            </ol>
+        </div>
+
+        <!-- Ultime 10 posizioni -->
+        <div class="results-column">
+            <ol class="race-results">
+                {% for driver in race_results[10:20] %}
+                <li class="result-item-{{ driver.scuderia }}">
+                    <div class="race-position">{{ loop.index +10 }}</div>
+                    <div class="race-driver">
+                        <img src="{{ url_for('static', filename='images/drivers/' ~ driver.image ~ '.png') }}"
+                             alt="{{ driver.nome }}" class="race-driver-image" draggable="false">
+                        <img src="{{ url_for('static', filename='images/jackets/' ~ driver.scuderia ~ '-jacket.png') }}"
+                             alt="{{ driver.scuderia }}" class="race-driver-jacket" draggable="false">
+                    </div>
+                    <img src="{{ url_for('static', filename='images/logos/' ~ driver.scuderia ~ '.png') }}"
+                         alt="{{ driver.logo }}" class="race-driver-logo" draggable="false">
+                    <span class="race-driver-name">{{ driver.nome }}</span>
+                    <span class="race-points">{{ driver.punti_gara }}</span>
+                </li>
+                {% endfor %}
+            </ol>
+        </div>
+    </div>
+
+    <div class="footer-bar">
+        <button class="back-button" id="redirect-button-back">
+            <div class="back-button-text">
+                Simulate All
+            </div>
+        </button>
+
+        <button class="next-button" id="redirect-button">
+            <div class="next-button-text">WDC</div>
+        </button>
+    </div>
+
+    <script>
+        document.getElementById('redirect-button-back').addEventListener('click', function() {
+            window.location.href = 'simulate-remaining-races';
+        });
+    </script>
+
+    <script>
+        document.getElementById('redirect-button').addEventListener('click', function() {
+            window.location.href = 'wdc-leaderboard';
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>F1 Driver Line-Up</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles/styles.css') }}">
+</head>
+<body>
+    <div class="main-container">
+        <div class="grid-container">
+            {% for team in teams %}
+                <!-- Link che avvolge tutto il contenuto del team -->
+                <a href="{{ url_for('lineup.team_info', team_name=team.nome) }}" class="team-container">
+                    <div class="grid-item {{ team.nome }}" id="team-{{ team.nome }}">
+                        <div class="team-logo">
+                            <img src="{{ url_for('static', filename='images/logos/' + team.nome + '.png') }}"
+                                 alt="{{ team.nome }}"
+                                 draggable="false">
+                        </div>
+                        <div class="driver-info" id="driver-info-{{ team.nome }}" draggable="false">
+                            {% for driver in team.piloti %}
+                                <div class="driver" id="driver-{{ team.nome }}-{{ driver.image }}" draggable="false" data-team="{{ team.nome }}">
+                                    <img src="{{ url_for('static', filename='images/drivers/' + driver.image + '.png') }}" alt="{{ driver.image }}" class="driver-image">
+                                    <div class="jacket">
+                                        <img src="{{ url_for('static', filename='images/jackets/' + (team.nome|replace(' ', '-') + '-jacket.png')) }}"
+                                             alt="{{ team.nome }}" class="driver-jacket" draggable="false">
+                                    </div>
+                                    <div class="driver-name">
+                                        <div class="driver-name-wrapper">{{ driver.nome }}</div>
+                                    </div>
+                                </div>
+                            {% endfor %}
+                        </div>
+                    </div>
+                </a>
+            {% endfor %}
+        </div>
+    </div>
+    <div class="footer-bar">
+        <button class="next-button" id="redirect-button-next">
+            <div class="next-button-text">
+                Next
+            </div>
+        </button>
+        <button class="back-button" id="redirect-button-back">
+            <div class="back-button-text">
+                Reset
+            </div>
+        </button>
+    </div>
+
+    <script>
+        document.getElementById('redirect-button-next').addEventListener('click', function() {
+            window.location.href = 'race';
+        });
+        document.getElementById('redirect-button-back').addEventListener('click', function() {
+            window.location.href = '/';
+        });
+    </script>
+</body>
+</html>
