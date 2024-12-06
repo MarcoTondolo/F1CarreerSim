@@ -5,40 +5,78 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Crea Pilota</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='styles/styles.css') }}">
+    <style>
+        @media (max-width: 1080px) {
+            .teams-selection {
+                display: flex;
+                flex-direction: column; /* Imposta la direzione in colonna */
+                align-items: center; /* Centra gli elementi orizzontalmente */
+            }
+
+            .team-option {
+                display: flex;
+                flex-direction: column; /* Imposta la direzione in colonna */
+                align-items: center; /* Centra gli elementi orizzontalmente */
+                margin-bottom: 20px; /* Aggiungi margine tra le opzioni del team */
+            }
+
+            .team-image {
+                width: 200px;
+                height: 200px;
+                object-fit: contain;
+                display: block;
+                margin: 0 auto;
+            }
+
+            .team-name {
+                font-size: 1.2rem;
+                text-align: center; /* Centra il nome del team */
+            }
+
+            h1 {
+                margin-bottom: 20px;
+                color: red;
+            }
+
+            h2 {
+                text-align: center;
+                margin-top: 30px;
+                margin-bottom: 20px;
+            }
+
+            h2, h1, .team-name {
+               font-size: 5rem;
+            }
+        }
+    </style>
 </head>
 <body class="crea_pilota">
-    <h1>Crea il tuo pilota</h1>
+    <div class="crea_pilota">
+        <h1>Crea il tuo pilota</h1>
 
-    <form action="{{ url_for('aggiungi_pilota') }}" method="POST">
-        <div class="form__group field">
-          <input type="text" class="form__field" placeholder="Name" name="name" id="name" required />
-          <label for="name" class="form__label">Name</label>
-        </div>
+        <form action="{{ url_for('aggiungi_pilota') }}" method="POST">
 
-        <div class="footer-bar">
-            <button type="submit" class="next-button" id="redirect-button">
-                <div class="next-button-text">
-                    Crea Pilota
-                </div>
-            </button>
-        </div>
+            <h2>Seleziona un team</h2>
+            <div class="teams-selection">
+                {% for team in teams %}
+                    <div class="team-option">
+                        <input type="radio" id="team_{{ loop.index }}" name="team" value="{{ team.nome }}" required>
+                        <label for="team_{{ loop.index }}">
+                            <img src="{{ url_for('static', filename='images/logos/' ~ team.nome ~ '.png') }}" alt="{{ team.nome }}" class="team-image">
+                            <div class="team-name">{{ team.nome.replace('-', ' ').title() }}</div>
+                        </label>
+                    </div>
+                {% endfor %}
+            </div>
 
-        <h2>Seleziona un team</h2>
-        <div class="teams-selection">
-            {% for team in teams %}
-                <div class="team-option">
-                    <label for="team_{{ loop.index }}">
-                        <!-- Visualizza l'immagine del team -->
-                        <img src="{{ url_for('static', filename='images/logos/' ~ team.nome ~ '.png') }}" alt="{{ team.nome }}" class="team-image">
-
-                        <!-- Mostra il nome del team -->
-                        <div class="team-name">{{ team.nome.replace('-', ' ').title() }}</div>
-                    </label>
-                    <!-- Input nascosto per selezionare il team -->
-                    <input type="radio" id="team_{{ loop.index }}" name="team" value="{{ team.nome }}" required>
-                </div>
-            {% endfor %}
-        </div>
-    </form>
+            <div class="footer-bar">
+                <button type="submit" class="next-button" id="redirect-button">
+                    <div class="next-button-text">
+                        Crea Pilota
+                    </div>
+                </button>
+            </div>
+        </form>
+    </div>
 </body>
 </html>

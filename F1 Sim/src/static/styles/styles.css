@@ -63,6 +63,7 @@ a {
     width: 100%;
     background-color: #242424;
     padding: 10px;
+    padding-top: 40px;
     display: flex;
     justify-content: flex-end;
     box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.2); /* Ombra per effetto di elevazione */
@@ -143,7 +144,6 @@ a {
 
 .next-button {
     border: none;
-    left: -10px;
     background-color: #ff2800;
     font-size: 1.5em;
     color: #ffffff;
@@ -156,8 +156,10 @@ a {
     text-overflow: ellipsis;
     white-space: nowrap;
     font-family: 'formula1display-bold', 'formula1display-regular', 'formula1display-wide', Arial, sans-serif;
-    position: relative;
-    transform: skew(-40deg);
+    position: absolute;  /* Posiziona il bottone relativamente al contenitore */
+    right: 0;            /* Allinea il bottone al bordo destro */
+    bottom: 10px;        /* Imposta una distanza dal fondo della barra */
+    transform: skew(-40deg); /* Mantiene l'inclinazione */
     transform-origin: bottom;
     z-index: 1;
 }
@@ -194,7 +196,6 @@ a {
 
 .back-button {
     border: none;
-    left: -1150px;
     background-color: #4d4d4d;
     font-size: 1.5em;
     color: #ffffff;
@@ -207,7 +208,9 @@ a {
     text-overflow: ellipsis;
     white-space: nowrap;
     font-family: 'formula1display-bold', 'formula1display-regular', 'formula1display-wide', Arial, sans-serif;
-    position: relative;
+    position: absolute;  /* Posiziona il bottone relativamente al contenitore */
+    left: 0;             /* Allinea il bottone al bordo sinistro */
+    bottom: 10px;        /* Imposta una distanza dal fondo della barra */
     transform: skew(40deg);
     transform-origin: bottom;
     z-index: 1;
@@ -545,6 +548,16 @@ body {
   }
 }
 
+input[type="radio"] {
+    appearance: none;  /* Rimuove il puntino */
+    -webkit-appearance: none;  /* Per browser WebKit (come Safari) */
+    -moz-appearance: none;  /* Per Firefox */
+}
+
+input[type="radio"]:checked + label .team-name {
+    color: blue;  /* Blu chiaro */
+}
+
 .teams-selection {
     display: flex; /* Usa flexbox per disporre gli elementi in orizzontale */
     flex-wrap: wrap; /* Permette di andare a capo se lo spazio è insufficiente */
@@ -563,5 +576,139 @@ a.team-logo {
 
 a img {
     cursor: pointer; /* Cambia il cursore al passaggio del mouse */
+}
+
+/* Modifica la visualizzazione della classifica in un'unica colonna su dispositivi mobili */
+@media (max-width: 1080px) {
+        h1, h3, p, div {
+            font-size: 2.5rem;
+        }
+
+        .grid-container {
+            padding-right: 5%; /* Aggiungi padding a destra */
+            grid-template-columns: 1fr;
+            gap: 15%;
+            padding-bottom: 100px; /* Aumenta il padding-bottom per fare spazio alla footer bar */
+        }
+
+        .team-info-container {
+            padding: 10px;
+        }
+
+        .driver {
+            width: 95%;
+        }
+
+        .driver-info {
+            display: flex;
+            align-items: center; /* Centra verticalmente, se necessario */
+            gap: 10px; /* Spazio tra immagine e nome */
+            justify-content: flex-start; /* Allinea gli elementi a sinistra */
+            width: 100%; /* Imposta la larghezza a 100% per occupare tutto lo spazio disponibile */
+        }
+
+        .driver-image, .driver-jacket {
+            width: 200px;
+            height: 200px;
+            object-fit: contain; /* Impedisce deformazioni nelle immagini */
+        }
+
+        .driver-name {
+            width: 95%;
+            height: 95%;
+        }
+
+        .team-logo img, .team-option img {
+            width: 100px;
+            height: 100px;
+        }
+
+        /* Footer bar fissata al fondo */
+        .footer-bar {
+            margin-top: 10px; /* Leggero margine sopra */
+            position: fixed; /* Rende la footer bar fissa in basso */
+            bottom: 0;
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            padding: 40px 10px;
+            background-color: #333; /* Aggiungi colore di sfondo per visibilità */
+            color: white;
+        }
+
+        .next-button,
+        .back-button {
+            font-size: 4em; /* Aumenta la dimensione del testo nei bottoni */
+            width: 350px; /* Aumenta la larghezza dei bottoni */
+            height: 60px; /* Aumenta l'altezza dei bottoni */
+        }
+        .results-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 5%;
+            margin: 0; /* Rimuovi eventuali margini di default */
+        }
+
+        .results-column {
+            width: 100%; /* Rende la colonna più larga su dispositivi mobili */
+            margin-bottom: 30px; /* Aumenta lo spazio tra le colonne */
+        }
+
+        .race-results {
+            font-size: 1.3em; /* Aumenta la dimensione del testo per dispositivi mobili */
+        }
+
+        .result-item {
+            font-size: 1.3em; /* Aumenta la dimensione del testo per ogni risultato */
+            padding: 15px; /* Aumenta lo spazio tra gli elementi */
+        }
+
+        .race-driver-name {
+            font-size: 1.6em; /* Ingrandisce il nome del pilota */
+        }
+
+        .race-points {
+            font-size: 1.4em; /* Ingrandisce i punti della gara */
+        }
+        /* Impostare il body per occupare tutta la finestra */
+        body {
+            display: flex;
+            flex-direction: column;
+            height: 97vh; /* Sottrai l'altezza della footer bar */
+            margin: 0; /* Rimuovi eventuali margini di default */
+        }
+
+        /* Contenitore principale, assicura che lo spazio sia disponibile sopra la footer bar */
+        .main-container {
+            flex-grow: 1; /* Permette al contenuto di occupare lo spazio disponibile */
+            overflow-y: auto; /* Abilita lo scroll se il contenuto è troppo lungo */
+            overflow-x: hidden;
+            width: 100%;
+        }
+
+        /* Footer bar fissa in basso */
+        .footer-bar {
+            position: fixed; /* La barra footer rimane fissa */
+            bottom: 0;
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            padding: 40px 10px;
+            background-color: #333; /* Colore di sfondo per visibilità */
+            color: white;
+            z-index: 1000; /* Assicura che la footer bar sia sopra gli altri contenuti */
+        }
+        h1, h3, p, div {
+            font-size: 2.5rem;
+        }
+
+        .team-info-container {
+            padding: 10px;
+        }
+
+        .team-logo-large {
+            width: 240px;
+        }
 }
 

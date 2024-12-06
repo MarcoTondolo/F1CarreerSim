@@ -6,6 +6,78 @@
     <title>Riepilogo Gare</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='styles/styles.css') }}">
 </head>
+<style>
+    @media (max-width: 1080px) {
+        body, html {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            width: 100%;
+            height: 100%;
+        }
+
+        .results-container-final {
+            flex-grow: 1; /* Occupa lo spazio disponibile sopra il footer */
+            display: flex;
+            flex-direction: column; /* Layout verticale */
+            align-items: center;
+            width: 100%;
+            height: calc(100vh - 80px);
+            padding: 0;
+            gap: 15px;
+            overflow-y: auto; /* Permette lo scrolling */
+        }
+
+        .results-column {
+            width: 100%; /* Ogni colonna si estende su tutta la larghezza */
+            padding: 0;
+            margin: 0;
+        }
+
+        .race-results {
+            display: flex;
+            flex-direction: column;
+            list-style: none;
+            padding: 0;
+            width: 90%; /* Adatta la larghezza */
+            align-items: center;
+        }
+
+        .result-item-ferrari,
+        .result-item-haas,
+        .result-item-racing-bulls,
+        .result-item-red-bull,
+        .result-item-mclaren,
+        .result-item-mercedes,
+        .result-item-williams,
+        .result-item-alpine,
+        .result-item-aston-martin,
+        .result-item-sauber,
+        .result-item-transfer {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            width: 105%; /* Occupa tutta la larghezza */
+            margin-left: 10%;
+            border-radius: 5px;
+            height: 150px;
+        }
+
+        .race-driver-image,
+        .race-driver-jacket,
+        .race-driver-logo {
+            width: 100px;
+            height: 100px;
+            object-fit: cover; /* Assicura che le immagini siano ben proporzionate */
+        }
+
+        .race-driver-name, .race-gp-name, .title {
+            font-size: 3rem;
+            text-align: left;
+            flex: 1; /* Adatta al layout */
+        }
+    }
+</style>
 <body>
     <h1 id="title">Riepilogo Stagione {{ current_season }}</h1>
     <div class="results-container-final">

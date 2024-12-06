@@ -3,8 +3,41 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{{ team.nome | replace('-', ' ') | title }} - Info Squadra</title>
+    <title>{{ team.nome | replace('-', ' ') | title }} - Info</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='styles/styles.css') }}">
+    <style>
+        @media (max-width: 1080px) {
+            h1, h3, p, div {
+                font-size: 3.5rem;
+            }
+
+            .team-info-container {
+                padding: 10px;
+            }
+
+            .team-logo-large {
+                width: 240px;
+            }
+
+            .driver {
+                width: 95%;
+            }
+
+            .driver-info {
+                flex-direction: column;
+            }
+
+            .driver-image, .driver-jacket {
+                width: 400px;
+                height: 400px;
+            }
+
+            .driver-name {
+                width: 580px;
+                height: 95%;
+            }
+        }
+    </style>
 </head>
 <body>
 <h1>{{ team.nome | replace('-', ' ') | title }}</h1>
@@ -19,7 +52,6 @@
 
     <!-- Informazioni del Team -->
     <section class="team-details">
-        <p>{{ team.nome | replace('-', ' ') | title }}</p>
         {% if team.wcc %}
         <h3>WCC</h3>
         {% for anno in team.wcc %}

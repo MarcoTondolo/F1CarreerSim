@@ -6,6 +6,60 @@
     <title>Season {{year}} Winners</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='styles/styles.css') }}">
 </head>
+<style>
+    @media (max-width: 1080px) {
+        .winners-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center; /* Centra il contenuto orizzontalmente */
+        }
+
+        h1,
+        .winner-text {
+            font-size: 4rem; /* Riduci la dimensione del testo per schermi più piccoli */
+        }
+
+        h1 {
+            color: red;
+        }
+
+        .winner-driver-container {
+            width: 400px; /* Imposta una larghezza fissa per le immagini */
+            height: 400px; /* Imposta una altezza fissa per le immagini */
+        }
+
+        .winner-driver-image,
+        .winner-driver-jacket {
+            width: 400px; /* Imposta una larghezza fissa per le immagini */
+            height: 400px; /* Imposta una altezza fissa per le immagini */
+        }
+
+        .winner-team-logo {
+            width: 300px; /* Imposta una larghezza fissa per il logo */
+            height: 300px; /* Imposta una altezza fissa per il logo */
+            object-fit: contain; /* Mantiene il logo proporzionato */
+        }
+
+        .winner {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            gap: 15px;
+        }
+
+        .winner-driver-container {
+            display: flex;
+            flex-direction: row;
+            gap: 15px;
+        }
+
+        .winner-team-logo {
+            width: 200px;
+            height: 200px;
+        }
+    }
+</style>
 <body>
     <h1>Vincitori della stagione {{year}}</h1>
 

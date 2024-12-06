@@ -43,11 +43,19 @@
                 Next
             </div>
         </button>
+        <button class="back-button" id="redirect-button-back">
+            <div class="back-button-text">
+                Reset
+            </div>
+        </button>
     </div>
 
     <script>
         document.getElementById('redirect-button-next').addEventListener('click', function() {
             window.location.href = 'race';
+        });
+        document.getElementById('redirect-button-back').addEventListener('click', function() {
+            window.location.href = '/';
         });
     </script>
 </body>

@@ -8,6 +8,7 @@ market1 = True
 market2 = True
 notizie_mercato = {}
 notizie_serializzate = {}
+offerte_giocatore = None
 
 gp_names = [
     "Bahrain", "Arabia Saudita", "Australia", "Giappone", "Cina", "Miami",
@@ -454,52 +455,6 @@ def gestisci_trasferimenti_2(piloti, scuderie, giocatore, scuderia):
     return notizie_mercato
 
 
-# Simulazione della carriera con la domanda sul termine
-def simula_carriera(giocatore, piloti, scuderie):
-
-        # Mostra classifica fine stagione
-        mostra_classifica(giocatore, piloti, scuderie, anno)
-
-        recap_carriera(giocatore)
-
-        show_HOF(piloti, piloti_svincolati, piloti_ritirati)
-        if giocatore.eta == 45:
-            exit(0)
-
-        # Aggiunta: Chiedi al giocatore se vuole terminare la carriera
-        continua_carriera = input("Vuoi continuare la tua carriera? (s/n): ").lower()
-        if continua_carriera == "n":
-            exit(0)
-
-        # Gestisci i trasferimenti
-        gestisci_trasferimenti(piloti, scuderie, giocatore)
-
-        # resetta punti
-        for scuderia in scuderie:
-            for pilota in scuderia.piloti:
-                pilota.resetta_punti()
-        for pilota in piloti:
-            pilota.resetta_punti()
-
-        anno += 1
-
-
-def inizializza_piloti():
-    global scuderie, piloti, nomi_piloti_svincolati_iniziali, piloti_svincolati
-
-    for nome_scuderia, nomi_piloti in scuderie_piloti.items():
-        scuderia = Scuderia(nome_scuderia, [])
-        for nome_pilota in nomi_piloti:
-            pilota = Pilota(nome_pilota, scuderia.nome, eta_piloti[nome_pilota])
-            scuderia.piloti.append(pilota)
-            piloti.append(pilota)
-        scuderie.append(scuderia)
-
-    for nome_pilota in nomi_piloti_svincolati_iniziali:
-        pilota = Pilota(nome_pilota, "Svincolato", eta_piloti[nome_pilota])
-        piloti_svincolati.append(pilota)
-
-
 def calculate_points(position):
     """Calcola i punti assegnati in base alla posizione finale della gara."""
     points_distribution = {1: 25, 2: 18, 3: 15, 4: 12, 5: 10, 6: 8, 7: 6, 8: 4, 9: 2, 10: 1}
@@ -667,9 +622,9 @@ def offerte_mercato():
     global market1
     global notizie_mercato
     global notizie_serializzate
-    offerte_giocatore = None
-    offerte_scuderia = None
-    if(market1):
+    global offerte_giocatore
+    if market1:
+        offerte_giocatore = None
         offerte_giocatore, offerte_scuderia = genera_offerte()
         notizie_mercato = gestisci_trasferimenti_1(piloti, scuderie, offerte_scuderia)
         if giocatore.scuderia is not "Svicolato":

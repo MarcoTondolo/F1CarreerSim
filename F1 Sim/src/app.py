@@ -46,7 +46,6 @@ def scegli_scuderia():
 
 
 def crea_piloti():
-
     for nome_scuderia, nomi_piloti in scuderie_piloti.items():
         scuderia = Scuderia(nome_scuderia, [])
         for nome_pilota in nomi_piloti:
@@ -59,12 +58,20 @@ def crea_piloti():
         pilota = Pilota(nome_pilota, "Svincolato", nome_pilota.split()[-1].lower())
         piloti_svincolati.append(pilota)
 
+def reset_simulazione():
+    # Resetta tutte le liste e variabili
+    global scuderie, piloti, piloti_svincolati, giocatore
+
+    # Pulisci le liste
+    scuderie.clear()  # Svuota la lista delle scuderie
+    piloti.clear()  # Svuota la lista dei piloti
+    piloti_svincolati.clear()  # Svuota la lista dei piloti svincolati
+
+
 @app.route('/')
 def index():
-    global first_start
-    if first_start:
-        crea_piloti()
-        first_start = False
+    reset_simulazione()
+    crea_piloti()
     return render_template("index.html")
 
 # Rotta per creare il pilota
@@ -76,7 +83,7 @@ def crea_pilota():
 # Rotta per aggiungere il pilota alla lineup
 @app.route('/aggiungi_pilota', methods=['POST'])
 def aggiungi_pilota():
-    nome = request.form['name']
+    nome = "Player"
     scuderia = request.form['team'].lower().replace(" ", "-")
 
     inizializza_simulazione(nome, scuderia)
