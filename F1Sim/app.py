@@ -1,7 +1,8 @@
 import random
+import datetime
 from flask import Flask, render_template, request, redirect, url_for
 from F1Sim.lineup import (lineup_blueprint, Pilota, Scuderia, scuderie, piloti, piloti_svincolati, scuderie_piloti,
-                          nomi_piloti_svincolati_iniziali, giocatore)
+                          nomi_piloti_svincolati_iniziali, giocatore, anno)
 
 app = Flask(__name__)
 app.secret_key = 'your_secret_key'
@@ -61,6 +62,7 @@ def crea_piloti():
 def reset_simulazione():
     # Resetta tutte le liste e variabili
     # Pulisci le liste
+    anno = datetime.datetime.now().year
     if scuderie:
         scuderie.clear()  # Svuota la lista delle scuderie
 
