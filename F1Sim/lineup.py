@@ -29,7 +29,8 @@ import datetime
 # Lista dei piloti svincolati
 nomi_piloti_svincolati_iniziali = ["Logan Sargeant", "Franco Colapinto", "Kevin Magnussen", "Daniel Ricciardo", "Guanyu Zhou"]
 piloti_svincolati = []
-piloti_ritirati = []
+scuderie = []
+piloti = []
 
 # Scuderie e piloti
 scuderie_piloti = {
@@ -44,10 +45,6 @@ scuderie_piloti = {
     "sauber": ["Valtteri Bottas", "Nico Hulkenberg"],
     "aston-martin": ["Fernando Alonso", "Lance Stroll"]
 }
-
-# Creazione delle scuderie e piloti
-scuderie = []
-piloti = []
 
 posizione_giocatore = 0
 
