@@ -1,6 +1,7 @@
 import random
 from flask import Flask, render_template, request, redirect, url_for
-from F1Sim.lineup import (lineup_blueprint, Pilota, Scuderia, scuderie_piloti, nomi_piloti_svincolati_iniziali)
+from F1Sim.lineup import (lineup_blueprint, Pilota, Scuderia, scuderie, piloti, piloti_svincolati, scuderie_piloti,
+                          nomi_piloti_svincolati_iniziali, giocatore)
 
 app = Flask(__name__)
 app.secret_key = 'your_secret_key'
@@ -59,16 +60,15 @@ def crea_piloti():
 
 def reset_simulazione():
     # Resetta tutte le liste e variabili
-    global scuderie, piloti, piloti_svincolati, giocatore
-
     # Pulisci le liste
-    if scuderie != [] or scuderie is not None:
+    if scuderie:
         scuderie.clear()  # Svuota la lista delle scuderie
-    if piloti != [] or piloti is not None:
-        piloti.clear()  # Svuota la lista dei piloti
-    if piloti_svincolati != [] or piloti_svincolati is not None:
-        piloti_svincolati.clear()  # Svuota la lista dei piloti svincolati
 
+    if piloti:
+        piloti.clear()  # Svuota la lista dei piloti
+
+    if piloti_svincolati:
+        piloti_svincolati.clear()  # Svuota la lista dei piloti svincolati
 
 @app.route('/')
 def index():
