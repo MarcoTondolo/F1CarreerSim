@@ -62,11 +62,11 @@ def reset_simulazione():
     global scuderie, piloti, piloti_svincolati, giocatore
 
     # Pulisci le liste
-    if scuderie is not [] or scuderie is not None:
+    if scuderie != [] or scuderie is not None:
         scuderie.clear()  # Svuota la lista delle scuderie
-    if piloti is not [] or piloti is not None:
+    if piloti != [] or piloti is not None:
         piloti.clear()  # Svuota la lista dei piloti
-    if piloti_svincolati is not [] or piloti_svincolati is not None:
+    if piloti_svincolati != [] or piloti_svincolati is not None:
         piloti_svincolati.clear()  # Svuota la lista dei piloti svincolati
 
 
