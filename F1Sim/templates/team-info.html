@@ -6,7 +6,7 @@
     <title>{{ team.nome | replace('-', ' ') | title }} - Info</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='styles/styles.css') }}">
     <style>
-        @media (max-width: 1080px) {
+        @media screen and (aspect-ratio: 20/9) {
             h1, h3, p, div {
                 font-size: 3.5rem;
             }

@@ -579,7 +579,7 @@ a img {
 }
 
 /* Modifica la visualizzazione della classifica in un'unica colonna su dispositivi mobili */
-@media (max-width: 1080px) {
+@media screen and (aspect-ratio: 20/9) {
         h1, h3, p, div {
             font-size: 2.5rem;
         }

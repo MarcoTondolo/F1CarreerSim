@@ -7,14 +7,16 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='styles/styles.css') }}">
 </head>
 <style>
-    /* Centra il titolo sia orizzontalmente che verticalmente e impedisce lo scroll */
-    body, html {
-        justify-content: center; /* Centra orizzontalmente */
-        align-items: center; /* Centra verticalmente */
-    }
+    @media screen and (aspect-ratio: 20/9) {
+        /* Centra il titolo sia orizzontalmente che verticalmente e impedisce lo scroll */
+        body, html {
+            justify-content: center; /* Centra orizzontalmente */
+            align-items: center; /* Centra verticalmente */
+        }
 
-    h1 {
-        text-align: center; /* Centra il testo all'interno dell'elemento h1 */
+        h1 {
+            text-align: center; /* Centra il testo all'interno dell'elemento h1 */
+        }
     }
 </style>
 <body>
