@@ -596,7 +596,7 @@ a img {
         }
 
         .driver {
-            width: 95%;
+            width: 100%;
         }
 
         .driver-info {
@@ -639,13 +639,7 @@ a img {
 
 
         .next-button,
-        .back-button:hover,
-        .back-button:hover:after,
-        .back-button:active,
-        .back-button,
-        .back-button:hover,
-        .back-button:hover:after,
-        .back-button:active {
+        .back-button {
             width: 50vw; /* Aumenta la larghezza dei bottoni */
             height: 5vh; /* Aumenta l'altezza dei bottoni */
         }
@@ -666,7 +660,6 @@ a img {
 
         .results-column {
             width: 100%; /* Rende la colonna più larga su dispositivi mobili */
-            margin-bottom: 30px; /* Aumenta lo spazio tra le colonne */
         }
 
         .race-results {
@@ -675,7 +668,7 @@ a img {
 
         .result-item {
             font-size: 1.3em; /* Aumenta la dimensione del testo per ogni risultato */
-            padding: 15px; /* Aumenta lo spazio tra gli elementi */
+            padding: 10px; /* Aumenta lo spazio tra gli elementi */
         }
 
         .race-driver-name {
@@ -689,7 +682,7 @@ a img {
         body {
             display: flex;
             flex-direction: column;
-            height: 93vh; /* Sottrai l'altezza della footer bar */
+            height: 90vh; /* Sottrai l'altezza della footer bar */
             margin: 0; /* Rimuovi eventuali margini di default */
         }
 
@@ -715,10 +708,6 @@ a img {
 
         .team-info-container {
             padding: 10px;
-        }
-
-        .team-logo-large {
-            width: 240px;
         }
 }
 
