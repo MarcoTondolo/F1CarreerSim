@@ -1,8 +1,8 @@
 import random
 import datetime
 from flask import Flask, render_template, request, redirect, url_for
-from F1Sim.lineup import (lineup_blueprint, Pilota, Scuderia, scuderie, piloti, piloti_svincolati, scuderie_piloti,
-                          nomi_piloti_svincolati_iniziali, giocatore, anno)
+from F1Sim.lineup import (lineup_blueprint, Pilota, Scuderia, Giocatore, scuderie, piloti, piloti_svincolati, scuderie_piloti,
+                          nomi_piloti_svincolati_iniziali, anno)
 
 app = Flask(__name__)
 app.secret_key = 'your_secret_key'
@@ -13,6 +13,7 @@ first_start = True
 def inizializza_simulazione(nome_giocatore, nome_team):
 
     team_iniziale = None
+    giocatore = None
 
     for scuderia in scuderie:
         if scuderia.nome == nome_team:
@@ -21,8 +22,7 @@ def inizializza_simulazione(nome_giocatore, nome_team):
     pilota_sostituito = random.choice(team_iniziale.piloti)
     piloti.remove(pilota_sostituito)
     piloti_svincolati.append(pilota_sostituito)
-    giocatore.nome = nome_giocatore
-    giocatore.scuderia = team_iniziale.nome
+    giocatore = Giocatore(nome_giocatore, team_iniziale.nome, "tbd")
     team_iniziale.piloti.append(giocatore)
     team_iniziale.piloti.remove(pilota_sostituito)
     piloti.append(giocatore)
@@ -62,7 +62,6 @@ def crea_piloti():
 def reset_simulazione():
     # Resetta tutte le liste e variabili
     # Pulisci le liste
-    anno = datetime.datetime.now().year
     if scuderie:
         scuderie.clear()  # Svuota la lista delle scuderie
 
@@ -71,6 +70,9 @@ def reset_simulazione():
 
     if piloti_svincolati:
         piloti_svincolati.clear()  # Svuota la lista dei piloti svincolati
+
+    anno = datetime.datetime.now().year
+
 
 @app.route('/')
 def index():
@@ -87,7 +89,7 @@ def crea_pilota():
 # Rotta per aggiungere il pilota alla lineup
 @app.route('/aggiungi_pilota', methods=['POST'])
 def aggiungi_pilota():
-    nome = "Player"
+    nome = "Marco Tondolo"
     scuderia = request.form['team'].lower().replace(" ", "-")
 
     inizializza_simulazione(nome, scuderia)
