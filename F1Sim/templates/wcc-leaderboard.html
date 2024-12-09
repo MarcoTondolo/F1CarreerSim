@@ -7,28 +7,33 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='styles/styles.css') }}">
 </head>
 <style>
-    @media screen and (aspect-ratio: 20/9) {
+    @media (max-width: 768px) {
         .race-driver-name,
         .race-points,
         .race-position,
         h1,
         title{
-            font-size: 3rem;
+            font-size: 1.2rem;
         }
 
         .results-column {
             flex: 1;
-            gap: 0;
+            margin: 0;
+        }
+
+        .race-results-wcc{
+            flex: 1;
+            padding-bottom: 7vh;
         }
 
         .race-driver-image,
         .race-driver-jacket {
-            width: 100px;
-            height: 100px;
+            width: 17vw;
+            height: auto;
         }
-        .logo {
-            width: 100px;
-            height: 100px;
+        .race-driver-logo {
+            width: 15vw;
+            height: auto;
         }
         .result-item-ferrari,
         .result-item-haas,
@@ -42,12 +47,8 @@
         .result-item-sauber,
         .result-item-transfer {
             display: flex;
-            align-items: center;
-            justify-content: space-between;
-            margin: 3px 0;
             border-radius: 5px;
-            height: 200px;
-            width: 1000px;
+            height: 10vh;
         }
     }
 </style>

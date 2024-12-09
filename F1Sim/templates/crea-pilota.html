@@ -6,7 +6,7 @@
     <title>Crea Pilota</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='styles/styles.css') }}">
     <style>
-        @media screen and (aspect-ratio: 20/9) {
+        @media (max-width: 768px) {
             .teams-selection {
                 display: flex;
                 flex-direction: column; /* Imposta la direzione in colonna */
@@ -20,16 +20,17 @@
                 margin-bottom: 20px; /* Aggiungi margine tra le opzioni del team */
             }
 
-            .team-image {
-                width: 200px;
-                height: 200px;
+            .team-option img{
+                width: 20vw;
+                align-items: center;
+                height: auto;
                 object-fit: contain;
                 display: block;
                 margin: 0 auto;
             }
 
             .team-name {
-                font-size: 1.2rem;
+                font-size: 1rem;
                 text-align: center; /* Centra il nome del team */
             }
 
@@ -45,7 +46,7 @@
             }
 
             h2, h1, .team-name {
-               font-size: 5rem;
+               font-size: 1rem;
             }
         }
     </style>

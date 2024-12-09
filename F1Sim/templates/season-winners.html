@@ -7,7 +7,7 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='styles/styles.css') }}">
 </head>
 <style>
-    @media screen and (aspect-ratio: 20/9) {
+    @media (max-width: 768px) {
         .winners-container {
             display: flex;
             flex-direction: column;
@@ -16,28 +16,23 @@
 
         h1,
         .winner-text {
-            font-size: 4rem; /* Riduci la dimensione del testo per schermi più piccoli */
+            font-size: 1.5rem; /* Riduci la dimensione del testo per schermi più piccoli */
         }
 
         h1 {
             color: red;
         }
 
-        .winner-driver-container {
-            width: 400px; /* Imposta una larghezza fissa per le immagini */
-            height: 400px; /* Imposta una altezza fissa per le immagini */
-        }
-
+        .winner-driver-container,
         .winner-driver-image,
         .winner-driver-jacket {
-            width: 400px; /* Imposta una larghezza fissa per le immagini */
-            height: 400px; /* Imposta una altezza fissa per le immagini */
+            width: 50vw;
+            height: auto;
         }
 
         .winner-team-logo {
-            width: 300px; /* Imposta una larghezza fissa per il logo */
-            height: 300px; /* Imposta una altezza fissa per il logo */
-            object-fit: contain; /* Mantiene il logo proporzionato */
+            width: 30vw;
+            height: auto;
         }
 
         .winner {
@@ -54,9 +49,8 @@
             gap: 15px;
         }
 
-        .winner-team-logo {
-            width: 200px;
-            height: 200px;
+        .winners-container {
+            padding-bottom: 7vh;
         }
     }
 </style>

@@ -1,7 +1,7 @@
 import random
 import datetime
 from flask import Flask, render_template, request, redirect, url_for
-from F1Sim.lineup import (lineup_blueprint, Pilota, Scuderia, Giocatore, scuderie, piloti, piloti_svincolati, scuderie_piloti,
+from F1Sim.lineup import (lineup_blueprint, Pilota, Scuderia, giocatore, scuderie, piloti, piloti_svincolati, scuderie_piloti,
                           nomi_piloti_svincolati_iniziali, anno)
 
 app = Flask(__name__)
@@ -11,9 +11,7 @@ first_start = True
 
 # Inizializzazione della simulazione
 def inizializza_simulazione(nome_giocatore, nome_team):
-
     team_iniziale = None
-    giocatore = None
 
     for scuderia in scuderie:
         if scuderia.nome == nome_team:
@@ -22,7 +20,11 @@ def inizializza_simulazione(nome_giocatore, nome_team):
     pilota_sostituito = random.choice(team_iniziale.piloti)
     piloti.remove(pilota_sostituito)
     piloti_svincolati.append(pilota_sostituito)
-    giocatore = Giocatore(nome_giocatore, team_iniziale.nome, "tbd")
+    giocatore.nome = nome_giocatore
+    giocatore.scuderia = team_iniziale.nome
+    giocatore.race_wins = 0
+    giocatore.wdc = []
+    giocatore.wcc = []
     team_iniziale.piloti.append(giocatore)
     team_iniziale.piloti.remove(pilota_sostituito)
     piloti.append(giocatore)

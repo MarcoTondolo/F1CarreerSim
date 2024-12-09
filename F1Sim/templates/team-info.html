@@ -6,9 +6,9 @@
     <title>{{ team.nome | replace('-', ' ') | title }} - Info</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='styles/styles.css') }}">
     <style>
-        @media screen and (aspect-ratio: 20/9) {
+        @media (max-width: 768px) {
             h1, h3, p, div {
-                font-size: 3.5rem;
+                font-size: 2rem;
             }
 
             .team-info-container {
@@ -16,7 +16,8 @@
             }
 
             .team-logo-large {
-                width: 240px;
+                width: 40vw;
+                height: auto;
             }
 
             .driver {
@@ -28,13 +29,12 @@
             }
 
             .driver-image, .driver-jacket {
-                width: 400px;
-                height: 400px;
+                width: 40vw;
+                height: auto;
             }
 
             .driver-name {
-                width: 580px;
-                height: 95%;
+                width: auto;
             }
         }
     </style>

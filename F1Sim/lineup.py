@@ -173,6 +173,7 @@ class Giocatore(Pilota):
             print("Scelta non valida, rimani nella scuderia attuale.")
             return None
 
+giocatore = Giocatore("", "", "tbd")
 
 # Funzione per calcolare i trofei del pilota
 def calcola_trofei_pilota(pilota):

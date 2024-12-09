@@ -10,27 +10,36 @@
     h1 {
         color: red;
     }
+    @media (max-width: 768px) {
+        h1, div {
+            font-size: 1.5rem;
+        }
+    }
 </style>
 <body>
 <h1 id="title">Notizie Trasferimenti Piloti</h1>
 
 <!-- Contenitore per i trasferimenti -->
 {% if notizie_mercato %}
-{% for pilota, trasferimento in notizie_mercato.items() %}
-<div>
-    {{ trasferimento['driver'] }}
-    {% if trasferimento['oldteam']|default('')|trim != "Svincolato" %}
-    da {{ trasferimento['oldteam'].replace('-', ' ').title() }}
-    {% endif %}
-    in {{ trasferimento['newteam'].replace('-', ' ').title() }}
+    {% for pilota, trasferimento in notizie_mercato.items() %}
+    <div>
+        <!-- Aggiungi l'indice numerico -->
+        <strong>{{ loop.index }}.</strong>
+        {{ trasferimento['driver'] }}
 
-    {% if trasferimento['subsituted'] is not none %}
-    (Sostituisce {{ trasferimento['subsituted'] }})
-    {% endif %}
-</div>
-{% endfor %}
+        {% if trasferimento['oldteam']|default('')|trim != "Svincolato" %}
+        da {{ trasferimento['oldteam'].replace('-', ' ').title() }}
+        {% endif %}
+
+        in {{ trasferimento['newteam'].replace('-', ' ').title() }}
+
+        {% if trasferimento['subsituted'] is not none %}
+        (Sostituisce {{ trasferimento['subsituted'] }})
+        {% endif %}
+    </div>
+    {% endfor %}
 {% else %}
-<p>Non ci sono trasferimenti da mostrare al momento.</p>
+    <p>Non ci sono trasferimenti da mostrare al momento.</p>
 {% endif %}
 
 <div class="footer-bar">

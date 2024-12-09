@@ -7,13 +7,14 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='styles/styles.css') }}">
 </head>
 <style>
-    @media screen and (aspect-ratio: 20/9) {
+    @media (max-width: 768px) {
         body, html {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
             width: 100%;
             height: 100%;
+            overflow-x: hidden;
         }
 
         .results-container-final {
@@ -23,26 +24,35 @@
             align-items: center;
             width: 100%;
             height: calc(100vh - 80px);
-            padding: 0;
+            padding-bottom: 7vh;
             gap: 15px;
             overflow-y: auto; /* Permette lo scrolling */
+            margin: 0 1vw;
         }
 
         .results-column {
             width: 100%; /* Ogni colonna si estende su tutta la larghezza */
-            padding: 0;
             margin: 0;
+            padding: 0;
         }
 
         .race-results {
             display: flex;
             flex-direction: column;
             list-style: none;
-            padding: 0;
-            width: 90%; /* Adatta la larghezza */
+            width: 98vw; /* Adatta la larghezza */
             align-items: center;
         }
 
+        .race-driver-image,
+        .race-driver-jacket {
+            width: 17vw;
+            height: auto;
+        }
+        .race-driver-logo {
+            width: 15vw;
+            height: auto;
+        }
         .result-item-ferrari,
         .result-item-haas,
         .result-item-racing-bulls,
@@ -55,25 +65,14 @@
         .result-item-sauber,
         .result-item-transfer {
             display: flex;
-            align-items: center;
-            justify-content: space-between;
-            width: 105%; /* Occupa tutta la larghezza */
-            margin-left: 10%;
             border-radius: 5px;
-            height: 150px;
-        }
-
-        .race-driver-image,
-        .race-driver-jacket,
-        .race-driver-logo {
-            width: 100px;
-            height: 100px;
-            object-fit: cover; /* Assicura che le immagini siano ben proporzionate */
+            height: 10vh;
+            width: 98vw;
         }
 
         .race-driver-name, .race-gp-name, .title {
-            font-size: 3rem;
-            text-align: left;
+            font-size: 1.2rem;
+            text-align: center;
             flex: 1; /* Adatta al layout */
         }
     }
