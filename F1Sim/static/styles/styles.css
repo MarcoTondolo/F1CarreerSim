@@ -682,7 +682,6 @@ a img {
         body {
             display: flex;
             flex-direction: column;
-            height: 90vh; /* Sottrai l'altezza della footer bar */
             margin: 0; /* Rimuovi eventuali margini di default */
         }
 
