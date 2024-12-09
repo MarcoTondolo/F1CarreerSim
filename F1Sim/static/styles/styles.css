@@ -692,6 +692,7 @@ a img {
             overflow-y: auto; /* Abilita lo scroll se il contenuto è troppo lungo */
             overflow-x: hidden;
             width: 100%;
+            height: 90vh;
         }
 
         /* Footer bar fissa in basso */
