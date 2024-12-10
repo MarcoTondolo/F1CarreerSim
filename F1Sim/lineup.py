@@ -23,6 +23,10 @@ MAX_RACES = len(gp_names)  # Utilizza direttamente la lunghezza di gp_names
 current_race_count = 0  # Inizializzazione globale
 current_season = datetime.datetime.now().year
 
+def reset_year():
+    global current_season
+    current_season = datetime.datetime.now().year
+
 import random
 import datetime
 
@@ -58,8 +62,6 @@ probabilita_offerta = [
 # Sistema di punteggio F1
 sistema_punti = [25, 18, 15, 12, 10, 8, 6, 4, 2, 1]
 
-# Variabile globale dell'anno
-anno = datetime.datetime.now().year
 
 # Classe per gestire i dati del pilota
 class Pilota:
