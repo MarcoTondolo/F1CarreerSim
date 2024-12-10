@@ -67,7 +67,7 @@
     <!-- Informazioni del Team -->
     <section class="team-details">
         {% if team.wcc %}
-        <h3>WCC</h3>
+        <h3>WCC ({{ team.wcc | length }})</h3>
         {% for anno in team.wcc %}
         <div>{{ anno }}</div>
         {% endfor %}
@@ -90,13 +90,13 @@
                 <h3>Race Wins</h3>
                 <p>{{ driver.race_wins }}</p>
                 {% if driver.wdc %}
-                <h3>WDC</h3>
+                <h3>WDC ({{ driver.wdc | length }})</h3>
                 {% for wdc in driver.wdc %}
                 <div>{{ wdc.scuderia | replace('-', ' ') | title }} ({{ wdc.anno }})</div>
                 {% endfor %}
                 {% endif %}
                 {% if driver.wcc %}
-                <h3>WCC</h3>
+                <h3>WCC ({{ driver.wcc | length }})</h3>
                 {% for wcc in driver.wcc %}
                 <div>{{ wcc.scuderia | replace('-', ' ') | title }} ({{ wcc.anno }})</div>
                 {% endfor %}
