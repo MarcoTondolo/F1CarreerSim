@@ -12,8 +12,55 @@
         margin: auto;
     }
     .results-container-final {
-        height: 88vh;
+        height: 85vh;
         overflow-y: auto;
+    }
+    @media (max-width: 768px) {
+        .race-driver-name,
+        .race-points,
+        .race-position,
+        h1,
+        title{
+            font-size: 1.2rem;
+        }
+
+        .results-column {
+            flex: 1;
+            margin: 0;
+        }
+
+        .results-container {
+            flex: 1;
+            padding-bottom: 10vh;
+        }
+
+        .race-driver-image,
+        .race-driver-jacket {
+            width: 15vw;
+            height: auto;
+        }
+        .race-driver-logo {
+            width: 15vw;
+            height: auto;
+        }
+        .result-item-ferrari,
+        .result-item-haas,
+        .result-item-racing-bulls,
+        .result-item-red-bull,
+        .result-item-mclaren,
+        .result-item-mercedes,
+        .result-item-williams,
+        .result-item-alpine,
+        .result-item-aston-martin,
+        .result-item-sauber,
+        .result-item-transfer {
+            display: flex;
+            border-radius: 5px;
+            height: 10vh;
+        }
+        .race-results {
+            width: 80vw;
+        }
     }
 </style>
 <body>
