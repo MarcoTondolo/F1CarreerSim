@@ -6,6 +6,9 @@
     <title>{{ team.nome | replace('-', ' ') | title }} - Info</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='styles/styles.css') }}">
     <style>
+        h1 {
+            color:red;
+        }
         @media (max-width: 768px) {
             h1, h3, p, div {
                 font-size: 1.2rem;
@@ -54,6 +57,11 @@
         <img src="{{ url_for('static', filename='images/logos/' ~ team.nome ~ '.png') }}"
              alt="{{ team.nome }}"
              class="team-logo-large">
+    </div>
+    <div class="team-car-container">
+        <img src="{{ url_for('static', filename='images/cars/' ~ team.nome ~ '-car.png') }}"
+             alt="{{ team.nome }}"
+             class="team-car">
     </div>
 
     <!-- Informazioni del Team -->
