@@ -495,7 +495,7 @@ def lineup():
         for scuderia in scuderie:
             for pilota in scuderia.piloti:
                 pilota.punti = 0
-    return render_template('lineup.html', teams=scuderie)
+    return render_template('lineup.html', teams=scuderie, year=current_season)
 
 
 @lineup_blueprint.route("/race")
@@ -510,7 +510,8 @@ def race():
 
         current_race_count += 1  # Incrementa dopo aver simulato la gara
 
-        return render_template('race.html', race_results=race_results, race_name=race_name)
+        return render_template('race.html', race_results=race_results, race_name=race_name,
+                               current_race=current_race_count, max_races=MAX_RACES)
     else:
         races_list = list(races.items())
         return render_template('race-wins.html', races=races_list, current_season=current_season)
@@ -647,10 +648,58 @@ def team_info(team_name):
         return "Team non trovato", 404
     return render_template('team-info.html', team=team)
 
-@lineup_blueprint.route('/driver/<driver_name>')
-def driver_info(driver_name):
-    # Trova le informazioni del pilota
-    driver = next((d for d in piloti if d.nome == driver_name), None)
-    if not driver:
-        return "Pilota non trovato", 404
-    return render_template('driver_info.html', driver=driver)
+@lineup_blueprint.route('/hof-wdc')
+def hof_wdc():
+    global piloti, piloti_svincolati
+    wdc_list = sorted([
+        {'pilota': pilota, 'scuderia': wdc['scuderia'], 'anno': wdc['anno']}
+        for pilota in piloti + piloti_svincolati if pilota.wdc
+        for wdc in pilota.wdc
+    ],
+        key=lambda x: x['anno']
+    )
+    return render_template('hof-wdc.html', wdc_list=wdc_list)
+
+@lineup_blueprint.route('/hof-wcc')
+def hof_wcc():
+    global scuderie
+    wcc_list = sorted([
+        {'scuderia': scuderia.nome, 'anno': anno}
+        for scuderia in scuderie
+        for anno in scuderia.wcc
+    ],
+        key=lambda x: x['anno']
+    )
+    return render_template('hof-wcc.html', wcc_list=wcc_list)
+
+@lineup_blueprint.route('/wdc-titles-leaderboard')
+def wdc_titles_leaderboard():
+    global scuderie
+    wdc_list = sorted([
+        {
+            'pilota': pilota,
+            'scuderia': pilota.wdc[-1]['scuderia'] if pilota.wdc else None,  # Ultima scuderia di WDC
+            'titoli': len(pilota.wdc)
+        }
+        for pilota in piloti + piloti_svincolati if pilota.wdc
+
+    ],
+        key=lambda x: x['titoli'],
+        reverse=True
+    )
+    return render_template('wdc-titles-leaderboard.html', wdc_list=wdc_list)
+
+@lineup_blueprint.route('/wcc-titles-leaderboard')
+def wcc_titles_leaderboard():
+    global scuderie
+    wcc_list = sorted([
+        {
+            'scuderia': scuderia,
+            'titoli': len(scuderia.wcc)
+        }
+        for scuderia in scuderie if scuderia.wcc
+    ],
+        key=lambda x: x['titoli'],
+        reverse=True
+    )
+    return render_template('wcc-titles-leaderboard.html', wcc_list=wcc_list)

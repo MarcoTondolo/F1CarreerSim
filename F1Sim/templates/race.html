@@ -53,7 +53,7 @@
     }
 </style>
 <body>
-    <h1 id="title">Risultati del GP {{ race_name }}</h1>
+    <h1 id="title">Risultati del GP {{ race_name }} ({{ current_race }}/{{ max_races }})</h1>
 
     <!-- Contenitore per i risultati divisi -->
     <div class="results-container">
@@ -116,9 +116,6 @@
         document.getElementById('redirect-button-back').addEventListener('click', function() {
             window.location.href = 'simulate-remaining-races';
         });
-    </script>
-
-    <script>
         document.getElementById('redirect-button').addEventListener('click', function() {
             window.location.href = 'wdc-leaderboard';
         });

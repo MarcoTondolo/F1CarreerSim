@@ -81,14 +81,22 @@
     <div class="footer-bar">
         <button class="next-button" id="redirect-button">
             <div class="next-button-text">
-                Offers
+                HoF WDC
+            </div>
+        </button>
+        <button class="back-button" id="redirect-button-back">
+            <div class="back-button-text">
+                Back
             </div>
         </button>
     </div>
 
     <script>
         document.getElementById('redirect-button').addEventListener('click', function() {
-            window.location.href = 'offers';
+            window.location.href = 'hof-wdc';
+        });
+        document.getElementById('redirect-button-back').addEventListener('click', function() {
+            window.location.href = 'race';
         });
     </script>
 </body>

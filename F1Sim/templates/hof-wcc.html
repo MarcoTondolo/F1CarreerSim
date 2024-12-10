@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hall of Fame WCC</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles/styles.css') }}">
+</head>
+<style>
+    .race-results {
+        width: 30%;
+        margin: auto;
+    }
+    .results-container-final {
+        height: 88vh;
+        overflow-y: auto;
+    }
+</style>
+<body>
+    <h1 id="title">Hall of Fame WCC</h1>
+    <div class="results-container">
+    <div class="results-column">
+        <ol class="race-results-wcc">
+            {% for wcc in wcc_list %}
+            <li class="result-item-{{ wcc.scuderia }}">
+                <div class="race-position">{{ wcc.anno }}</div>
+                <div class="race-driver">
+                    <img src="{{ url_for('static', filename='images/logos/' ~ wcc.scuderia ~ '.png') }}"
+                         alt="{{ team }}" class="logo" draggable="false">
+                </div>
+                <span class="race-driver-name">{{ wcc.scuderia.replace('-', ' ').title() }}</span>
+            </li>
+            {% endfor %}
+        </ol>
+    </div>
+</div>
+<div class="footer-bar">
+    <button class="next-button" id="redirect-button">
+        <div class="next-button-text">WDC Titles</div>
+    </button>
+        <button class="back-button" id="redirect-button-back">
+            <div class="back-button-text">
+                Back
+            </div>
+        </button>
+</div>
+
+<script>
+    document.getElementById('redirect-button').addEventListener('click', function() {
+            window.location.href = 'wdc-titles-leaderboard';
+        });
+    document.getElementById('redirect-button-back').addEventListener('click', function() {
+        window.location.href = 'hof-wdc';
+    });
+</script>
+</body>
+</html>

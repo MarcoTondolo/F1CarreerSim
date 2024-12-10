@@ -7,6 +7,8 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='styles/styles.css') }}">
 </head>
 <body>
+    <h1 id="title">Lineup {{ year }}</h1>
+
     <div class="main-container">
         <div class="grid-container">
             {% for team in teams %}
