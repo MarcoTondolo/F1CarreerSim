@@ -85,12 +85,20 @@
     <button class="next-button" id="redirect-button">
         <div class="next-button-text">HoF WCC</div>
     </button>
+    <button class="back-button" id="redirect-button-back">
+        <div class="back-button-text">
+            Back
+        </div>
+    </button>
 </div>
 
 <script>
     document.getElementById('redirect-button').addEventListener('click', function() {
             window.location.href = 'hof-wcc';
         });
+    document.getElementById('redirect-button-back').addEventListener('click', function() {
+        window.location.href = 'season-winners';
+    });
 </script>
 </body>
 </html>

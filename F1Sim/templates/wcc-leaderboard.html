@@ -7,6 +7,11 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='styles/styles.css') }}">
 </head>
 <style>
+    .race-driver,
+    .team-car {
+        width: 10vw;
+        height: auto;
+    }
     @media (max-width: 768px) {
         .race-driver-name,
         .race-points,
@@ -47,6 +52,11 @@
             border-radius: 5px;
             height: 10vh;
         }
+        .race-driver,
+        .team-car {
+            width: 30vw;
+            height: auto;
+        }
     }
 </style>
 <body>
@@ -58,9 +68,12 @@
             <li class="result-item-{{ team.nome }}">
                 <div class="race-position">{{ loop.index }}</div>
                 <div class="race-driver">
-                    <img src="{{ url_for('static', filename='images/logos/' ~ team.nome ~ '.png') }}"
-                         alt="{{ team }}" class="logo" draggable="false">
+                        <img src="{{ url_for('static', filename='images/cars/' ~ team.nome ~ '-car.png') }}"
+                             alt="{{ team.nome }}"
+                             class="team-car">
                 </div>
+                <img src="{{ url_for('static', filename='images/logos/' ~ team.nome ~ '.png') }}"
+                     alt="{{ team }}" class="logo" draggable="false">
                 <span class="race-driver-name">{{ team.nome.replace('-', ' ').title() }}</span>
                 <span class="race-points">{{ points }}</span>
             </li>

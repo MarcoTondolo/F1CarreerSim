@@ -574,15 +574,17 @@ def season_winners():
     scuderie_ordinate = sorted(punti_scuderie.items(), key=lambda s: s[1], reverse=True)
     team_winner = scuderie_ordinate[0][0]
 
-    # Aggiungi il titolo WDC al pilota vincitore
-    if driver_winner.nome not in driver_winner.wdc:
+    # Aggiungi il titolo WDC al pilota vincitore, evitando duplicati
+    if not any(wdc['anno'] == current_season for wdc in driver_winner.wdc):
         driver_winner.wdc.append({'scuderia': driver_winner.scuderia, 'anno': current_season})
 
-    # Aggiungi il titolo WCC alla scuderia vincitrice
-    if team_winner.nome not in team_winner.wcc:
+    # Aggiungi il titolo WCC alla scuderia vincitrice, evitando duplicati
+    if current_season not in team_winner.wcc:
         team_winner.wcc.append(current_season)
+        # Aggiorna anche i piloti della scuderia, evitando duplicati
         for driver in team_winner.piloti:
-            driver.wcc.append({'scuderia': team_winner.nome, 'anno': current_season})
+            if not any(wcc['anno'] == current_season for wcc in driver.wcc):
+                driver.wcc.append({'scuderia': team_winner.nome, 'anno': current_season})
 
     market1 = True
     market2 = True
