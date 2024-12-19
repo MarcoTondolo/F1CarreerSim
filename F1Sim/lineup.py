@@ -38,10 +38,10 @@ piloti = []
 
 # Scuderie e piloti
 scuderie_piloti = {
-    "red-bull": ["Max Verstappen", "Sergio Perez"],
+    "red-bull": ["Max Verstappen", "Liam Lawson"],
     "ferrari": ["Charles Leclerc", "Lewis Hamilton"],
     "mclaren": ["Lando Norris", "Oscar Piastri"],
-    "racing-bulls": ["Yuki Tsunoda", "Liam Lawson"],
+    "racing-bulls": ["Yuki Tsunoda", "Sergio Perez"],
     "haas": ["Oliver Bearman", "Esteban Ocon"],
     "mercedes": ["George Russell", "Kimi Antonelli"],
     "alpine": ["Pierre Gasly", "Jack Doohan"],
