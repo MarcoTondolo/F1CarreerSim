@@ -1,5 +1,6 @@
 from random import randint
 from flask import Blueprint, render_template, request, session
+from info.races import f1_calendar, f2_calendar, f3_calendar, f4_calendar
 import datetime
 
 lineup_blueprint = Blueprint('lineup', __name__)
@@ -10,16 +11,15 @@ notizie_mercato = {}
 notizie_serializzate = {}
 offerte_giocatore = None
 
-gp_names = [
-    "Bahrain", "Arabia Saudita", "Australia", "Giappone", "Cina", "Miami",
-    "Emilia Romagna", "Monaco", "Canada", "Spagna", "Austria", "Gran Bretagna",
-    "Ungheria", "Belgio", "Olanda", "Italia", "Azerbaijan", "Singapore", "Austin",
-    "Messico", "Brasile", "Las Vegas", "Qatar", "Abu Dhabi"
-]
+f1_races = {gp: {"winner_name": "", "winner_team": ""} for gp in f1_calendar}
+f2_races = {gp: {"winner_name": "", "winner_team": ""} for gp in f2_calendar}
+f3_races = {gp: {"winner_name": "", "winner_team": ""} for gp in f3_calendar}
+f4_races = {gp: {"winner_name": "", "winner_team": ""} for gp in f4_calendar}
 
-races = {gp: {"winner_name": "", "winner_team": ""} for gp in gp_names}
-
-MAX_RACES = len(gp_names)  # Utilizza direttamente la lunghezza di gp_names
+F1_MAX_RACES = len(f1_calendar)
+F2_MAX_RACES = len(f2_calendar)
+F3_MAX_RACES = len(f3_calendar)
+F4_MAX_RACES = len(f4_calendar)
 current_race_count = 0  # Inizializzazione globale
 current_season = datetime.datetime.now().year
 
@@ -33,22 +33,20 @@ import datetime
 # Lista dei piloti svincolati
 nomi_piloti_svincolati_iniziali = ["Logan Sargeant", "Franco Colapinto", "Kevin Magnussen", "Daniel Ricciardo", "Guanyu Zhou"]
 piloti_svincolati = []
-scuderie = []
-piloti = []
+scuderie_f1 = []
+scuderie_f2 = []
+scuderie_f3 = []
+scuderie_f4 = []
 
-# Scuderie e piloti
-scuderie_piloti = {
-    "red-bull": ["Max Verstappen", "Sergio Perez"],
-    "ferrari": ["Charles Leclerc", "Lewis Hamilton"],
-    "mclaren": ["Lando Norris", "Oscar Piastri"],
-    "racing-bulls": ["Yuki Tsunoda", "Liam Lawson"],
-    "haas": ["Oliver Bearman", "Esteban Ocon"],
-    "mercedes": ["George Russell", "Kimi Antonelli"],
-    "alpine": ["Pierre Gasly", "Jack Doohan"],
-    "williams": ["Carlos Sainz", "Alexander Albon"],
-    "sauber": ["Valtteri Bottas", "Nico Hulkenberg"],
-    "aston-martin": ["Fernando Alonso", "Lance Stroll"]
+scuderie = {
+    1: scuderie_f1,
+    2: scuderie_f2,
+    3: scuderie_f3,
+    4: scuderie_f4,
 }
+
+
+piloti = []
 
 posizione_giocatore = 0
 
@@ -65,15 +63,23 @@ sistema_punti = [25, 18, 15, 12, 10, 8, 6, 4, 2, 1]
 
 # Classe per gestire i dati del pilota
 class Pilota:
-    def __init__(self, nome, scuderia, image, punti=0, punti_gara=0, race_wins=0, rating=randint(50, 100), wdc=None, wcc=None):
+    def __init__(self, nome, scuderia, categoria, academy, image, punti=0, punti_gara=0, race_wins=0, rating=randint(50, 100)):
         self.nome = nome
         self.image = image
         self.scuderia = scuderia
+        self.categoria = categoria
+        self.academy = academy
         self.punti_gara = punti_gara
         self.punti = punti
         self.race_wins = race_wins
-        self.rating = rating  # Aggiunto il rating
+        self.rating = randint(1, 25) if categoria == 4 else (
+                        randint(26, 50)) if categoria == 3 else (
+                        randint(51, 75)) if categoria == 2 else (
+                        randint(76, 100))
         self.temp_rating = 0
+        self.f4 = []
+        self.f3 = []
+        self.f2 = []
         self.wdc = []
         self.wcc = []
         self.posizione_finale = None
@@ -126,7 +132,10 @@ class Pilota:
         self.rating += incremento
         self.rating -= self.temp_rating
         # Il rating non può andare sotto 50 o sopra 100
-        self.rating = max(50, min(self.rating, 100))
+        self.rating = max(50, min(self.rating, 100)) if self.categoria == 4 else (
+                        max(50, min(self.rating, 100))) if self.categoria == 3 else (
+                        max(50, min(self.rating, 100))) if self.categoria == 2 else (
+                        max(50, min(self.rating, 100)))
 
     def resetta_punti(self):
         self.punti = 0
@@ -134,9 +143,10 @@ class Pilota:
 
 # Classe per la scuderia
 class Scuderia:
-    def __init__(self, nome, piloti):
+    def __init__(self, nome, categoria):
         self.nome = nome
-        self.piloti = piloti
+        self.categoria = categoria
+        self.piloti = []
         self.wcc = []
 
     def calcola_punti(self):
@@ -145,8 +155,8 @@ class Scuderia:
 
 # Classe per il giocatore
 class Giocatore(Pilota):
-    def __init__(self, nome, scuderia, image):
-        super().__init__(nome, scuderia, image)
+    def __init__(self, nome, scuderia, categoria, image):
+        super().__init__(nome, scuderia, categoria, image)
 
     def scegli_squadra(self, offerte):
         if not offerte:
@@ -175,7 +185,7 @@ class Giocatore(Pilota):
             print("Scelta non valida, rimani nella scuderia attuale.")
             return None
 
-giocatore = Giocatore("", "", "tbd")
+giocatore = Giocatore("", "", "", "tbd")
 
 # Funzione per calcolare i trofei del pilota
 def calcola_trofei_pilota(pilota):
@@ -206,7 +216,7 @@ def simula_gara(piloti, gp_name, giocatore):
 
     # Aggiorna il vincitore della gara
     piloti[0].race_wins +=1
-    races[gp_names[current_race_count]] = {
+    f1_races[f1_calendar[current_race_count]] = {
         "winner_name": piloti[0].nome,
         "winner_image": piloti[0].image,
         "winner_team": piloti[0].scuderia,
@@ -488,14 +498,15 @@ def serializza_notizie_mercato(notizie_mercato):
 def lineup():
     global current_race_count
     global current_season
-    global first_start
-    if current_race_count >= MAX_RACES:
+    global scuderie
+    global giocatore
+    if current_race_count >= F1_MAX_RACES:
         current_race_count = 0
         current_season += 1
-        for scuderia in scuderie:
+        for scuderia in scuderie[giocatore.categoria]:
             for pilota in scuderia.piloti:
                 pilota.punti = 0
-    return render_template('lineup.html', teams=scuderie, year=current_season)
+    return render_template('lineup.html', teams=scuderie[giocatore.categoria], year=current_season)
 
 
 @lineup_blueprint.route("/race")
@@ -504,16 +515,16 @@ def race():
     global current_season
     global giocatore
 
-    if current_race_count < MAX_RACES:
-        race_results = simula_gara(piloti, gp_names, giocatore)
-        race_name = gp_names[current_race_count]
+    if current_race_count < F1_MAX_RACES:
+        race_results = simula_gara(piloti, f1_calendar, giocatore)
+        race_name = f1_calendar[current_race_count]
 
         current_race_count += 1  # Incrementa dopo aver simulato la gara
 
         return render_template('race.html', race_results=race_results, race_name=race_name,
-                               current_race=current_race_count, max_races=MAX_RACES)
+                               current_race=current_race_count, max_races=F1_MAX_RACES)
     else:
-        races_list = list(races.items())
+        races_list = list(f1_races.items())
         return render_template('race-wins.html', races=races_list, current_season=current_season)
 
 
@@ -524,8 +535,8 @@ def simulate_remaining_races():
     global piloti
 
     # Simula tutte le gare rimanenti
-    while current_race_count < MAX_RACES:
-        simula_gara(piloti, gp_names, giocatore)
+    while current_race_count < F1_MAX_RACES:
+        simula_gara(piloti, f1_calendar, giocatore)
         current_race_count += 1  # Incrementa dopo ogni simulazione
 
     drivers_sorted = sorted(piloti, key=lambda d: d.punti, reverse=True)
@@ -629,7 +640,7 @@ def offerte_mercato():
         offerte_giocatore = None
         offerte_giocatore, offerte_scuderia = genera_offerte()
         notizie_mercato = gestisci_trasferimenti_1(piloti, scuderie, offerte_scuderia)
-        if giocatore.scuderia is not "Svicolato":
+        if giocatore.scuderia != "Svicolato":
             for scuderia in scuderie:
                 if scuderia.nome == giocatore.scuderia:
                     offerte_giocatore.setdefault(scuderia, []).append(giocatore)
