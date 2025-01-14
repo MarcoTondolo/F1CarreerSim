@@ -397,6 +397,24 @@ def riempi_scuderie(notizie_mercato):
                 pilota = pilota_svincolato
             piloti_visti.add(pilota)
 
+    # Rimuove eventuali piloti in più
+    for scuderia in scuderie:
+        while len(scuderia.piloti) > 2:
+            # Seleziona un pilota a caso, ma evita di rimuovere il giocatore
+            pilota_da_rimuovere = random.choice(scuderia.piloti)
+            if pilota_da_rimuovere != giocatore:
+                scuderia.piloti.remove(pilota_da_rimuovere)
+                # Registra il movimento nel mercato
+                notizie_mercato[pilota_da_rimuovere.nome] = {
+                    "driver": pilota_da_rimuovere.nome,
+                    "oldteam": scuderia.nome,
+                    "newteam": "Svincolato"
+                }
+    i = 0
+    for scuderia in scuderie:
+        i += len(scuderia.piloti)
+    print(f"Totale piloti: {i}")
+
 
 def genera_offerte():
     global posizione_giocatore
@@ -466,9 +484,6 @@ def calculate_points(position):
 def serializza_notizie_mercato(notizie_mercato):
     notizie_serializzate = {}
     for nome_pilota, trasferimento in notizie_mercato.items():
-        print(nome_pilota)
-        print(trasferimento)
-
         # Verifica se esiste la chiave 'driver'
         driver_name = trasferimento.get("driver") if trasferimento.get("driver") else "Pilota sconosciuto"
 
