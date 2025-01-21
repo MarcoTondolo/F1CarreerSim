@@ -350,70 +350,63 @@ def riempi_scuderie(notizie_mercato):
     for scuderia in scuderie:
         while len(scuderia.piloti) < 2 and piloti_svincolati:
             # Seleziona un pilota svincolato casuale
-            pilota_svincolato = piloti_svincolati.pop(random.randint(0, len(piloti_svincolati) - 1))
+            pilota_svincolato = random.choice(piloti_svincolati)
+            piloti_svincolati.remove(pilota_svincolato)
 
             # Aggiungi il pilota alla scuderia
             scuderia.piloti.append(pilota_svincolato)
-
-            # Aggiorna le informazioni del pilota
             pilota_svincolato.scuderia = scuderia.nome
-
-            # Aggiorna la lista globale dei piloti
-            if pilota_svincolato not in piloti:
-                piloti.append(pilota_svincolato)
 
             # Registra il movimento nel mercato
             notizie_mercato[pilota_svincolato.nome] = {
                 "driver": pilota_svincolato.nome,
                 "oldteam": "Svincolato",
-                "newteam": scuderia.nome
+                "newteam": scuderia.nome,
             }
 
-    # Debugging: verifica che ogni pilota sia assegnato a una sola scuderia
+    # Debugging: verifica duplicati
     piloti_visti = set()
     for scuderia in scuderie:
+        nuovi_piloti = []
         for pilota in scuderia.piloti:
-            if pilota in piloti_visti:
-                scuderia.piloti.remove(pilota)
-                
-                pilota_svincolato = piloti_svincolati.pop(random.randint(0, len(piloti_svincolati) - 1))
+            if pilota not in piloti_visti:
+                piloti_visti.add(pilota)
+                nuovi_piloti.append(pilota)
+            else:
+                # Se il pilota è duplicato, rimuovilo e rimpiazzalo
+                if piloti_svincolati:
+                    nuovo_pilota = random.choice(piloti_svincolati)
+                    piloti_svincolati.remove(nuovo_pilota)
+                    nuovo_pilota.scuderia = scuderia.nome
+                    notizie_mercato[nuovo_pilota.nome] = {
+                        "driver": nuovo_pilota.nome,
+                        "oldteam": "Svincolato",
+                        "newteam": scuderia.nome,
+                    }
+                    nuovi_piloti.append(nuovo_pilota)
+        scuderia.piloti = nuovi_piloti
 
-                # Aggiungi il pilota alla scuderia
-                scuderia.piloti.append(pilota_svincolato)
-
-                # Aggiorna le informazioni del pilota
-                pilota_svincolato.scuderia = scuderia.nome
-
-                # Aggiorna la lista globale dei piloti
-                if pilota_svincolato not in piloti:
-                    piloti.append(pilota_svincolato)
-
-                # Registra il movimento nel mercato
-                notizie_mercato[pilota_svincolato.nome] = {
-                    "driver": pilota_svincolato.nome,
-                    "oldteam": "Svincolato",
-                    "newteam": scuderia.nome
-                }
-                pilota = pilota_svincolato
-            piloti_visti.add(pilota)
-
-    # Rimuove eventuali piloti in più
+    # Rimuove piloti in eccesso
     for scuderia in scuderie:
         while len(scuderia.piloti) > 2:
-            # Seleziona un pilota a caso, ma evita di rimuovere il giocatore
-            pilota_da_rimuovere = random.choice(scuderia.piloti)
-            if pilota_da_rimuovere != giocatore:
-                scuderia.piloti.remove(pilota_da_rimuovere)
-                # Registra il movimento nel mercato
-                notizie_mercato[pilota_da_rimuovere.nome] = {
-                    "driver": pilota_da_rimuovere.nome,
-                    "oldteam": scuderia.nome,
-                    "newteam": "Svincolato"
-                }
-    i = 0
-    for scuderia in scuderie:
-        i += len(scuderia.piloti)
-    print(f"Totale piloti: {i}")
+            pilota_da_rimuovere = random.choice(
+                [pilota for pilota in scuderia.piloti if pilota != giocatore]
+            )
+            scuderia.piloti.remove(pilota_da_rimuovere)
+            piloti_svincolati.append(pilota_da_rimuovere)
+            pilota_da_rimuovere.scuderia = "Svincolato"
+
+            # Registra il movimento nel mercato
+            notizie_mercato[pilota_da_rimuovere.nome] = {
+                "driver": pilota_da_rimuovere.nome,
+                "oldteam": scuderia.nome,
+                "newteam": "Svincolato",
+            }
+
+    # Debugging finale
+    totale_piloti = sum(len(scuderia.piloti) for scuderia in scuderie)
+    print(f"Totale piloti assegnati: {totale_piloti}")
+
 
 
 def genera_offerte():
