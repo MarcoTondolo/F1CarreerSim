@@ -111,31 +111,12 @@ class Pilota:
         self.punti_gara = points_distribution.get(position, 0)  # 0 punti per oltre la 10° posizione
         self.punti += self.punti_gara
 
-    def aggiorna_rating(self, posizione):
-        # Modifica del rating in base alla posizione finale
-        incremento = 0
-        if posizione == 1:
-            incremento = 3
-        elif posizione == 2:
-            incremento = 2
-        elif posizione == 3:
-            incremento = 1
-        elif 4 <= posizione <= 15:
-            incremento = 0
-        elif 16 <= posizione <= 18:
-            incremento = -1
-        elif posizione == 19:
-            incremento = -2
-        elif posizione == 20:
-            incremento = -3
-        # Aggiorna il rating
-        self.rating += incremento
-        self.rating -= self.temp_rating
+    def max_rating(self):
         # Il rating non può andare sotto 50 o sopra 100
-        self.rating = max(50, min(self.rating, 100)) if self.categoria == 4 else (
-                        max(50, min(self.rating, 100))) if self.categoria == 3 else (
-                        max(50, min(self.rating, 100))) if self.categoria == 2 else (
-                        max(50, min(self.rating, 100)))
+        self.rating = max(1, min(self.rating, 25)) if self.categoria == 4 else (
+                        max(26, min(self.rating, 50))) if self.categoria == 3 else (
+                        max(51, min(self.rating, 75))) if self.categoria == 2 else (
+                        max(76, min(self.rating, 100)))
 
     def resetta_punti(self):
         self.punti = 0
@@ -156,7 +137,7 @@ class Scuderia:
 # Classe per il giocatore
 class Giocatore(Pilota):
     def __init__(self, nome, scuderia, categoria, image):
-        super().__init__(nome, scuderia, categoria, image)
+        super().__init__(self, nome, scuderia, categoria, image)
 
     def scegli_squadra(self, offerte):
         if not offerte:
@@ -212,7 +193,7 @@ def simula_gara(piloti, gp_name, giocatore):
     for posizione, pilota in enumerate(piloti, 1):
         pilota.posizione_finale = posizione
         pilota.guadagna_punti(posizione)
-        pilota.aggiorna_rating(posizione)  # Aggiorna il rating dopo la gara
+        pilota.max_rating()  # Aggiorna il rating dopo la gara
 
     # Aggiorna il vincitore della gara
     piloti[0].race_wins +=1

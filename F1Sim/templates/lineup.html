@@ -23,11 +23,11 @@
                         </div>
                         <div class="driver-info" id="driver-info-{{ team.nome }}" draggable="false">
                             {% for driver in team.piloti %}
-                                <div class="driver" id="driver-{{ team.nome }}-{{ driver.image }}" draggable="false" data-team="{{ team.nome }}">
+                                <div class="driver" id="driver-{{ team.nome }}-{{ driver.image }}" draggable="false" data-team="{{ driver.academy }}">
                                     <img src="{{ url_for('static', filename='images/drivers/' + driver.image + '.png') }}" alt="{{ driver.image }}" class="driver-image">
                                     <div class="jacket">
-                                        <img src="{{ url_for('static', filename='images/jackets/' + (team.nome|replace(' ', '-') + '-jacket.png')) }}"
-                                             alt="{{ team.nome }}" class="driver-jacket" draggable="false">
+                                        <img src="{{ url_for('static', filename='images/jackets/' + (driver.academy|replace(' ', '-') + '-jacket.png')) }}"
+                                             alt="{{ driver.academy }}" class="driver-jacket" draggable="false">
                                     </div>
                                     <div class="driver-name">
                                         <div class="driver-name-wrapper">{{ driver.nome }}</div>

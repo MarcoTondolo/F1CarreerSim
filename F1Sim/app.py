@@ -29,6 +29,7 @@ def inizializza_simulazione(nome_giocatore, nome_team):
     giocatore.race_wins = 0
     giocatore.wdc = []
     giocatore.wcc = []
+    giocatore.academy = random.choice(scuderie_f1).nome
     team_iniziale.piloti.append(giocatore)
     team_iniziale.piloti.remove(pilota_sostituito)
     piloti.append(giocatore)
@@ -67,13 +68,14 @@ def crea_piloti():
             if nomi_piloti:
                 for nome_pilota in nomi_piloti:
                     # Imposta l'academy in base alla categoria
+                    academy = nome_scuderia if categoria == 1 else random.choice(scuderie_f1).nome
                     pilota = Pilota(nome_pilota, scuderia.nome, categoria, academy, nome_pilota.split()[-1].lower())
                     scuderia.piloti.append(pilota)
                     piloti.append(pilota)
             else:
                 for i in range(2):  # Aggiungi due piloti
                     # Imposta l'academy in base alla categoria
-                    academy = nome_scuderia if categoria == 1 else random.choice(academy_casuali)
+                    academy = nome_scuderia if categoria == 1 else random.choice(scuderie_f1).nome
                     pilota = Pilota(f"{fake.first_name()} {fake.last_name()}", scuderia.nome, categoria, academy, "tbd")
                     scuderia.piloti.append(pilota)
                     piloti.append(pilota)
