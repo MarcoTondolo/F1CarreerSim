@@ -1,8 +1,9 @@
 import random
+import os
 from flask import Flask, render_template, request, redirect, url_for
 from F1Sim.lineup import (lineup_blueprint, Pilota, Scuderia, giocatore, scuderie_f1, scuderie_f2, scuderie_f3, scuderie_f4,
-                          piloti, piloti_svincolati, nomi_piloti_svincolati_iniziali, reset_year)
-from info.teams import scuderie_piloti_f1, scuderie_piloti_f2, scuderie_piloti_f3, scuderie_piloti_f4
+                          piloti, piloti_svincolati, reset_year)
+from info.teams import scuderie_piloti_f1, scuderie_piloti_f2, scuderie_piloti_f3, scuderie_piloti_f4, nomi_piloti_svincolati_iniziali
 from faker import Faker
 
 fake = Faker()
@@ -29,7 +30,7 @@ def inizializza_simulazione(nome_giocatore, nome_team):
     giocatore.race_wins = 0
     giocatore.wdc = []
     giocatore.wcc = []
-    giocatore.academy = random.choice(scuderie_f1).nome
+    giocatore.academy = academy = "f4"
     team_iniziale.piloti.append(giocatore)
     team_iniziale.piloti.remove(pilota_sostituito)
     piloti.append(giocatore)
@@ -63,22 +64,16 @@ def crea_piloti():
 
     for categoria, (scuderie_piloti, lista_scuderie) in scuderie_categorie.items():
         for nome_scuderia, nomi_piloti in scuderie_piloti.items():
+            academy = f"f{categoria}" if categoria > 1 else nome_scuderia
             scuderia = Scuderia(nome_scuderia, categoria)
 
-            if nomi_piloti:
-                for nome_pilota in nomi_piloti:
-                    # Imposta l'academy in base alla categoria
-                    academy = nome_scuderia if categoria == 1 else random.choice(scuderie_f1).nome
-                    pilota = Pilota(nome_pilota, scuderia.nome, categoria, academy, nome_pilota.split()[-1].lower())
-                    scuderia.piloti.append(pilota)
-                    piloti.append(pilota)
-            else:
-                for i in range(2):  # Aggiungi due piloti
-                    # Imposta l'academy in base alla categoria
-                    academy = nome_scuderia if categoria == 1 else random.choice(scuderie_f1).nome
-                    pilota = Pilota(f"{fake.first_name()} {fake.last_name()}", scuderia.nome, categoria, academy, "tbd")
-                    scuderia.piloti.append(pilota)
-                    piloti.append(pilota)
+            for nome_pilota in nomi_piloti:
+                cognome_pilota = nome_pilota.split()[-1].lower()
+                percorso_immagine = f"static/images/drivers/{cognome_pilota}.png"
+                immagine_pilota = cognome_pilota if os.path.exists(percorso_immagine) else "tbd"
+                pilota = Pilota(nome_pilota, scuderia.nome, categoria, academy, immagine_pilota)
+                scuderia.piloti.append(pilota)
+                piloti.append(pilota)
 
             lista_scuderie.append(scuderia)
 

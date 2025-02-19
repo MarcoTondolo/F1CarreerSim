@@ -31,7 +31,6 @@ import random
 import datetime
 
 # Lista dei piloti svincolati
-nomi_piloti_svincolati_iniziali = ["Logan Sargeant", "Franco Colapinto", "Kevin Magnussen", "Daniel Ricciardo", "Guanyu Zhou"]
 piloti_svincolati = []
 scuderie_f1 = []
 scuderie_f2 = []
