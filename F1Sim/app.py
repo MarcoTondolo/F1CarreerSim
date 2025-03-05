@@ -1,8 +1,8 @@
 import random
-import datetime
 from flask import Flask, render_template, request, redirect, url_for
-from F1Sim.lineup import (lineup_blueprint, Pilota, Scuderia, giocatore, scuderie, piloti, piloti_svincolati, scuderie_piloti,
-                          nomi_piloti_svincolati_iniziali, reset_year)
+from F1Sim.lineup import (lineup_blueprint, Pilota, Scuderia, giocatore, scuderie, piloti, piloti_svincolati,
+                          scuderie_piloti,
+                          nomi_piloti_svincolati_iniziali, reset_year, current_season)
 
 app = Flask(__name__)
 app.secret_key = 'your_secret_key'
@@ -80,7 +80,7 @@ def reset_simulazione():
 def index():
     reset_simulazione()
     crea_piloti()
-    return render_template("index.html")
+    return render_template("index.html", anno=current_season)
 
 # Rotta per creare il pilota
 @app.route('/crea-pilota')
