@@ -636,7 +636,7 @@ def offerte_mercato():
 def team_info(team_name):
     global scuderie
     # Trova le informazioni del team
-    team = next((t for t in scuderie if t.nome == team_name), None)
+    team = next((t for t in scuderie[giocatore.categoria] if t.nome == team_name), None)
     if not team:
         return "Team non trovato", 404
     return render_template('team-info.html', team=team)
