@@ -6,6 +6,13 @@
     <title>F1 Driver Line-Up</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='styles/styles.css') }}">
 </head>
+<style>
+    @media (max-width: 768px) {
+        main-container {
+            height: 10vh;
+        }
+    }
+</style>
 <body>
     <h1 id="title">Lineup {{ year }}</h1>
 
