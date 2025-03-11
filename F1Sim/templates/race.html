@@ -7,13 +7,37 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='styles/styles.css') }}">
 </head>
 <style>
+    .race-header {
+        display: flex;
+        align-items: center;  /* Allinea verticalmente titolo e immagine */
+        justify-content: center; /* Mantiene il titolo centrato */
+        gap: 20px; /* Distanza tra titolo e immagine */
+        text-align: center; /* Mantiene il testo centrato */
+    }
+
+    .race-track {
+        width: 5vw; /* Regola la dimensione dell'immagine */
+        height: auto;
+    }
+
     @media (max-width: 768px) {
+        .race-header {
+            flex-direction: column; /* Mette l'immagine sotto il titolo */
+            text-align: center;
+            gap: 10px;
+            width: 100%;
+        }
+        .race-track {
+            width: 20vw; /* Regola la dimensione dell'immagine */
+            height: auto;
+        }
         .race-driver-name,
         .race-points,
         .race-position,
         h1,
         title{
             font-size: 1.2rem;
+            max-width: 90%;
         }
 
         .results-column {
@@ -53,7 +77,12 @@
     }
 </style>
 <body>
-    <h1 id="title">Risultati del GP {{ race_name }} ({{ current_race }}/{{ max_races }})</h1>
+    <div class="race-header">
+        <h1 id="title">Risultati del GP {{ race_name }} ({{ current_race }}/{{ max_races }})</h1>
+        <img src="{{ url_for('static', filename='images/tracks/' ~ race_name ~ '.png') }}"
+             alt="{{ race_name }}" class="race-track" draggable="false">
+    </div>
+
 
     <!-- Contenitore per i risultati divisi -->
     <div class="results-container">

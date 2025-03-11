@@ -13,7 +13,7 @@ offerte_giocatore = None
 gp_names = [
     "Bahrain", "Arabia Saudita", "Australia", "Giappone", "Cina", "Miami",
     "Emilia Romagna", "Monaco", "Canada", "Spagna", "Austria", "Gran Bretagna",
-    "Ungheria", "Belgio", "Olanda", "Italia", "Azerbaijan", "Singapore", "Austin",
+    "Ungheria", "Belgio", "Olanda", "Italia", "Azerbaijan", "Singapore", "Stati Uniti",
     "Messico", "Brasile", "Las Vegas", "Qatar", "Abu Dhabi"
 ]
 
