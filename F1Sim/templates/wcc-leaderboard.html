@@ -12,6 +12,15 @@
         width: 10vw;
         height: auto;
     }
+    .race-position-container {
+        flex-direction: row;
+        display: flex;
+        align-items: center;
+    }
+    .triangle-leaderboard {
+        width: 2vw; /* Regola la dimensione dell'immagine */
+        height: auto;
+    }
     @media (max-width: 768px) {
         .race-driver-name,
         .race-points,
@@ -19,6 +28,11 @@
         h1,
         title{
             font-size: 1.2rem;
+        }
+        .triangle-leaderboard {
+            width: 5vw; /* Regola la dimensione dell'immagine */
+            height: auto;
+            margin-left: -10%;
         }
 
         .race-results-wcc {
@@ -57,6 +71,9 @@
             width: 30vw;
             height: auto;
         }
+        .race-driver-name {
+            margin-right: -4%;
+        }
     }
 </style>
 <body>
@@ -66,11 +83,24 @@
         <ol class="race-results-wcc">
             {% for team, points in teams %}
             <li class="result-item-{{ team.nome }}">
-                <div class="race-position">{{ loop.index }}</div>
+                <div class="race-position-container">
+                    <div class="race-position">{{ loop.index }}</div>
+                    {% if team.leaderboard_change is not none %}
+                    <img src="{{ url_for('static', filename='images/others/triangle-' ~ team.leaderboard_change ~ '.png') }}"
+                         alt="{{ 'Freccia ' + team.leaderboard_change }}"
+                         class="triangle-leaderboard"
+                         draggable="false">
+                    {% else %}
+                        <img src="{{ url_for('static', filename='images/others/triangle-empty.png') }}"
+                             alt="Freccia vuota"
+                             class="triangle-leaderboard"
+                             draggable="false">
+                    {% endif %}
+                </div>
                 <div class="race-driver">
-                        <img src="{{ url_for('static', filename='images/cars/' ~ team.nome ~ '-car.png') }}"
-                             alt="{{ team.nome }}"
-                             class="team-car">
+                    <img src="{{ url_for('static', filename='images/cars/' ~ team.nome ~ '-car.png') }}"
+                         alt="{{ team.nome }}"
+                         class="team-car">
                 </div>
                 <img src="{{ url_for('static', filename='images/logos/' ~ team.nome ~ '.png') }}"
                      alt="{{ team }}" class="logo" draggable="false">

@@ -7,6 +7,15 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='styles/styles.css') }}">
 </head>
 <style>
+    .race-position-container {
+        flex-direction: row;
+        display: flex;
+        align-items: center;
+    }
+    .triangle-leaderboard {
+        width: 2vw; /* Regola la dimensione dell'immagine */
+        height: auto;
+    }
     @media (max-width: 768px) {
         .race-driver-name,
         .race-points,
@@ -14,6 +23,10 @@
         h1,
         title{
             font-size: 1.2rem;
+        }
+        .triangle-leaderboard {
+            width: 5vw; /* Regola la dimensione dell'immagine */
+            height: auto;
         }
 
         .results-column {
@@ -50,66 +63,95 @@
             border-radius: 5px;
             height: 10vh;
         }
+        .race-driver-name {
+            margin-right: -4%;
+        }
     }
 </style>
 <body>
-    <h1 id="title">Classifica Mondiale Piloti</h1>
-    <!-- Contenitore per i risultati divisi -->
-    <div class="results-container">
-        <!-- Prime 10 posizioni -->
-        <div class="results-column">
-            <ol class="race-results">
-                {% for driver in drivers_sorted[:10] %}
-                <li class="result-item-{{ driver.scuderia }}">
+<h1 id="title">Classifica Mondiale Piloti</h1>
+<!-- Contenitore per i risultati divisi -->
+<div class="results-container">
+    <!-- Prime 10 posizioni -->
+    <div class="results-column">
+        <ol class="race-results">
+            {% for driver in drivers_sorted[:10] %}
+            <li class="result-item-{{ driver.scuderia }}">
+                <div class="race-position-container">
                     <div class="race-position">{{ loop.index }}</div>
-                    <div class="race-driver">
-                        <img src="{{ url_for('static', filename='images/drivers/' ~ driver.image ~ '.png') }}"
-                             alt="{{ driver.nome }}" class="race-driver-image" draggable="false">
-                        <img src="{{ url_for('static', filename='images/jackets/' ~ driver.scuderia ~ '-jacket.png') }}"
-                             alt="{{ driver.scuderia }}" class="race-driver-jacket" draggable="false">
-                    </div>
-                    <img src="{{ url_for('static', filename='images/logos/' ~ driver.scuderia ~ '.png') }}"
-                         alt="{{ driver.logo }}" class="race-driver-logo" draggable="false">
-                    <span class="race-driver-name">{{ driver.nome }}</span>
-                    <span class="race-points">{{ driver.punti }}</span>
-                </li>
-                {% endfor %}
-            </ol>
-        </div>
-
-        <!-- Ultime 10 posizioni -->
-        <div class="results-column">
-            <ol class="race-results">
-                {% for driver in drivers_sorted[10:20] %}
-                <li class="result-item-{{ driver.scuderia }}">
-                    <div class="race-position">{{ loop.index +10 }}</div>
-                    <div class="race-driver">
-                        <img src="{{ url_for('static', filename='images/drivers/' ~ driver.image ~ '.png') }}"
-                             alt="{{ driver.nome }}" class="race-driver-image" draggable="false">
-                        <img src="{{ url_for('static', filename='images/jackets/' ~ driver.scuderia ~ '-jacket.png') }}"
-                             alt="{{ driver.scuderia }}" class="race-driver-jacket" draggable="false">
-                    </div>
-                    <img src="{{ url_for('static', filename='images/logos/' ~ driver.scuderia ~ '.png') }}"
-                         alt="{{ driver.logo }}" class="race-driver-logo" draggable="false">
-                    <span class="race-driver-name">{{ driver.nome }}</span>
-                    <span class="race-points">{{ driver.punti }}</span>
-                </li>
-                {% endfor %}
-            </ol>
-        </div>
-    </div>
-    <div class="footer-bar">
-        <button class="next-button" id="redirect-button">
-            <div class="next-button-text">
-                WCC
-            </div>
-        </button>
+                    {% if driver.leaderboard_change is not none %}
+                    <img src="{{ url_for('static', filename='images/others/triangle-' ~ driver.leaderboard_change ~ '.png') }}"
+                         alt="{{ 'Freccia ' + driver.leaderboard_change }}"
+                         class="triangle-leaderboard"
+                         draggable="false">
+                    {% else %}
+                        <img src="{{ url_for('static', filename='images/others/triangle-empty.png') }}"
+                             alt="Freccia vuota"
+                             class="triangle-leaderboard"
+                             draggable="false">
+                    {% endif %}
+                </div>
+                <div class="race-driver">
+                    <img src="{{ url_for('static', filename='images/drivers/' ~ driver.image ~ '.png') }}"
+                         alt="{{ driver.nome }}" class="race-driver-image" draggable="false">
+                    <img src="{{ url_for('static', filename='images/jackets/' ~ driver.scuderia ~ '-jacket.png') }}"
+                         alt="{{ driver.scuderia }}" class="race-driver-jacket" draggable="false">
+                </div>
+                <img src="{{ url_for('static', filename='images/logos/' ~ driver.scuderia ~ '.png') }}"
+                     alt="{{ driver.logo }}" class="race-driver-logo" draggable="false">
+                <span class="race-driver-name">{{ driver.nome }}</span>
+                <span class="race-points">{{ driver.punti }}</span>
+            </li>
+            {% endfor %}
+        </ol>
     </div>
 
-    <script>
-        document.getElementById('redirect-button').addEventListener('click', function() {
-            window.location.href = 'wcc-leaderboard';
-        });
-    </script>
+    <!-- Ultime 10 posizioni -->
+    <div class="results-column">
+        <ol class="race-results">
+            {% for driver in drivers_sorted[10:20] %}
+            <li class="result-item-{{ driver.scuderia }}">
+                <div class="race-position-container">
+                    <div class="race-position">{{ loop.index + 10 }}</div>
+                    {% if driver.leaderboard_change is not none %}
+                    <img src="{{ url_for('static', filename='images/others/triangle-' ~ driver.leaderboard_change ~ '.png') }}"
+                         alt="{{ 'Freccia ' + driver.leaderboard_change }}"
+                         class="triangle-leaderboard"
+                         draggable="false">
+                    {% else %}
+                        <img src="{{ url_for('static', filename='images/others/triangle-empty.png') }}"
+                             alt="Freccia vuota"
+                             class="triangle-leaderboard"
+                             draggable="false">
+                    {% endif %}
+                </div>
+                <div class="race-driver">
+                    <img src="{{ url_for('static', filename='images/drivers/' ~ driver.image ~ '.png') }}"
+                         alt="{{ driver.nome }}" class="race-driver-image" draggable="false">
+                    <img src="{{ url_for('static', filename='images/jackets/' ~ driver.scuderia ~ '-jacket.png') }}"
+                         alt="{{ driver.scuderia }}" class="race-driver-jacket" draggable="false">
+                </div>
+                <img src="{{ url_for('static', filename='images/logos/' ~ driver.scuderia ~ '.png') }}"
+                     alt="{{ driver.logo }}" class="race-driver-logo" draggable="false">
+                <span class="race-driver-name">{{ driver.nome }}</span>
+                <span class="race-points">{{ driver.punti }}</span>
+            </li>
+            {% endfor %}
+        </ol>
+    </div>
+</div>
+<div class="footer-bar">
+    <button class="next-button" id="redirect-button">
+        <div class="next-button-text">
+            WCC
+        </div>
+    </button>
+</div>
+
+<script>
+    document.getElementById('redirect-button').addEventListener('click', function() {
+        window.location.href = 'wcc-leaderboard';
+    });
+</script>
 </body>
 </html>

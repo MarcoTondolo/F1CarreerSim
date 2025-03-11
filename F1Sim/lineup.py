@@ -80,6 +80,8 @@ class Pilota:
         self.wdc = []
         self.wcc = []
         self.posizione_finale = None
+        self.last_position = None
+        self.leaderboard_change = None
 
     def to_dict(self):
         return {
@@ -145,6 +147,8 @@ class Scuderia:
         self.nome = nome
         self.piloti = piloti
         self.wcc = []
+        self.last_position = None
+        self.leaderboard_change = None
 
     def calcola_punti(self):
         return sum([pilota.punti for pilota in self.piloti])
@@ -207,9 +211,13 @@ def simula_gara(piloti, gp_name):
 
     # Simula la gara con un po' di casualità per ogni posizione
     for posizione, pilota in enumerate(piloti, 1):
+        if pilota.last_position:
+            pilota.leaderboard_change = "up" if posizione < pilota.last_position else \
+                                        "down" if posizione > pilota.last_position else None
         pilota.posizione_finale = posizione
         pilota.guadagna_punti(posizione)
         pilota.aggiorna_rating(posizione)  # Aggiorna il rating dopo la gara
+        pilota.last_position = posizione
 
     # Aggiorna il vincitore della gara
     piloti[0].race_wins +=1
@@ -510,6 +518,8 @@ def lineup():
         for scuderia in scuderie:
             for pilota in scuderia.piloti:
                 pilota.punti = 0
+                pilota.last_position = None
+                pilota.leaderboard_change = None
     return render_template('lineup.html', teams=scuderie, year=current_season)
 
 
@@ -555,6 +565,11 @@ def wdc_leaderboard():
 
     # Ordina i piloti in base ai punti
     drivers_sorted = sorted(piloti, key=lambda d: d.punti, reverse=True)
+    for posizione, pilota in enumerate(drivers_sorted, 1):
+        if pilota.last_position:
+            pilota.leaderboard_change = "up" if posizione < pilota.last_position else \
+                                        "down" if posizione > pilota.last_position else None
+        pilota.last_position = posizione
 
     return render_template('wdc-leaderboard.html', drivers_sorted=drivers_sorted)
 
@@ -565,6 +580,11 @@ def wcc_leaderboard():
 
     # Ordinamento delle scuderie per punti
     scuderie_ordinate = sorted(punti_scuderie.items(), key=lambda s: s[1], reverse=True)
+    for posizione, (scuderia, _) in enumerate(scuderie_ordinate, 1):
+        if scuderia.last_position:
+            scuderia.leaderboard_change = "up" if posizione < scuderia.last_position else \
+                                        "down" if posizione > scuderia.last_position else None
+        scuderia.last_position = posizione
 
     return render_template('wcc-leaderboard.html', teams=scuderie_ordinate)
 
