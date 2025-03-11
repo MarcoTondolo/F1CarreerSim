@@ -109,25 +109,29 @@ class Pilota:
         self.punti += self.punti_gara
 
     def aggiorna_rating(self, posizione):
-        # Modifica del rating in base alla posizione finale
+        # Genera una variazione casuale basata sulla posizione finale
         incremento = 0
         if posizione == 1:
-            incremento = 3
+            incremento = random.randint(2, 5)  # Aumento più alto per il vincitore
         elif posizione == 2:
-            incremento = 2
+            incremento = random.randint(1, 4)
         elif posizione == 3:
-            incremento = 1
-        elif 4 <= posizione <= 15:
-            incremento = 0
+            incremento = random.randint(1, 3)
+        elif 4 <= posizione <= 10:
+            incremento = random.randint(-1, 2)  # Piccole variazioni
+        elif 11 <= posizione <= 15:
+            incremento = random.randint(-2, 1)  # Possibile calo leggero
         elif 16 <= posizione <= 18:
-            incremento = -1
+            incremento = random.randint(-3, 0)  # Possibile calo maggiore
         elif posizione == 19:
-            incremento = -2
+            incremento = random.randint(-4, -1)  # Perdita più significativa
         elif posizione == 20:
-            incremento = -3
+            incremento = random.randint(-5, -2)  # Perdita più drastica
+
         # Aggiorna il rating
         self.rating += incremento
         self.rating -= self.temp_rating
+
         # Il rating non può andare sotto 50 o sopra 100
         self.rating = max(50, min(self.rating, 100))
 
@@ -195,8 +199,8 @@ def simula_gara(piloti, gp_name, giocatore):
     # Aggiungiamo casualità ai rating
     # Ogni pilota riceve un fattore casuale che modifica leggermente il suo rating
     for pilota in piloti:
-        variazione_random = random.randint(-3, 3)  # Piccola variazione per simulare imprevedibilità
-        pilota.rating += variazione_random
+        variazione_random = random.randint(-10, 10)  # Piccola variazione per simulare imprevedibilità
+        pilota.add_temp_rating(variazione_random)
 
     # Ordina i piloti in base al rating modificato, i migliori avranno un vantaggio
     piloti.sort(key=lambda p: p.rating, reverse=True)
