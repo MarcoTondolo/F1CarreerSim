@@ -7,6 +7,10 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='styles/styles.css') }}">
 </head>
 <style>
+    .race-track {
+        width: 5vw; /* Regola la dimensione dell'immagine */
+        height: auto;
+    }
     @media (max-width: 768px) {
         body, html {
             margin: 0;
@@ -15,6 +19,10 @@
             width: 100%;
             height: 100%;
             overflow-x: hidden;
+        }
+        .race-track {
+            width: 20vw; /* Regola la dimensione dell'immagine */
+            height: auto;
         }
 
         .results-container-final {
@@ -85,6 +93,8 @@
                 {% for gp, winner_data in races[:8] %}
                 <li class="result-item-{{ winner_data.winner_team }}">
                     <div class="race-gp-name">{{ gp }}</div>
+                    <img src="{{ url_for('static', filename='images/tracks/' ~ gp ~ '.png') }}"
+                         alt="{{ gp }}" class="race-track" draggable="false">
                     <div class="race-driver">
                         <img src="{{ url_for('static', filename='images/drivers/' ~ winner_data.winner_image ~ '.png') }}"
                              alt="{{ winner_data.winner_name }}" class="race-driver-image" draggable="false">
@@ -104,6 +114,8 @@
                 {% for gp, winner_data in races[8:16] %}
                 <li class="result-item-{{ winner_data.winner_team }}">
                     <div class="race-gp-name">{{ gp }}</div>
+                    <img src="{{ url_for('static', filename='images/tracks/' ~ gp ~ '.png') }}"
+                         alt="{{ gp }}" class="race-track" draggable="false">
                     <div class="race-driver">
                         <img src="{{ url_for('static', filename='images/drivers/' ~ winner_data.winner_image ~ '.png') }}"
                              alt="{{ winner_data.winner_name }}" class="race-driver-image" draggable="false">
@@ -123,6 +135,8 @@
                 {% for gp, winner_data in races[16:24] %}
                 <li class="result-item-{{ winner_data.winner_team }}">
                     <div class="race-gp-name">{{ gp }}</div>
+                    <img src="{{ url_for('static', filename='images/tracks/' ~ gp ~ '.png') }}"
+                         alt="{{ gp }}" class="race-track" draggable="false">
                     <div class="race-driver">
                         <img src="{{ url_for('static', filename='images/drivers/' ~ winner_data.winner_image ~ '.png') }}"
                              alt="{{ winner_data.winner_name }}" class="race-driver-image" draggable="false">

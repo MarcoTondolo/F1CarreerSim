@@ -195,7 +195,7 @@ def calcola_trofei_scuderia(scuderia):
 
 
 # Funzione per simulare una gara
-def simula_gara(piloti, gp_name, giocatore):
+def simula_gara(piloti, gp_name):
     # Aggiungiamo casualità ai rating
     # Ogni pilota riceve un fattore casuale che modifica leggermente il suo rating
     for pilota in piloti:
@@ -213,7 +213,7 @@ def simula_gara(piloti, gp_name, giocatore):
 
     # Aggiorna il vincitore della gara
     piloti[0].race_wins +=1
-    races[gp_names[current_race_count]] = {
+    races[gp_name] = {
         "winner_name": piloti[0].nome,
         "winner_image": piloti[0].image,
         "winner_team": piloti[0].scuderia,
@@ -520,8 +520,8 @@ def race():
     global giocatore
 
     if current_race_count < MAX_RACES:
-        race_results = simula_gara(piloti, gp_names, giocatore)
         race_name = gp_names[current_race_count]
+        race_results = simula_gara(piloti, race_name)
 
         current_race_count += 1  # Incrementa dopo aver simulato la gara
 
@@ -540,7 +540,8 @@ def simulate_remaining_races():
 
     # Simula tutte le gare rimanenti
     while current_race_count < MAX_RACES:
-        simula_gara(piloti, gp_names, giocatore)
+        race_name = gp_names[current_race_count]
+        simula_gara(piloti, race_name)
         current_race_count += 1  # Incrementa dopo ogni simulazione
 
     drivers_sorted = sorted(piloti, key=lambda d: d.punti, reverse=True)
