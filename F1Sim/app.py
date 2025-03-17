@@ -143,8 +143,13 @@ def reset():
 def index():
     filename = "dati_f1.json"
     if os.path.exists(filename) and os.stat(filename).st_size > 0:
-        carica_dati(filename)
-        return redirect(url_for('lineup.lineup'))
+        try:
+            carica_dati(filename)
+            return redirect(url_for('lineup.lineup'))
+        except Exception as e:
+            reset_simulazione()
+            crea_piloti()
+            return render_template("index.html", anno=current_season)
     else:
         reset_simulazione()
         crea_piloti()

@@ -187,6 +187,49 @@ class Scuderia:
     def calcola_punti(self):
         return sum([pilota.punti for pilota in self.piloti])
 
+    def aggiorna_rating_scuderia(self, posizione, piloti):
+        """Aggiorna il rating della scuderia in base ai risultati della gara e al miglioramento rispetto alla gara precedente."""
+        punteggio = 0
+
+        # Somma le posizioni dei piloti
+        for pilota in piloti:
+            if pilota.last_position == 1:
+                punteggio += 25
+            elif pilota.last_position == 2:
+                punteggio += 18
+            elif pilota.last_position == 3:
+                punteggio += 15
+            elif 4 <= pilota.last_position <= 10:
+                punteggio += 10
+            elif 11 <= pilota.last_position <= 15:
+                punteggio += 5
+            elif 16 <= pilota.last_position <= 20:
+                punteggio += 2
+
+        # Aggiungi bonus per miglioramento
+        if self.last_position:
+            miglioramento = self.last_position - posizione  # Se positivo, significa che è migliorato
+            if miglioramento > 5:
+                punteggio += random.randint(2, 4)  # Ricompensa extra se ha guadagnato molte posizioni
+            elif miglioramento > 2:
+                punteggio += random.randint(1, 3)
+
+            self.rating += punteggio
+
+            if miglioramento > 5:
+                punteggio += 10  # Bonus significativo se miglioramento è maggiore di 5
+            elif miglioramento > 2:
+                punteggio += 5  # Bonus minore per miglioramenti modesti
+
+            # Penalità per peggioramento
+            if miglioramento < -5:
+                punteggio -= 10  # Penalità maggiore se peggioramento > 5
+            elif miglioramento < -2:
+                punteggio -= 5  # Penalità minore per peggioramenti
+
+        # Assicurati che il punteggio sia nei limiti
+        self.rating = max(50, min(self.rating + punteggio, 100))
+
 
 # Classe per il giocatore
 class Giocatore(Pilota):
@@ -644,6 +687,9 @@ def wcc_leaderboard():
             scuderia.leaderboard_change = "up" if posizione < scuderia.last_position else \
                                         "down" if posizione > scuderia.last_position else None
         scuderia.last_position = posizione
+        for scuderiaReal in scuderie:
+            if scuderiaReal.nome == scuderia.nome:
+                scuderiaReal.aggiorna_rating_scuderia(posizione, piloti)
 
     return render_template('wcc-leaderboard.html', teams=scuderie_ordinate)
 
