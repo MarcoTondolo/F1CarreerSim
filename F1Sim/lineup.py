@@ -533,8 +533,10 @@ def genera_offerte():
     # Aggiungi le offerte per il giocatore in offerte_giocatore e rimuovile da offerte_scuderie
     for scuderia, offerte in offerte_scuderie.items():
         if giocatore in offerte:
-            offerte_giocatore[scuderia] = giocatore
-            offerte.remove(giocatore)  # Rimuovi il giocatore dalle offerte_scuderie
+            if scuderia not in offerte_giocatore:
+                offerte_giocatore[scuderia] = []  # Inizializza con una lista
+            offerte_giocatore[scuderia].append(giocatore)  # Aggiungi il giocatore alla lista
+            offerte.remove(giocatore)
 
     return offerte_giocatore, offerte_scuderie
 
@@ -768,7 +770,7 @@ def offerte_mercato():
     global notizie_serializzate
     global offerte_giocatore
     if market1:
-        offerte_giocatore = []
+        offerte_giocatore = {}
         offerte_giocatore, offerte_scuderia = genera_offerte()
         notizie_mercato = gestisci_trasferimenti_1(piloti, scuderie, offerte_scuderia)
         if giocatore.scuderia is not "Svicolato":
