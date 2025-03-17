@@ -1,6 +1,7 @@
 from random import randint
 from flask import Blueprint, render_template, request, session
 import datetime
+import json
 
 lineup_blueprint = Blueprint('lineup', __name__)
 
@@ -26,6 +27,11 @@ current_season = datetime.datetime.now().year
 def reset_year():
     global current_season
     current_season = datetime.datetime.now().year
+
+
+def set_year(year):
+    global current_season
+    current_season = year
 
 import random
 import datetime
@@ -68,7 +74,9 @@ sistema_punti = [25, 18, 15, 12, 10, 8, 6, 4, 2, 1]
 
 # Classe per gestire i dati del pilota
 class Pilota:
-    def __init__(self, nome, scuderia, image, punti=0, punti_gara=0, race_wins=0, rating=randint(50, 100), wdc=None, wcc=None):
+    def __init__(self, nome, scuderia, image, punti=0, punti_gara=0, race_wins=0, rating=randint(50, 100),
+                 temp_rating=0, wdc=None, wcc=None, posizione_finale = None, last_position = None, last_race_position = None,
+                 leaderboard_change = None):
         self.nome = nome
         self.image = image
         self.scuderia = scuderia
@@ -76,11 +84,12 @@ class Pilota:
         self.punti = punti
         self.race_wins = race_wins
         self.rating = rating  # Aggiunto il rating
-        self.temp_rating = 0
-        self.wdc = []
-        self.wcc = []
+        self.temp_rating = temp_rating
+        self.wdc = [] if wdc is None else wdc
+        self.wcc = [] if wcc is None else wcc
         self.posizione_finale = None
         self.last_position = None
+        self.last_race_position = None
         self.leaderboard_change = None
 
     def to_dict(self):
@@ -111,28 +120,33 @@ class Pilota:
         self.punti += self.punti_gara
 
     def aggiorna_rating(self, posizione):
-        # Genera una variazione casuale basata sulla posizione finale
         incremento = 0
         if posizione == 1:
-            incremento = random.randint(2, 5)  # Aumento più alto per il vincitore
+            incremento = random.randint(2, 5)
         elif posizione == 2:
             incremento = random.randint(1, 4)
         elif posizione == 3:
             incremento = random.randint(1, 3)
         elif 4 <= posizione <= 10:
-            incremento = random.randint(-1, 2)  # Piccole variazioni
+            incremento = random.randint(-1, 2)
         elif 11 <= posizione <= 15:
-            incremento = random.randint(-2, 1)  # Possibile calo leggero
+            incremento = random.randint(-2, 1)
         elif 16 <= posizione <= 18:
-            incremento = random.randint(-3, 0)  # Possibile calo maggiore
+            incremento = random.randint(-3, 0)
         elif posizione == 19:
-            incremento = random.randint(-4, -1)  # Perdita più significativa
+            incremento = random.randint(-4, -1)
         elif posizione == 20:
-            incremento = random.randint(-5, -2)  # Perdita più drastica
+            incremento = random.randint(-5, -2)
 
-        # Aggiorna il rating
-        self.rating += incremento
-        self.rating -= self.temp_rating
+        # BONUS per i piloti che migliorano molto rispetto alla gara precedente
+        if self.last_race_position:
+            miglioramento = self.last_race_position - posizione  # Se positivo, significa che è migliorato
+            if miglioramento > 5:
+                incremento += random.randint(2, 4)  # Ricompensa extra se ha guadagnato molte posizioni
+            elif miglioramento > 2:
+                incremento += random.randint(1, 3)
+
+            self.rating += incremento
 
         # Il rating non può andare sotto 50 o sopra 100
         self.rating = max(50, min(self.rating, 100))
@@ -188,6 +202,28 @@ class Giocatore(Pilota):
 
 giocatore = Giocatore("", "", "tbd")
 
+
+def salva_dati(scuderie, giocatore, filename="dati_f1.json"):
+    """Salva i dati delle scuderie, dei piloti e del giocatore in un file JSON."""
+    dati = {
+        "scuderie": [
+            {
+                "nome": scuderia.nome,
+                "piloti": [pilota.to_dict() for pilota in scuderia.piloti],
+                "wcc": scuderia.wcc,
+                "last_position": scuderia.last_position,
+                "leaderboard_change": scuderia.leaderboard_change
+            }
+            for scuderia in scuderie
+        ],
+        "giocatore": giocatore.to_dict(),
+        "current_season": current_season
+    }
+
+    with open(filename, "w", encoding="utf-8") as file:
+        json.dump(dati, file, indent=4, ensure_ascii=False)
+    print("Dati salvati con successo.")
+
 # Funzione per calcolare i trofei del pilota
 def calcola_trofei_pilota(pilota):
     return len(pilota.wdc), len(pilota.wcc)
@@ -211,13 +247,10 @@ def simula_gara(piloti, gp_name):
 
     # Simula la gara con un po' di casualità per ogni posizione
     for posizione, pilota in enumerate(piloti, 1):
-        if pilota.last_position:
-            pilota.leaderboard_change = "up" if posizione < pilota.last_position else \
-                                        "down" if posizione > pilota.last_position else None
         pilota.posizione_finale = posizione
         pilota.guadagna_punti(posizione)
         pilota.aggiorna_rating(posizione)  # Aggiorna il rating dopo la gara
-        pilota.last_position = posizione
+        pilota.last_race_position = posizione
 
     # Aggiorna il vincitore della gara
     piloti[0].race_wins +=1
@@ -520,6 +553,8 @@ def lineup():
                 pilota.punti = 0
                 pilota.last_position = None
                 pilota.leaderboard_change = None
+                pilota.last_race_position = None
+        salva_dati(scuderie, giocatore)
     return render_template('lineup.html', teams=scuderie, year=current_season)
 
 

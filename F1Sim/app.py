@@ -2,7 +2,9 @@ import random
 from flask import Flask, render_template, request, redirect, url_for
 from F1Sim.lineup import (lineup_blueprint, Pilota, Scuderia, giocatore, scuderie, piloti, piloti_svincolati,
                           scuderie_piloti,
-                          nomi_piloti_svincolati_iniziali, reset_year, current_season)
+                          nomi_piloti_svincolati_iniziali, reset_year, current_season, set_year)
+import json
+import os
 
 app = Flask(__name__)
 app.secret_key = 'your_secret_key'
@@ -75,12 +77,74 @@ def reset_simulazione():
 
     reset_year()
 
+    filename = "dati_f1.json"
+    if os.path.exists(filename):
+        os.remove(filename)
 
-@app.route('/')
-def index():
+
+def carica_dati(filename):
+    """Carica i dati delle scuderie, dei piloti e del giocatore da un file JSON, se presente."""
+    with open(filename, "r", encoding="utf-8") as file:
+        dati = json.load(file)
+
+    for scuderia_data in dati["scuderie"]:
+        piloti_caricati = []
+        for pilota_data in scuderia_data["piloti"]:
+            pilota = Pilota(
+                pilota_data["nome"],
+                pilota_data["scuderia"],
+                pilota_data["image"],
+                pilota_data["punti"],
+                pilota_data["punti_gara"],
+                pilota_data["race_wins"],
+                pilota_data["rating"],
+                pilota_data["temp_rating"],
+                pilota_data["wdc"],
+                pilota_data["wcc"],
+                pilota_data["posizione_finale"]
+            )
+            piloti_caricati.append(pilota)
+        scuderia = Scuderia(scuderia_data["nome"], piloti_caricati)
+        scuderia.wcc = scuderia_data["wcc"]
+        scuderia.last_position = scuderia_data["last_position"]
+        scuderia.leaderboard_change = scuderia_data["leaderboard_change"]
+        scuderie.append(scuderia)
+
+    giocatore_data = dati["giocatore"]
+    giocatore.nome = giocatore_data["nome"]
+    giocatore.scuderia = giocatore_data["scuderia"]
+    giocatore.image = giocatore_data["image"]
+    giocatore.punti = giocatore_data["punti"]
+    giocatore.punti_gara = giocatore_data["punti_gara"]
+    giocatore.race_wins = giocatore_data["race_wins"]
+    giocatore.rating = giocatore_data["rating"]
+    giocatore.temp_rating = giocatore_data["temp_rating"]
+    giocatore.wdc = giocatore_data["wdc"]
+    giocatore.wcc = giocatore_data["wcc"]
+    giocatore.posizione_finale = giocatore_data["posizione_finale"]
+
+    set_year(dati["current_season"])
+
+    print("Dati caricati con successo.")
+
+
+@app.route('/reset')
+def reset():
     reset_simulazione()
     crea_piloti()
     return render_template("index.html", anno=current_season)
+
+
+@app.route('/')
+def index():
+    filename = "dati_f1.json"
+    if os.path.exists(filename):
+        carica_dati(filename)
+        return redirect(url_for('lineup.lineup'))
+    else:
+        reset_simulazione()
+        crea_piloti()
+        return render_template("index.html", anno=current_season)
 
 # Rotta per creare il pilota
 @app.route('/crea-pilota')
