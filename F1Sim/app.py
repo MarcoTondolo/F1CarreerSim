@@ -79,7 +79,8 @@ def reset_simulazione():
 
     filename = "dati_f1.json"
     if os.path.exists(filename):
-        os.remove(filename)
+        with open(filename, "w", encoding="utf-8"):
+            pass
 
 
 def carica_dati(filename):
@@ -138,7 +139,7 @@ def reset():
 @app.route('/')
 def index():
     filename = "dati_f1.json"
-    if os.path.exists(filename):
+    if os.path.exists(filename) and os.stat(filename).st_size > 0:
         carica_dati(filename)
         return redirect(url_for('lineup.lineup'))
     else:
