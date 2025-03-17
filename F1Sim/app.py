@@ -88,7 +88,8 @@ def carica_dati(filename):
     with open(filename, "r", encoding="utf-8") as file:
         dati = json.load(file)
 
-    scuderie.clear()
+    if scuderie:
+        scuderie.clear()
     for scuderia_data in dati["scuderie"]:
         piloti_caricati = []
         for pilota_data in scuderia_data["piloti"]:

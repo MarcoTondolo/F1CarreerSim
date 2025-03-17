@@ -233,7 +233,8 @@ def salva_dati(scuderie, giocatore, filename="dati_f1.json"):
                 "piloti": [pilota.to_dict() for pilota in scuderia.piloti],
                 "wcc": scuderia.wcc,
                 "last_position": scuderia.last_position,
-                "leaderboard_change": scuderia.leaderboard_change
+                "leaderboard_change": scuderia.leaderboard_change,
+                "rating": scuderia.rating
             }
             for scuderia in scuderie
         ],
