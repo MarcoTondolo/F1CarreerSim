@@ -701,7 +701,7 @@ a img {
             overflow-y: auto; /* Abilita lo scroll se il contenuto è troppo lungo */
             overflow-x: hidden;
             width: 100%;
-            height: 85vh;
+            height: 80vh;
             padding-top: 2vh;
         }
 
