@@ -478,7 +478,7 @@ $gray: #9b9b9b;
 
 body {
   display: flex;
-  min-height: 100vh;       /* Altezza minima 100% della viewport */
+  height: 99vh;       /* Altezza minima 100% della viewport */
   font-size: 1.5rem;
   background-color: #222222;
 }
