@@ -1,10 +1,12 @@
 import random
-from flask import Flask, render_template, request, redirect, url_for
+from flask import Flask, request, jsonify
+from flask_cors import CORS
 from F1Sim.lineup import (lineup_blueprint, Pilota, Scuderia, giocatore, scuderie, piloti, piloti_svincolati,
                           scuderie_piloti,
                           nomi_piloti_svincolati_iniziali, reset_year, current_season)
 
 app = Flask(__name__)
+CORS(app, origins="http://localhost:3000")
 app.secret_key = 'your_secret_key'
 app.register_blueprint(lineup_blueprint)
 first_start = True
@@ -45,6 +47,9 @@ def scegli_scuderia():
         else:
             scuderie_scelte[1] = random.choice(scuderie)
 
+    for _, scuderia in enumerate(scuderie_scelte):
+         scuderie_scelte[_] = scuderia.to_dict()
+
     return scuderie_scelte
 
 
@@ -80,13 +85,17 @@ def reset_simulazione():
 def index():
     reset_simulazione()
     crea_piloti()
-    return render_template("index.html", anno=current_season)
+    return jsonify({
+        "currentSeason": current_season
+    })
 
 # Rotta per creare il pilota
 @app.route('/crea-pilota')
 def crea_pilota():
     three_teams = scegli_scuderia()
-    return render_template('crea-pilota.html', teams=three_teams)
+    return jsonify({
+        "teams": three_teams
+    })
 
 # Rotta per aggiungere il pilota alla lineup
 @app.route('/aggiungi_pilota', methods=['POST'])
@@ -96,7 +105,7 @@ def aggiungi_pilota():
 
     inizializza_simulazione(nome, scuderia)
 
-    return redirect(url_for('lineup.lineup'))
+    return jsonify({"message": "Pilota aggiunto con successo!"}), 200
 
 if __name__ == '__main__':
     app.run(debug=True)

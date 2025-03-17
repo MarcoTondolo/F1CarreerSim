@@ -1,8 +1,10 @@
 from random import randint
-from flask import Blueprint, render_template, request, session
+from flask import Blueprint, render_template, request, session, jsonify
+from flask_cors import CORS
 import datetime
 
 lineup_blueprint = Blueprint('lineup', __name__)
+CORS(lineup_blueprint)
 
 market1 = True
 market2 = True
@@ -153,6 +155,14 @@ class Scuderia:
     def calcola_punti(self):
         return sum([pilota.punti for pilota in self.piloti])
 
+    def to_dict(self):
+        return {
+            'nome': self.nome,
+            'piloti': [pilota.to_dict() for pilota in self.piloti],
+            'wcc': self.wcc,
+            'last_position': self.last_position,
+            'leaderboard_change': self.leaderboard_change,
+        }
 
 # Classe per il giocatore
 class Giocatore(Pilota):
@@ -520,7 +530,10 @@ def lineup():
                 pilota.punti = 0
                 pilota.last_position = None
                 pilota.leaderboard_change = None
-    return render_template('lineup.html', teams=scuderie, year=current_season)
+    return jsonify({
+        "teams": [scuderia.to_dict() for scuderia in scuderie],
+        "year": current_season
+    })
 
 
 @lineup_blueprint.route("/race")
@@ -684,7 +697,9 @@ def team_info(team_name):
     team = next((t for t in scuderie if t.nome == team_name), None)
     if not team:
         return "Team non trovato", 404
-    return render_template('team-info.html', team=team)
+    return jsonify({
+        "team": team.to_dict()
+    })
 
 @lineup_blueprint.route('/hof-wdc')
 def hof_wdc():
