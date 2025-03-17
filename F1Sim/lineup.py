@@ -2,6 +2,7 @@ from random import randint
 from flask import Blueprint, render_template, request, session
 import datetime
 import json
+import os
 
 lineup_blueprint = Blueprint('lineup', __name__)
 
@@ -205,6 +206,7 @@ giocatore = Giocatore("", "", "tbd")
 
 def salva_dati(scuderie, giocatore, filename="dati_f1.json"):
     """Salva i dati delle scuderie, dei piloti e del giocatore in un file JSON."""
+    filename = os.path.join("/home/Nstnct/F1CarreerSim/F1Sim", filename)
     dati = {
         "scuderie": [
             {
