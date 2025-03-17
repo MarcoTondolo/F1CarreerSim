@@ -702,6 +702,7 @@ a img {
             overflow-x: hidden;
             width: 100%;
             height: 85vh;
+            padding-top: 2vh;
         }
 
         /* Footer bar fissa in basso */
