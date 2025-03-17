@@ -107,6 +107,7 @@ def carica_dati(filename):
                 pilota_data["posizione_finale"]
             )
             piloti_caricati.append(pilota)
+            piloti.append(pilota)
         scuderia = Scuderia(scuderia_data["nome"], piloti_caricati)
         scuderia.wcc = scuderia_data["wcc"]
         scuderia.last_position = scuderia_data["last_position"]

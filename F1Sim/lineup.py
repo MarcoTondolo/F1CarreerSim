@@ -193,17 +193,18 @@ class Scuderia:
 
         # Somma le posizioni dei piloti
         for pilota in piloti:
-            if pilota.last_position == 1:
+            last_position_int = int(pilota.posizione_finale)
+            if last_position_int == 1:
                 punteggio += 25
-            elif pilota.last_position == 2:
+            elif last_position_int == 2:
                 punteggio += 18
-            elif pilota.last_position == 3:
+            elif last_position_int == 3:
                 punteggio += 15
-            elif 4 <= pilota.last_position <= 10:
+            elif 4 <= last_position_int <= 10:
                 punteggio += 10
-            elif 11 <= pilota.last_position <= 15:
+            elif 11 <= last_position_int <= 15:
                 punteggio += 5
-            elif 16 <= pilota.last_position <= 20:
+            elif 16 <= last_position_int <= 20:
                 punteggio += 2
 
         # Aggiungi bonus per miglioramento
@@ -767,7 +768,7 @@ def offerte_mercato():
     global notizie_serializzate
     global offerte_giocatore
     if market1:
-        offerte_giocatore = None
+        offerte_giocatore = []
         offerte_giocatore, offerte_scuderia = genera_offerte()
         notizie_mercato = gestisci_trasferimenti_1(piloti, scuderie, offerte_scuderia)
         if giocatore.scuderia is not "Svicolato":
