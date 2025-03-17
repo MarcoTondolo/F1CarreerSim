@@ -107,11 +107,28 @@ class Pilota:
             'posizione_finale': self.posizione_finale
         }
 
-
     def add_temp_rating(self, temp_rating):
-        """Aggiunge un bonus o malus per simulare la performance in gara"""
-        self.temp_rating = temp_rating
-        self.rating += temp_rating
+        """Aggiunge un bonus o malus per simulare la performance in gara, influenzata dal rating della scuderia."""
+        scuderia_rating = 0
+
+        for scuderia in scuderie:
+            if self.scuderia == scuderia.nome:
+                scuderia_rating = scuderia.rating
+
+        if scuderia_rating >= 90:  # Rating molto alto della scuderia
+            effetto_scuderia = random.randint(2, 5)  # Bonus per una scuderia molto forte
+        elif scuderia_rating >= 70:  # Rating medio della scuderia
+            effetto_scuderia = random.randint(1, 3)  # Bonus minore per una scuderia media
+        elif scuderia_rating >= 50:  # Rating basso della scuderia
+            effetto_scuderia = random.randint(-1, 2)  # Bonus o malus limitato per scuderia sotto la media
+        else:  # Rating molto basso della scuderia
+            effetto_scuderia = random.randint(-3, 0)  # Malus per una scuderia debole
+
+        # Il bonus/malus viene aggiunto al `temp_rating`
+        self.temp_rating = temp_rating + effetto_scuderia
+
+        # Aggiorna il rating del pilota
+        self.rating += self.temp_rating
 
     def guadagna_punti(self, position):
         """Calcola i punti assegnati in base alla posizione finale della gara."""
@@ -148,6 +165,8 @@ class Pilota:
 
             self.rating += incremento
 
+        self.rating -= self.temp_rating
+
         # Il rating non può andare sotto 50 o sopra 100
         self.rating = max(50, min(self.rating, 100))
 
@@ -157,9 +176,10 @@ class Pilota:
 
 # Classe per la scuderia
 class Scuderia:
-    def __init__(self, nome, piloti):
+    def __init__(self, nome, piloti, rating = randint(50, 100)):
         self.nome = nome
         self.piloti = piloti
+        self.rating = rating
         self.wcc = []
         self.last_position = None
         self.leaderboard_change = None
@@ -242,7 +262,7 @@ def simula_gara(piloti, gp_name):
     # Aggiungiamo casualità ai rating
     # Ogni pilota riceve un fattore casuale che modifica leggermente il suo rating
     for pilota in piloti:
-        variazione_random = random.randint(-10, 10)  # Piccola variazione per simulare imprevedibilità
+        variazione_random = random.randint(-5, 5)
         pilota.add_temp_rating(variazione_random)
 
     # Ordina i piloti in base al rating modificato, i migliori avranno un vantaggio

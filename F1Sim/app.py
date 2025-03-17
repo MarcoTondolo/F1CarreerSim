@@ -110,6 +110,7 @@ def carica_dati(filename):
         scuderia.wcc = scuderia_data["wcc"]
         scuderia.last_position = scuderia_data["last_position"]
         scuderia.leaderboard_change = scuderia_data["leaderboard_change"]
+        scuderia.rating = scuderia_data["rating"]
         scuderie.append(scuderia)
 
     giocatore_data = dati["giocatore"]
