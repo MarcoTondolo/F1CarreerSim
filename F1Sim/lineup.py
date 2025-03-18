@@ -75,8 +75,7 @@ sistema_punti = [25, 18, 15, 12, 10, 8, 6, 4, 2, 1]
 # Classe per gestire i dati del pilota
 class Pilota:
     def __init__(self, nome, scuderia, image, punti=0, punti_gara=0, race_wins=0, rating=randint(50, 100),
-                 temp_rating=0, wdc=None, wcc=None, posizione_finale = None, last_position = None, last_race_position = None,
-                 leaderboard_change = None):
+                 temp_rating=0, wdc=None, wcc=None):
         self.nome = nome
         self.image = image
         self.scuderia = scuderia
@@ -282,6 +281,9 @@ def salva_dati(scuderie, giocatore, filename="dati_f1.json"):
             }
             for scuderia in scuderie
         ],
+        "piloti_svincolati": [
+            [pilota.to_dict() for pilota in piloti_svincolati],
+        ],
         "giocatore": giocatore.to_dict(),
         "current_season": current_season
     }
@@ -402,7 +404,7 @@ def mercato_piloti_ai(offerte_scuderie, notizie_mercato, giocatore, piloti_svinc
 
 def mercato_giocatore(scuderia, notizie_mercato, giocatore, piloti_svincolati):
     # Scelta del giocatore
-    if scuderia != None and giocatore.scuderia != scuderia.nome:
+    if scuderia is not None and giocatore.scuderia != scuderia.nome:
             if giocatore in piloti_svincolati:
                 piloti_svincolati.remove(giocatore)
             nuova_scuderia = scuderia  # nuova_scuderia ora è un oggetto Scuderia

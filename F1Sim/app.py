@@ -90,6 +90,8 @@ def carica_dati(filename):
 
     if scuderie:
         scuderie.clear()
+    if piloti_svincolati:
+        piloti_svincolati.clear()
     for scuderia_data in dati["scuderie"]:
         piloti_caricati = []
         for pilota_data in scuderia_data["piloti"]:
@@ -127,6 +129,8 @@ def carica_dati(filename):
     giocatore.wdc = giocatore_data["wdc"]
     giocatore.wcc = giocatore_data["wcc"]
     giocatore.posizione_finale = giocatore_data["posizione_finale"]
+
+    piloti_svincolati.append(dati["piloti_svincolati"])
 
     set_year(dati["current_season"])
 
