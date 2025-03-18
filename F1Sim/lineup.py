@@ -187,45 +187,68 @@ class Scuderia:
         return sum([pilota.punti for pilota in self.piloti])
 
     def aggiorna_rating_scuderia(self, posizione, piloti):
-        """Aggiorna il rating della scuderia in base ai risultati della gara e al miglioramento rispetto alla gara precedente."""
+        """Bilancia il rating della scuderia in base ai risultati della gara, suddividendo le squadre in fasce."""
         punteggio = 0
 
-        # Somma le posizioni dei piloti
+        # Suddivisione delle fasce: Alta (1-3), Media (4-7), Bassa (8-10)
+        if posizione <= 3:
+            fascia = "alta"
+        elif 4 <= posizione <= 7:
+            fascia = "media"
+        else:
+            fascia = "bassa"
+
+        # Somma le posizioni dei piloti con bilanciamento
         for pilota in piloti:
             last_position_int = int(pilota.posizione_finale)
             if last_position_int == 1:
-                punteggio += 25
+                punteggio += 18  # Ridotto per evitare sbilanciamenti
             elif last_position_int == 2:
-                punteggio += 18
+                punteggio += 14
             elif last_position_int == 3:
-                punteggio += 15
-            elif 4 <= last_position_int <= 10:
-                punteggio += 10
-            elif 11 <= last_position_int <= 15:
+                punteggio += 12
+            elif 4 <= last_position_int <= 7:
+                punteggio += 8
+            elif 8 <= last_position_int <= 10:
                 punteggio += 5
+            elif 11 <= last_position_int <= 15:
+                punteggio += 3
             elif 16 <= last_position_int <= 20:
-                punteggio += 2
+                punteggio += 1
 
-        # Aggiungi bonus per miglioramento
+        # Bonus per miglioramento con bilanciamento delle fasce
         if self.last_position:
             miglioramento = self.last_position - posizione  # Se positivo, significa che è migliorato
             if miglioramento > 5:
-                punteggio += random.randint(2, 4)  # Ricompensa extra se ha guadagnato molte posizioni
+                if fascia == "bassa":
+                    punteggio += random.randint(3, 5)  # Più alto per team bassi
+                elif fascia == "media":
+                    punteggio += random.randint(2, 4)
+                else:
+                    punteggio += random.randint(1, 3)
             elif miglioramento > 2:
-                punteggio += random.randint(1, 3)
+                if fascia == "bassa":
+                    punteggio += random.randint(2, 4)
+                elif fascia == "media":
+                    punteggio += random.randint(1, 3)
+                else:
+                    punteggio += random.randint(1, 2)
 
-            self.rating += punteggio
-
-            if miglioramento > 5:
-                punteggio += 10  # Bonus significativo se miglioramento è maggiore di 5
-            elif miglioramento > 2:
-                punteggio += 5  # Bonus minore per miglioramenti modesti
-
-            # Penalità per peggioramento
-            if miglioramento < -5:
-                punteggio -= 10  # Penalità maggiore se peggioramento > 5
-            elif miglioramento < -2:
-                punteggio -= 5  # Penalità minore per peggioramenti
+        # Penalità per peggioramento con scalature bilanciate
+        if miglioramento < -5:
+            if fascia == "alta":
+                punteggio -= 10  # Penalità più severa per i top team
+            elif fascia == "media":
+                punteggio -= 7
+            else:
+                punteggio -= 5  # Penalità più leggera per team bassi
+        elif miglioramento < -2:
+            if fascia == "alta":
+                punteggio -= 7
+            elif fascia == "media":
+                punteggio -= 5
+            else:
+                punteggio -= 3
 
         # Assicurati che il punteggio sia nei limiti
         self.rating = max(50, min(self.rating + punteggio, 100))
@@ -482,8 +505,8 @@ def riempi_scuderie(notizie_mercato):
     for scuderia in scuderie:
         nuovi_piloti = []
         for pilota in scuderia.piloti:
-            if pilota not in piloti_visti:
-                piloti_visti.add(pilota)
+            if pilota.nome not in piloti_visti:
+                piloti_visti.add(pilota.nome)
                 nuovi_piloti.append(pilota)
             else:
                 # Se il pilota è duplicato, rimuovilo e rimpiazzalo
@@ -773,7 +796,7 @@ def offerte_mercato():
         offerte_giocatore = {}
         offerte_giocatore, offerte_scuderia = genera_offerte()
         notizie_mercato = gestisci_trasferimenti_1(piloti, scuderie, offerte_scuderia)
-        if giocatore.scuderia is not "Svicolato":
+        if giocatore.scuderia != "Svicolato":
             for scuderia in scuderie:
                 if scuderia.nome == giocatore.scuderia:
                     offerte_giocatore.setdefault(scuderia, []).append(giocatore)
