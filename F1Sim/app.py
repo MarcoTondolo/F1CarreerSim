@@ -105,8 +105,7 @@ def carica_dati(filename):
                 pilota_data["rating"],
                 pilota_data["temp_rating"],
                 pilota_data["wdc"],
-                pilota_data["wcc"],
-                pilota_data["posizione_finale"]
+                pilota_data["wcc"]
             )
             piloti_caricati.append(pilota)
             piloti.append(pilota)
@@ -130,7 +129,20 @@ def carica_dati(filename):
     giocatore.wcc = giocatore_data["wcc"]
     giocatore.posizione_finale = giocatore_data["posizione_finale"]
 
-    piloti_svincolati.append(dati["piloti_svincolati"])
+    for pilota_data in dati["piloti_svincolati"]:
+        pilota = Pilota(
+            pilota_data["nome"],
+            pilota_data["scuderia"],
+            pilota_data["image"],
+            pilota_data["punti"],
+            pilota_data["punti_gara"],
+            pilota_data["race_wins"],
+            pilota_data["rating"],
+            pilota_data["temp_rating"],
+            pilota_data["wdc"],
+            pilota_data["wcc"]
+        )
+        piloti_svincolati.append(pilota)
 
     set_year(dati["current_season"])
 

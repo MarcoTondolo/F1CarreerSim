@@ -281,9 +281,7 @@ def salva_dati(scuderie, giocatore, filename="dati_f1.json"):
             }
             for scuderia in scuderie
         ],
-        "piloti_svincolati": [
-            [pilota.to_dict() for pilota in piloti_svincolati],
-        ],
+        "piloti_svincolati": [pilota.to_dict() for pilota in piloti_svincolati],
         "giocatore": giocatore.to_dict(),
         "current_season": current_season
     }
