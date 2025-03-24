@@ -10,6 +10,7 @@ market2 = True
 notizie_mercato = {}
 notizie_serializzate = {}
 offerte_giocatore = None
+regulation_changes = 4
 
 gp_names = [
     "Bahrain", "Arabia Saudita", "Australia", "Giappone", "Cina", "Miami",
@@ -137,22 +138,14 @@ class Pilota:
 
     def aggiorna_rating(self, posizione):
         incremento = 0
-        if posizione == 1:
-            incremento = random.randint(2, 5)
-        elif posizione == 2:
-            incremento = random.randint(1, 4)
-        elif posizione == 3:
-            incremento = random.randint(1, 3)
-        elif 4 <= posizione <= 10:
-            incremento = random.randint(-1, 2)
-        elif 11 <= posizione <= 15:
-            incremento = random.randint(-2, 1)
-        elif 16 <= posizione <= 18:
-            incremento = random.randint(-3, 0)
-        elif posizione == 19:
-            incremento = random.randint(-4, -1)
-        elif posizione == 20:
-            incremento = random.randint(-5, -2)
+        if posizione <= 3:
+            incremento += random.randint(2, 4)
+        elif posizione <= 10:
+            incremento += random.randint(1, 3)
+        elif posizione <= 15:
+            incremento -= random.randint(1, 2)
+        else:
+            incremento -= 1
 
         # BONUS per i piloti che migliorano molto rispetto alla gara precedente
         if self.last_race_position:
@@ -162,7 +155,7 @@ class Pilota:
             elif miglioramento > 2:
                 incremento += random.randint(1, 3)
 
-            self.rating += incremento
+        self.rating += incremento
 
         self.rating -= self.temp_rating
 
@@ -186,9 +179,13 @@ class Scuderia:
     def calcola_punti(self):
         return sum([pilota.punti for pilota in self.piloti])
 
+    def reset_rating_scuderia(self):
+        self.rating = randint(50, 100)
+
     def aggiorna_rating_scuderia(self, posizione, piloti):
         """Bilancia il rating della scuderia in base ai risultati della gara, suddividendo le squadre in fasce."""
         punteggio = 0
+        miglioramento = 0
 
         # Suddivisione delle fasce: Alta (1-3), Media (4-7), Bassa (8-10)
         if posizione <= 3:
@@ -385,7 +382,6 @@ def mercato_piloti_ai(offerte_scuderie, notizie_mercato, giocatore, piloti_svinc
                 scuderia_attuale_pilota = None
                 for scuderia_attuale in scuderie:
                     if pilota in scuderia_attuale.piloti:
-                        scuderia_attuale_piloti = scuderia_attuale.nome
                         if pilota in scuderia_attuale.piloti:  # Verifica doppia
                             scuderia_attuale.piloti.remove(pilota)
                         break
@@ -501,26 +497,22 @@ def riempi_scuderie(notizie_mercato):
             }
 
     # Debugging: verifica duplicati
-    piloti_visti = set()
     for scuderia in scuderie:
-        nuovi_piloti = []
         for pilota in scuderia.piloti:
-            if pilota.nome not in piloti_visti:
-                piloti_visti.add(pilota.nome)
-                nuovi_piloti.append(pilota)
-            else:
-                # Se il pilota è duplicato, rimuovilo e rimpiazzalo
-                if piloti_svincolati:
-                    nuovo_pilota = random.choice(piloti_svincolati)
-                    piloti_svincolati.remove(nuovo_pilota)
-                    nuovo_pilota.scuderia = scuderia.nome
-                    notizie_mercato[nuovo_pilota.nome] = {
-                        "driver": nuovo_pilota.nome,
-                        "oldteam": "Svincolato",
-                        "newteam": scuderia.nome,
-                    }
-                    nuovi_piloti.append(nuovo_pilota)
-        scuderia.piloti = nuovi_piloti
+            for scuderiaToCheck in scuderie:
+                for pilotaToCheck in scuderiaToCheck.piloti:
+                    if pilotaToCheck.nome == pilota.nome and pilotaToCheck.scuderia != pilota.scuderia:
+                        if piloti_svincolati:
+                            nuovo_pilota = random.choice(piloti_svincolati)
+                            piloti_svincolati.remove(nuovo_pilota)
+                            nuovo_pilota.scuderia = scuderia.nome
+                            scuderiaToCheck.piloti.remove(pilotaToCheck)
+                            scuderiaToCheck.piloti.append(nuovo_pilota)
+                            notizie_mercato[nuovo_pilota.nome] = {
+                                "driver": nuovo_pilota.nome,
+                                "oldteam": "Svincolato",
+                                "newteam": scuderia.nome,
+                            }
 
     # Rimuove piloti in eccesso
     for scuderia in scuderie:
@@ -635,12 +627,16 @@ def serializza_notizie_mercato(notizie_mercato):
 
 @lineup_blueprint.route("/lineup")
 def lineup():
-    global current_race_count
-    global current_season
-    global first_start
+    global current_race_count, current_season, regulation_changes
     if current_race_count >= MAX_RACES:
         current_race_count = 0
         current_season += 1
+        if regulation_changes == 4:
+            regulation_changes = 0
+            for scuderia in scuderie:
+                scuderia.reset_rating_scuderia()
+            print("New Regulations")
+        regulation_changes += 1
         for scuderia in scuderie:
             for pilota in scuderia.piloti:
                 pilota.punti = 0
