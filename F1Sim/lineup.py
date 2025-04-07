@@ -48,10 +48,10 @@ piloti = []
 
 # Scuderie e piloti
 scuderie_piloti = {
-    "red-bull": ["Max Verstappen", "Liam Lawson"],
+    "red-bull": ["Max Verstappen", "Yuki Tsunoda"],
     "ferrari": ["Charles Leclerc", "Lewis Hamilton"],
     "mclaren": ["Lando Norris", "Oscar Piastri"],
-    "racing-bulls": ["Yuki Tsunoda", "Isack Hadjar"],
+    "racing-bulls": ["Liam Lawson", "Isack Hadjar"],
     "haas": ["Oliver Bearman", "Esteban Ocon"],
     "mercedes": ["George Russell", "Kimi Antonelli"],
     "alpine": ["Pierre Gasly", "Jack Doohan"],
@@ -115,14 +115,12 @@ class Pilota:
             if self.scuderia == scuderia.nome:
                 scuderia_rating = scuderia.rating
 
-        if scuderia_rating >= 90:  # Rating molto alto della scuderia
-            effetto_scuderia = random.randint(2, 5)  # Bonus per una scuderia molto forte
-        elif scuderia_rating >= 70:  # Rating medio della scuderia
-            effetto_scuderia = random.randint(1, 3)  # Bonus minore per una scuderia media
-        elif scuderia_rating >= 50:  # Rating basso della scuderia
-            effetto_scuderia = random.randint(-1, 2)  # Bonus o malus limitato per scuderia sotto la media
-        else:  # Rating molto basso della scuderia
-            effetto_scuderia = random.randint(-3, 0)  # Malus per una scuderia debole
+        if scuderia_rating >= 90:
+            effetto_scuderia = random.randint(-1, 3)
+        elif scuderia_rating >= 70:
+            effetto_scuderia = random.randint(-1, 2)
+        else:
+            effetto_scuderia = random.randint(-1, 1)
 
         # Il bonus/malus viene aggiunto al `temp_rating`
         self.temp_rating = temp_rating + effetto_scuderia
@@ -139,13 +137,11 @@ class Pilota:
     def aggiorna_rating(self, posizione):
         incremento = 0
         if posizione <= 3:
-            incremento += random.randint(2, 4)
+            incremento += random.randint(-1, 3)
         elif posizione <= 10:
-            incremento += random.randint(1, 3)
-        elif posizione <= 15:
-            incremento -= random.randint(1, 2)
+            incremento += random.randint(-1, 2)
         else:
-            incremento -= 1
+            incremento -= random.randint(-2, 1)
 
         # BONUS per i piloti che migliorano molto rispetto alla gara precedente
         if self.last_race_position:
@@ -160,7 +156,7 @@ class Pilota:
         self.rating -= self.temp_rating
 
         # Il rating non può andare sotto 50 o sopra 100
-        self.rating = max(50, min(self.rating, 100))
+        self.rating = max(80, min(self.rating, 100))
 
     def resetta_punti(self):
         self.punti = 0
@@ -358,48 +354,55 @@ def crea_offerte(giocatore, probabilita_offerta_giocatore):
 
     for scuderia in scuderie:
         offerte_scuderie[scuderia] = []
+
         # Offerta al giocatore, anche se la scuderia ha già 2 piloti
         if random.random() <= probabilita_offerta_giocatore and giocatore not in scuderia.piloti:
-            offerte_scuderie[scuderia].append(giocatore)  # Offerta al giocatore
+            offerte_scuderie[scuderia].append(giocatore)
 
         # Offerte a piloti di altre scuderie (massimo due offerte totali)
         while len(offerte_scuderie[scuderia]) < 2:
-            pilota = random.choice(
-                [p for p in piloti if p.scuderia != scuderia and p.scuderia is not None and p not in scuderia.piloti])
+            candidati = [p for p in piloti if p.scuderia != scuderia and p.scuderia is not None and p not in scuderia.piloti]
+            if not candidati:
+                break
+            pilota = random.choice(candidati)
             offerte_scuderie[scuderia].append(pilota)
 
     return offerte_scuderie
 
 
 def mercato_piloti_ai(offerte_scuderie, notizie_mercato, giocatore, piloti_svincolati):
-    # Altri piloti decidono se accettare
+    """
+    Gestisce le offerte rivolte ai piloti (escluso il giocatore) e la loro eventuale accettazione.
+    Per ciascuna offerta, c'è il 50% di probabilità che il pilota accetti.
+    """
     for scuderia, offerte in offerte_scuderie.items():
         for pilota in offerte:
             if pilota.nome != giocatore.nome and random.random() < 0.5:  # 50% probabilità di accettare
                 if pilota in piloti_svincolati:
                     piloti_svincolati.remove(pilota)
-                # Rimuovere il pilota dalla sua attuale scuderia
-                scuderia_attuale_pilota = None
-                for scuderia_attuale in scuderie:
-                    if pilota in scuderia_attuale.piloti:
-                        if pilota in scuderia_attuale.piloti:  # Verifica doppia
-                            scuderia_attuale.piloti.remove(pilota)
+                # Rimuove il pilota dalla scuderia attuale (se presente)
+                scuderia_attuale = None
+                for s in scuderie:
+                    if pilota in s.piloti:
+                        s.piloti.remove(pilota)
+                        scuderia_attuale = s.nome
                         break
-                if not scuderia_attuale_pilota:
-                    scuderia_attuale_pilota = "Svincolato"
-                # Aggiungere alla nuova scuderia o sostituire un pilota
+                if not scuderia_attuale:
+                    scuderia_attuale = "Svincolato"
+
+                # Se la nuova scuderia ha spazio, aggiunge il pilota, altrimenti sostituisce un pilota esistente
                 if len(scuderia.piloti) < 2:
                     scuderia.piloti.append(pilota)
                     pilota.scuderia = scuderia.nome
                     notizie_mercato[pilota.nome] = {
                         "driver": pilota.nome,
-                        "oldteam": scuderia_attuale_pilota,
+                        "oldteam": scuderia_attuale,
                         "newteam": scuderia.nome,
                     }
                 else:
                     pilota_da_sostituire = random.choice(scuderia.piloti)
-                    pilota_da_sostituire.scuderia = "Svincolato"
                     scuderia.piloti.remove(pilota_da_sostituire)
+                    pilota_da_sostituire.scuderia = "Svincolato"
                     if pilota_da_sostituire in piloti:
                         piloti.remove(pilota_da_sostituire)
                     piloti_svincolati.append(pilota_da_sostituire)
@@ -407,160 +410,164 @@ def mercato_piloti_ai(offerte_scuderie, notizie_mercato, giocatore, piloti_svinc
                     pilota.scuderia = scuderia.nome
                     notizie_mercato[pilota.nome] = {
                         "driver": pilota.nome,
-                        "oldteam": scuderia_attuale.nome,
+                        "oldteam": scuderia_attuale,
                         "newteam": scuderia.nome,
                         "subsituted": pilota_da_sostituire.nome
                     }
 
-                # Rimuovi tutte le altre offerte per il pilota
-                for altra_scuderia, altre_offerte in offerte_scuderie.items():
+                # Rimuove il pilota da eventuali altre offerte nelle altre scuderie
+                for altre_scuderia, altre_offerte in offerte_scuderie.items():
                     if pilota in altre_offerte:
                         altre_offerte.remove(pilota)
-                break  # Uscire dal ciclo, il pilota ha accettato
+                break  # Il pilota ha accettato, passa alla prossima offerta
 
 
 def mercato_giocatore(scuderia, notizie_mercato, giocatore, piloti_svincolati):
-    # Scelta del giocatore
-    if scuderia is not None and giocatore.scuderia != scuderia.nome:
-            if giocatore in piloti_svincolati:
-                piloti_svincolati.remove(giocatore)
-            nuova_scuderia = scuderia  # nuova_scuderia ora è un oggetto Scuderia
-            scuderia_attuale = giocatore.scuderia
-            if len(nuova_scuderia.piloti) < 2:  # Se c'è spazio, si aggiunge
-                for scuderia in scuderie:
-                    if scuderia.nome == giocatore.scuderia:
-                        scuderia.piloti.remove(giocatore)
-                        giocatore.scuderia = "Svincolato"
-                        scuderia_attuale = scuderia.nome
-                        break
-                giocatore.scuderia = nuova_scuderia.nome
-                nuova_scuderia.piloti.append(giocatore)
-                notizie_mercato[giocatore.nome] = {
-                    "driver": giocatore.nome,
-                    "oldteam": scuderia_attuale,
-                    "newteam": nuova_scuderia.nome,
-                }
-            else:  # Se la scuderia è piena, sostituisce un pilota casuale
-                scuderia_attuale = giocatore.scuderia
-                pilota_da_sostituire = random.choice(nuova_scuderia.piloti)
-                nuova_scuderia.piloti.remove(pilota_da_sostituire)
-                if pilota_da_sostituire in piloti:
-                    piloti.remove(pilota_da_sostituire)
-                piloti_svincolati.append(pilota_da_sostituire)
-                giocatore.scuderia = nuova_scuderia.nome
-                nuova_scuderia.piloti.append(giocatore)
-                notizie_mercato[giocatore.nome] = {
-                    "driver": giocatore.nome,
-                    "oldteam": scuderia_attuale,
-                    "newteam": nuova_scuderia.nome,
-                    "subsituted": pilota_da_sostituire.nome
-                }
+    """
+    Gestisce il trasferimento del giocatore:
+    - Se il giocatore sceglie una nuova scuderia, lo trasferisce sostituendo un pilota se necessario.
+    - Se il giocatore è svincolato, lo inserisce in una scuderia disponibile.
+    """
+    if scuderia and giocatore.scuderia != scuderia.nome:
+        if giocatore in piloti_svincolati:
+            piloti_svincolati.remove(giocatore)
 
+        scuderia_attuale = giocatore.scuderia
+
+        # Se c'è spazio, trasferisce il giocatore
+        if len(scuderia.piloti) < 2:
+            # Rimuove il giocatore dalla scuderia precedente, se presente
+            for s in scuderie:
+                if s.nome == giocatore.scuderia and giocatore in s.piloti:
+                    s.piloti.remove(giocatore)
+                    scuderia_attuale = s.nome
+                    break
+            giocatore.scuderia = scuderia.nome
+            scuderia.piloti.append(giocatore)
+            notizie_mercato[giocatore.nome] = {
+                "driver": giocatore.nome,
+                "oldteam": scuderia_attuale,
+                "newteam": scuderia.nome,
+            }
+        else:
+            # Se la scuderia è piena, sostituisce un pilota esistente
+            pilota_da_sostituire = random.choice(scuderia.piloti)
+            scuderia.piloti.remove(pilota_da_sostituire)
+            if pilota_da_sostituire in piloti:
+                piloti.remove(pilota_da_sostituire)
+            piloti_svincolati.append(pilota_da_sostituire)
+            giocatore.scuderia = scuderia.nome
+            scuderia.piloti.append(giocatore)
+            notizie_mercato[giocatore.nome] = {
+                "driver": giocatore.nome,
+                "oldteam": scuderia_attuale,
+                "newteam": scuderia.nome,
+                "subsituted": pilota_da_sostituire.nome
+            }
+
+    # Se il giocatore risulta ancora svincolato e non è presente nella lista principale,
+    # viene assegnato ad una scuderia disponibile
     if giocatore in piloti_svincolati and giocatore not in piloti:
         piloti_svincolati.remove(giocatore)
-        scuderia = random.choice([scuderia for scuderia in scuderie if len(scuderia.piloti) < 2])
-        scuderia.piloti.append(giocatore)
-        giocatore.scuderia = scuderia.nome
-        scuderia_attuale = "Svincolato"
+        scuderia_disponibile = random.choice([s for s in scuderie if len(s.piloti) < 2])
+        scuderia_disponibile.piloti.append(giocatore)
+        giocatore.scuderia = scuderia_disponibile.nome
         notizie_mercato[giocatore.nome] = {
             "driver": giocatore.nome,
             "oldteam": "Svincolato",
-            "newteam": scuderia.nome
+            "newteam": scuderia_disponibile.nome
         }
     elif giocatore in piloti_svincolati:
         piloti_svincolati.remove(giocatore)
 
-    if giocatore in piloti_svincolati and giocatore in piloti:
-        piloti_svincolati.remove(giocatore)
-
 
 def riempi_scuderie(notizie_mercato):
+    global piloti_svincolati
     """
     Riempi le scuderie incomplete con piloti svincolati.
-    Aggiorna la lista globale dei piloti e notizie mercato.
+    Aggiorna la lista globale dei piloti e registra le notizie di mercato.
     """
-    for scuderia in scuderie:
-        while len(scuderia.piloti) < 2 and piloti_svincolati:
-            # Seleziona un pilota svincolato casuale
-            pilota_svincolato = random.choice(piloti_svincolati)
-            piloti_svincolati.remove(pilota_svincolato)
 
-            # Aggiungi il pilota alla scuderia
-            scuderia.piloti.append(pilota_svincolato)
-            pilota_svincolato.scuderia = scuderia.nome
+    duplicati_presenti = True
+    while duplicati_presenti:
+        duplicati_presenti = False
 
-            # Registra il movimento nel mercato
-            notizie_mercato[pilota_svincolato.nome] = {
-                "driver": pilota_svincolato.nome,
-                "oldteam": "Svincolato",
-                "newteam": scuderia.nome,
-            }
+        # Controllo duplicati nelle scuderie (confronto tramite p.nome)
+        piloti_visti = set()
+        for s in scuderie:
+            piloti_validi = []
+            for p in s.piloti:
+                if p.nome in piloti_visti:
+                    print(f"Rimosso duplicato: {p.nome} dalla scuderia {s.nome}")
+                    # Aggiunge il pilota duplicato ai piloti svincolati, se non già presente
+                    if all(p.nome != ps.nome for ps in piloti_svincolati):
+                        piloti_svincolati.append(p)
+                    duplicati_presenti = True
+                else:
+                    piloti_visti.add(p.nome)
+                    piloti_validi.append(p)
+            s.piloti = piloti_validi
 
-    # Debugging: verifica duplicati
-    for scuderia in scuderie:
-        for pilota in scuderia.piloti:
-            for scuderiaToCheck in scuderie:
-                for pilotaToCheck in scuderiaToCheck.piloti:
-                    if pilotaToCheck.nome == pilota.nome and pilotaToCheck.scuderia != pilota.scuderia:
-                        if piloti_svincolati:
-                            nuovo_pilota = random.choice(piloti_svincolati)
-                            piloti_svincolati.remove(nuovo_pilota)
-                            nuovo_pilota.scuderia = scuderia.nome
-                            scuderiaToCheck.piloti.remove(pilotaToCheck)
-                            scuderiaToCheck.piloti.append(nuovo_pilota)
-                            notizie_mercato[nuovo_pilota.nome] = {
-                                "driver": nuovo_pilota.nome,
-                                "oldteam": "Svincolato",
-                                "newteam": scuderia.nome,
-                            }
+        # Controllo duplicati nella lista dei piloti svincolati (confronto tramite p.nome)
+        piloti_svincolati_validi = []
+        piloti_visti_svincolati = set()
+        for p in piloti_svincolati:
+            if p.nome in piloti_visti_svincolati:
+                print(f"Rimosso duplicato: {p.nome} dalla lista dei piloti svincolati")
+                duplicati_presenti = True
+            else:
+                piloti_visti_svincolati.add(p.nome)
+                piloti_svincolati_validi.append(p)
+        piloti_svincolati = piloti_svincolati_validi
 
-    # Rimuove piloti in eccesso
+    # Rimuove eventuali piloti in eccesso (oltre il limite di 2 per scuderia)
     for scuderia in scuderie:
         while len(scuderia.piloti) > 2:
-            pilota_da_rimuovere = random.choice(
-                [pilota for pilota in scuderia.piloti if pilota != giocatore]
-            )
+            pilota_da_rimuovere = random.choice([p for p in scuderia.piloti if p != giocatore])
             scuderia.piloti.remove(pilota_da_rimuovere)
             piloti_svincolati.append(pilota_da_rimuovere)
             pilota_da_rimuovere.scuderia = "Svincolato"
-
-            # Registra il movimento nel mercato
             notizie_mercato[pilota_da_rimuovere.nome] = {
                 "driver": pilota_da_rimuovere.nome,
                 "oldteam": scuderia.nome,
                 "newteam": "Svincolato",
             }
+        # Assegna i piloti svincolati alle scuderie incomplete
+        for scuderia in scuderie:
+            while len(scuderia.piloti) < 2 and piloti_svincolati:
+                pilota_svincolato = random.choice(piloti_svincolati)
+                piloti_svincolati.remove(pilota_svincolato)
+                scuderia.piloti.append(pilota_svincolato)
+                pilota_svincolato.scuderia = scuderia.nome
+                notizie_mercato[pilota_svincolato.nome] = {
+                    "driver": pilota_svincolato.nome,
+                    "oldteam": "Svincolato",
+                    "newteam": scuderia.nome,
+                }
 
-    # Debugging finale
-    totale_piloti = sum(len(scuderia.piloti) for scuderia in scuderie)
-    print(f"Totale piloti assegnati: {totale_piloti}")
-
+    print(f"Totale piloti assegnati: {sum(len(s.piloti) for s in scuderie)}")
 
 
 def genera_offerte():
     global posizione_giocatore
-    # Probabilità di offerte per il giocatore in base alla posizione
     probabilita_offerta_giocatore = probabilita_offerta[posizione_giocatore - 1]
 
     offerte_scuderie = crea_offerte(giocatore, probabilita_offerta_giocatore)
     offerte_giocatore = {}
 
-    # Aggiungi le offerte per il giocatore in offerte_giocatore e rimuovile da offerte_scuderie
-    for scuderia, offerte in offerte_scuderie.items():
+    # Estrae le offerte rivolte al giocatore e le rimuove dalle offerte per le scuderie
+    for s, offerte in offerte_scuderie.items():
         if giocatore in offerte:
-            if scuderia not in offerte_giocatore:
-                offerte_giocatore[scuderia] = []  # Inizializza con una lista
-            offerte_giocatore[scuderia].append(giocatore)  # Aggiungi il giocatore alla lista
+            offerte_giocatore.setdefault(s, []).append(giocatore)
             offerte.remove(giocatore)
 
     return offerte_giocatore, offerte_scuderie
 
+
 def gestisci_trasferimenti_1(piloti, scuderie, offerte_scuderie):
     global movimenti_mercato, piloti_svincolati
     notizie_mercato = {}
-
     mercato_piloti_ai(offerte_scuderie, notizie_mercato, giocatore, piloti_svincolati)
-
     return notizie_mercato
 
 
@@ -569,60 +576,49 @@ def gestisci_trasferimenti_2(piloti, scuderie, giocatore, scuderia):
     notizie_mercato = {}
 
     mercato_giocatore(scuderia, notizie_mercato, giocatore, piloti_svincolati)
-
     riempi_scuderie(notizie_mercato)
 
-    # Verifica che nessun pilota sia in più di una scuderia
+    # Verifica che ogni pilota sia assegnato a una sola scuderia
     piloti_visti = set()
-
-    for scuderia in scuderie:
-        piloti_scuderia = set()  # Per verificare duplicati all'interno della stessa scuderia
-        for pilota in scuderia.piloti:
-            if pilota in piloti_visti:
-                print(f"Errore: {pilota.nome} è in più di una scuderia!")
+    for s in scuderie:
+        for p in s.piloti:
+            if p in piloti_visti:
+                print(f"Errore: {p.nome} è in più di una scuderia!")
                 exit(0)
-            piloti_visti.add(pilota)
+            piloti_visti.add(p)
 
-            if pilota in piloti_scuderia:
-                print(f"Errore: {pilota.nome} è duplicato nella scuderia {scuderia.nome}!")
-                exit(0)
-            piloti_scuderia.add(pilota)
-
-    for pilota in piloti:
-        piloti.remove(pilota)
-    for scuderia in scuderie:
-        for pilota in scuderia.piloti:
-            if pilota not in piloti:
-                piloti.append(pilota)
+    # Aggiorna la lista globale dei piloti in base alle assegnazioni nelle scuderie
+    piloti.clear()
+    for s in scuderie:
+        for p in s.piloti:
+            if p not in piloti:
+                piloti.append(p)
 
     return notizie_mercato
+
+
+def serializza_notizie_mercato(notizie_mercato):
+    """Serializza il dizionario delle notizie di mercato per la sessione"""
+    notizie_serializzate = {}
+    for nome_pilota, trasferimento in notizie_mercato.items():
+        driver = trasferimento.get("driver", "Pilota sconosciuto")
+        old_team = trasferimento.get("oldteam", "Svincolato")
+        new_team = trasferimento.get("newteam", "Svincolato")
+        substituted = trasferimento.get("subsituted", None)
+
+        notizie_serializzate[nome_pilota] = {
+            "driver": driver,
+            "oldteam": old_team,
+            "newteam": new_team,
+            "subsituted": substituted
+        }
+    return notizie_serializzate
 
 
 def calculate_points(position):
     """Calcola i punti assegnati in base alla posizione finale della gara."""
     points_distribution = {1: 25, 2: 18, 3: 15, 4: 12, 5: 10, 6: 8, 7: 6, 8: 4, 9: 2, 10: 1}
     return points_distribution.get(position, 0)  # 0 punti per oltre la 10° posizione# Inizializzazione della simulazione
-
-
-def serializza_notizie_mercato(notizie_mercato):
-    notizie_serializzate = {}
-    for nome_pilota, trasferimento in notizie_mercato.items():
-        # Verifica se esiste la chiave 'driver'
-        driver_name = trasferimento.get("driver") if trasferimento.get("driver") else "Pilota sconosciuto"
-
-        # Gestisce il caso in cui non esiste una squadra precedente o nuova
-        old_team = trasferimento.get("oldteam") if trasferimento.get("oldteam") else "Svincolato"
-        new_team = trasferimento.get("newteam") if trasferimento.get("newteam") else "Svincolato"
-
-        # Serializza le informazioni
-        notizie_serializzate[nome_pilota] = {
-            "driver": driver_name,
-            "oldteam": old_team,
-            "newteam": new_team,
-            "subsituted": trasferimento["subsituted"] if trasferimento.get("subsituted") else None
-        }
-
-    return notizie_serializzate
 
 
 @lineup_blueprint.route("/lineup")
@@ -762,20 +758,18 @@ def season_winners():
 
 @lineup_blueprint.route("/transfers", methods=['POST'])
 def transfers():
-    global market2
-    global notizie_mercato
-    global notizie_serializzate
-    if(market2):
-        scuderia = None
+    global market2, notizie_mercato, notizie_serializzate
+    if market2:
+        scuderia_selezionata = None
         if request.form.get('team'):
             nome_scuderia = request.form['team'].lower().replace(" ", "-")
             for s in scuderie:
-                if s.nome == nome_scuderia and (s.nome != None or s.nome != ""):
-                    scuderia = s
-        # Recupera notizie_mercato dalla sessione
+                if s.nome == nome_scuderia and s.nome:
+                    scuderia_selezionata = s
+                    break
+
         notizie_mercato = session.get('notizie_mercato', {})
-        notizie_mercato.update(gestisci_trasferimenti_2(piloti, scuderie, giocatore, scuderia))
-        # Serializza notizie_mercato prima di salvarlo nella sessione
+        notizie_mercato.update(gestisci_trasferimenti_2(piloti, scuderie, giocatore, scuderia_selezionata))
         notizie_serializzate = serializza_notizie_mercato(notizie_mercato)
         session['notizie_mercato'] = notizie_serializzate
         market2 = False
@@ -784,18 +778,16 @@ def transfers():
 
 @lineup_blueprint.route("/offers")
 def offerte_mercato():
-    global market1
-    global notizie_mercato
-    global notizie_serializzate
-    global offerte_giocatore
+    global market1, notizie_mercato, notizie_serializzate, offerte_giocatore
     if market1:
         offerte_giocatore = {}
         offerte_giocatore, offerte_scuderia = genera_offerte()
         notizie_mercato = gestisci_trasferimenti_1(piloti, scuderie, offerte_scuderia)
-        if giocatore.scuderia != "Svicolato":
-            for scuderia in scuderie:
-                if scuderia.nome == giocatore.scuderia:
-                    offerte_giocatore.setdefault(scuderia, []).append(giocatore)
+        # Se il giocatore è già assegnato, lo aggiunge alle offerte della sua scuderia
+        if giocatore.scuderia != "Svincolato":
+            for s in scuderie:
+                if s.nome == giocatore.scuderia:
+                    offerte_giocatore.setdefault(s, []).append(giocatore)
         notizie_serializzate = serializza_notizie_mercato(notizie_mercato)
         session['notizie_mercato'] = notizie_serializzate
         market1 = False
