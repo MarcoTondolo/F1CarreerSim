@@ -11,6 +11,33 @@ app.secret_key = 'your_secret_key'
 app.register_blueprint(lineup_blueprint)
 first_start = True
 
+
+def inizializza_titoli():
+    # Carica i dati dal file JSON
+    with open("titoli_f1_attuali.json", "r", encoding="utf-8") as file:
+        dati = json.load(file)
+
+    # Aggiorna i titoli WCC per le scuderie
+    for dati_scuderia in dati["team"]:
+        for scuderia in scuderie:
+            if scuderia.nome == dati_scuderia["nome"]:
+                for anno in dati_scuderia["WCC"]:
+                    if anno not in scuderia.wcc:
+                        scuderia.wcc.append(anno)
+
+    # Aggiorna i titoli WDC per i piloti
+    for dati_pilota in dati["piloti"]:
+        for pilota in piloti:
+            if pilota.nome == dati_pilota["nome"]:
+                for wdc in dati_pilota["WDC"]:
+                    pilota.wdc.append({'scuderia': wdc['team'], 'anno': wdc['anno']})
+                for wcc in dati_pilota["WCC"]:
+                    for anno in wcc["anni"]:
+                        pilota.wcc.append({'scuderia': wcc["team"], 'anno': anno})
+
+                pilota.race_wins = dati_pilota["race_wins"]
+
+
 # Inizializzazione della simulazione
 def inizializza_simulazione(nome_giocatore, nome_team):
     team_iniziale = None
@@ -30,6 +57,7 @@ def inizializza_simulazione(nome_giocatore, nome_team):
     team_iniziale.piloti.append(giocatore)
     team_iniziale.piloti.remove(pilota_sostituito)
     piloti.append(giocatore)
+    inizializza_titoli()
 
 
 def scegli_scuderia():

@@ -813,7 +813,7 @@ def hof_wdc():
         for pilota in piloti + piloti_svincolati if pilota.wdc
         for wdc in pilota.wdc
     ],
-        key=lambda x: x['anno']
+        key=lambda x: x['anno'], reverse= True
     )
     return render_template('hof-wdc.html', wdc_list=wdc_list)
 
@@ -825,7 +825,7 @@ def hof_wcc():
         for scuderia in scuderie
         for anno in scuderia.wcc
     ],
-        key=lambda x: x['anno']
+        key=lambda x: x['anno'], reverse= True
     )
     return render_template('hof-wcc.html', wcc_list=wcc_list)
 
