@@ -824,6 +824,9 @@ def hof_wcc():
         {'scuderia': scuderia.nome, 'anno': anno}
         for scuderia in scuderie
         for anno in scuderia.wcc
+    ] + [
+        {'scuderia': 'renault', 'anno': 2005},
+        {'scuderia': 'renault', 'anno': 2006}
     ],
         key=lambda x: x['anno'], reverse= True
     )

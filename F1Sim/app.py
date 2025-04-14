@@ -12,9 +12,9 @@ app.register_blueprint(lineup_blueprint)
 first_start = True
 
 
-def inizializza_titoli():
+def inizializza_titoli(filename):
     # Carica i dati dal file JSON
-    with open("titoli_f1_attuali.json", "r", encoding="utf-8") as file:
+    with open(filename, "r", encoding="utf-8") as file:
         dati = json.load(file)
 
     # Aggiorna i titoli WCC per le scuderie
@@ -41,6 +41,7 @@ def inizializza_titoli():
 # Inizializzazione della simulazione
 def inizializza_simulazione(nome_giocatore, nome_team):
     team_iniziale = None
+    filename = "titoli_f1_attuali.json"
 
     for scuderia in scuderie:
         if scuderia.nome == nome_team:
@@ -57,7 +58,8 @@ def inizializza_simulazione(nome_giocatore, nome_team):
     team_iniziale.piloti.append(giocatore)
     team_iniziale.piloti.remove(pilota_sostituito)
     piloti.append(giocatore)
-    inizializza_titoli()
+    if os.path.exists(filename) and os.stat(filename).st_size > 0:
+        inizializza_titoli(filename)
 
 
 def scegli_scuderia():
@@ -191,7 +193,7 @@ def index():
         try:
             carica_dati(filename)
             return redirect(url_for('lineup.lineup'))
-        except Exception as e:
+        except Exception:
             reset_simulazione()
             crea_piloti()
             return render_template("index.html", anno=current_season)
