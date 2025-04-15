@@ -394,7 +394,6 @@ a {
 .result-item-alpine,
 .result-item-aston-martin,
 .result-item-sauber,
-.result-item-renault,
 .result-item-transfer {
     display: flex;
     align-items: center;
@@ -413,7 +412,6 @@ a {
 .result-item-alpine { background-color: #29374a; }
 .result-item-aston-martin { background-color: #2e5744; }
 .result-item-sauber { background-color: #000000; }
-.result-item-renault { background-color: #1d8ce0; }
 .result-item-transfer { background-color: #29374a; }
 
 .race-driver {

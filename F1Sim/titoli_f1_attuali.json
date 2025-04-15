@@ -184,12 +184,12 @@
             "nome": "Fernando Alonso",
             "team": "aston-martin",
             "WDC": [
-                { "anno": 2005, "team": "renault" },
-                { "anno": 2006, "team": "renault" }
+                { "anno": 2005, "team": "alpine" },
+                { "anno": 2006, "team": "alpine" }
             ],
             "WCC": [
                 {
-                    "team": "renault",
+                    "team": "alpine",
                     "anni": [2005, 2006]
                 }
             ],

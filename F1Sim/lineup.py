@@ -808,28 +808,38 @@ def team_info(team_name):
 @lineup_blueprint.route('/hof-wdc')
 def hof_wdc():
     global piloti, piloti_svincolati
-    wdc_list = sorted([
-        {'pilota': pilota, 'scuderia': wdc['scuderia'], 'anno': wdc['anno']}
-        for pilota in piloti + piloti_svincolati if pilota.wdc
-        for wdc in pilota.wdc
-    ],
-        key=lambda x: x['anno'], reverse= True
-    )
+    visti = set()
+    wdc_list = []
+    for pilota in piloti + piloti_svincolati:
+        for wdc in pilota.wdc:
+            chiave = (pilota.nome, wdc['anno'])
+            if chiave not in visti:
+                visti.add(chiave)
+                wdc_list.append({
+                    'pilota': pilota,
+                    'scuderia': wdc['scuderia'],
+                    'anno': wdc['anno']
+                })
+    wdc_list.sort(key=lambda x: x['anno'], reverse=True)
     return render_template('hof-wdc.html', wdc_list=wdc_list)
 
 @lineup_blueprint.route('/hof-wcc')
 def hof_wcc():
     global scuderie
-    wcc_list = sorted([
-        {'scuderia': scuderia.nome, 'anno': anno}
-        for scuderia in scuderie
-        for anno in scuderia.wcc
-    ] + [
-        {'scuderia': 'renault', 'anno': 2005},
-        {'scuderia': 'renault', 'anno': 2006}
-    ],
-        key=lambda x: x['anno'], reverse= True
-    )
+    visti = set()
+    wcc_list = []
+
+    for scuderia in scuderie:
+        for anno in scuderia.wcc:
+            chiave = (scuderia.nome, anno)
+            if chiave not in visti:
+                visti.add(chiave)
+                wcc_list.append({
+                    'scuderia': scuderia.nome,
+                    'anno': anno
+                })
+
+    wcc_list.sort(key=lambda x: x['anno'], reverse=True)
     return render_template('hof-wcc.html', wcc_list=wcc_list)
 
 @lineup_blueprint.route('/wdc-titles-leaderboard')
