@@ -10,6 +10,7 @@ app = Flask(__name__)
 app.secret_key = 'your_secret_key'
 app.register_blueprint(lineup_blueprint)
 first_start = True
+folder = "F1Sim"
 
 
 def inizializza_titoli(filename):
@@ -58,7 +59,13 @@ def inizializza_simulazione(nome_giocatore, nome_team):
     team_iniziale.piloti.append(giocatore)
     team_iniziale.piloti.remove(pilota_sostituito)
     piloti.append(giocatore)
-    if os.path.exists(filename) and os.stat(filename).st_size > 0:
+    file_path = os.path.join(folder, filename)
+    if "F1Sim" not in os.path.normpath(file_path):
+        file_path = os.path.join(folder, filename)
+    else:
+        file_path = filename  # già dentro F1Sim
+    if (( os.path.exists(filename) or os.path.exists(file_path) )
+            and ( os.stat(file_path).st_size > 0 or os.stat(filename).st_size > 0) ):
         inizializza_titoli(filename)
 
 

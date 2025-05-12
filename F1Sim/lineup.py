@@ -39,7 +39,7 @@ import datetime
 
 # Lista dei piloti svincolati
 nomi_piloti_svincolati_iniziali = [
-    "Logan Sargeant", "Franco Colapinto", "Kevin Magnussen", "Daniel Ricciardo", "Guanyu Zhou",
+    "Logan Sargeant", "Jack Doohan", "Kevin Magnussen", "Daniel Ricciardo", "Guanyu Zhou",
     "Sergio Perez", "Valtteri Bottas"
 ]
 piloti_svincolati = []
@@ -54,7 +54,7 @@ scuderie_piloti = {
     "racing-bulls": ["Liam Lawson", "Isack Hadjar"],
     "haas": ["Oliver Bearman", "Esteban Ocon"],
     "mercedes": ["George Russell", "Kimi Antonelli"],
-    "alpine": ["Pierre Gasly", "Jack Doohan"],
+    "alpine": ["Pierre Gasly", "Franco Colapinto"],
     "williams": ["Carlos Sainz", "Alexander Albon"],
     "sauber": ["Gabriel Bortoleto", "Nico Hulkenberg"],
     "aston-martin": ["Fernando Alonso", "Lance Stroll"]
