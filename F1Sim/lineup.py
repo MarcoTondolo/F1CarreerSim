@@ -13,9 +13,9 @@ offerte_giocatore = None
 regulation_changes = 4
 
 gp_names = [
-    "Bahrain", "Arabia Saudita", "Australia", "Giappone", "Cina", "Miami",
-    "Emilia Romagna", "Monaco", "Canada", "Spagna", "Austria", "Gran Bretagna",
-    "Ungheria", "Belgio", "Olanda", "Italia", "Azerbaijan", "Singapore", "Stati Uniti",
+    "Australia", "Cina", "Giappone", "Bahrain", "Arabia Saudita", "Miami",
+    "Emilia Romagna", "Monaco", "Spagna", "Canada", "Austria", "Gran Bretagna",
+    "Belgio", "Ungheria", "Olanda", "Italia", "Azerbaijan", "Singapore", "Stati Uniti",
     "Messico", "Brasile", "Las Vegas", "Qatar", "Abu Dhabi"
 ]
 
@@ -40,7 +40,7 @@ import datetime
 # Lista dei piloti svincolati
 nomi_piloti_svincolati_iniziali = [
     "Logan Sargeant", "Jack Doohan", "Kevin Magnussen", "Daniel Ricciardo", "Guanyu Zhou",
-    "Sergio Perez", "Valtteri Bottas"
+    "Sergio Perez", "Valtteri Bottas", "Sebastian Vettel", "Kimi Raikkonen", "Nico Rosberg",
 ]
 piloti_svincolati = []
 scuderie = []

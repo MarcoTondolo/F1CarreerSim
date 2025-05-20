@@ -38,6 +38,18 @@ def inizializza_titoli(filename):
 
                 pilota.race_wins = dati_pilota["race_wins"]
 
+    # Aggiorna i titoli WDC per i piloti svincolati
+    for dati_pilota in dati["piloti_svincolati"]:
+        for pilota in piloti_svincolati:
+            if pilota.nome == dati_pilota["nome"]:
+                for wdc in dati_pilota["WDC"]:
+                    pilota.wdc.append({'scuderia': wdc['team'], 'anno': wdc['anno']})
+                for wcc in dati_pilota["WCC"]:
+                    for anno in wcc["anni"]:
+                        pilota.wcc.append({'scuderia': wcc["team"], 'anno': anno})
+
+                pilota.race_wins = dati_pilota["race_wins"]
+
 
 # Inizializzazione della simulazione
 def inizializza_simulazione(nome_giocatore, nome_team):

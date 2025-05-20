@@ -206,6 +206,48 @@
     ],
     "piloti_svincolati": [
         {
+            "nome": "Kimi Raikkonen",
+            "WDC": [
+                { "anno": 2007, "team": "ferrari" }
+            ],
+            "WCC": [
+                {
+                    "team": "ferrari",
+                    "anni": [2007]
+                }
+            ],
+            "race_wins": 21
+        },
+        {
+            "nome": "Sebastian Vettel",
+            "WDC": [
+                { "anno": 2010, "team": "red-bull" },
+                { "anno": 2011, "team": "red-bull" },
+                { "anno": 2012, "team": "red-bull" },
+                { "anno": 2013, "team": "red-bull" }
+            ],
+            "WCC": [
+                {
+                    "team": "red bull",
+                    "anni": [2010, 2011, 2012, 2013]
+                }
+            ],
+            "race_wins": 54
+        },
+        {
+            "nome": "Nico Rosberg",
+            "WDC": [
+                { "anno": 2016, "team": "mercedes" }
+            ],
+            "WCC": [
+                {
+                    "team": "mercedes",
+                    "anni": [2014, 2015, 2016]
+                }
+            ],
+            "race_wins": 23
+        },
+        {
             "nome": "Logan Sargeant",
             "WDC": [],
             "WDC_anni": [],
