@@ -71,8 +71,7 @@ def inizializza_simulazione(nome_giocatore, nome_team):
     team_iniziale.piloti.append(giocatore)
     team_iniziale.piloti.remove(pilota_sostituito)
     piloti.append(giocatore)
-    file_path = os.path.join(folder, filename)
-    if "F1Sim" not in os.path.normpath(file_path):
+    if not os.path.exists(filename):
         file_path = os.path.join(folder, filename)
     else:
         file_path = filename  # già dentro F1Sim
