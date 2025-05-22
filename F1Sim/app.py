@@ -196,6 +196,16 @@ def carica_dati(filename):
 
     print("Dati caricati con successo.")
 
+def rimuovi_duplicati(lista):
+    unici = []
+    nomi_visti = set()
+    for item in lista:
+        if item.nome not in nomi_visti:
+            unici.append(item)
+            nomi_visti.add(item.nome)
+    return unici
+
+
 
 @app.route('/reset')
 def reset():
@@ -210,6 +220,9 @@ def index():
     if os.path.exists(filename) and os.stat(filename).st_size > 0:
         try:
             carica_dati(filename)
+            piloti[:] = rimuovi_duplicati(piloti)
+            scuderie[:] = rimuovi_duplicati(scuderie)
+            piloti_svincolati[:] = rimuovi_duplicati(piloti_svincolati)
             return redirect(url_for('lineup.lineup'))
         except Exception:
             reset_simulazione()
