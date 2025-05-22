@@ -1,3 +1,4 @@
+import os
 from random import randint
 from flask import Blueprint, render_template, request, session
 import datetime
@@ -282,7 +283,7 @@ class Giocatore(Pilota):
 giocatore = Giocatore("", "", "tbd")
 
 
-def salva_dati(scuderie, giocatore, filename="dati_f1.json"):
+def salva_dati(scuderie, giocatore, filename="dati_f1.json", folder="F1Sim"):
     """Salva i dati delle scuderie, dei piloti e del giocatore in un file JSON."""
     print("Salvataggio...")
     dati = {
@@ -303,7 +304,8 @@ def salva_dati(scuderie, giocatore, filename="dati_f1.json"):
     }
 
     print(dati)
-
+    if not os.path.exists(filename):
+        filename = os.path.join(folder, filename)
     with open(filename, "w", encoding="utf-8") as file:
         json.dump(dati, file, indent=4, ensure_ascii=False)
     print("Dati salvati con successo.")
