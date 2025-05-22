@@ -133,8 +133,10 @@ def reset_simulazione():
 
 def carica_dati(filename):
     """Carica i dati delle scuderie, dei piloti e del giocatore da un file JSON, se presente."""
-    with open(filename, "r", encoding="utf-8") as file:
-        dati = json.load(file)
+    if not os.path.exists(filename):
+        file_path = os.path.join(folder, filename)
+        with open(file_path, "r", encoding="utf-8") as file:
+            dati = json.load(file)
 
     if scuderie:
         scuderie.clear()
