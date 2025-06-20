@@ -7,6 +7,11 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='styles/styles.css') }}">
 </head>
 <style>
+    .golden {
+        color: gold;
+        font-weight: bold;
+        text-shadow: 1px 1px 3px #b8860b;
+    }
     .race-position-container {
         flex-direction: row;
         display: flex;
@@ -75,10 +80,15 @@
     <!-- Prime 10 posizioni -->
     <div class="results-column">
         <ol class="race-results">
+            {% set leader = drivers_sorted[0] %}
+            {% set second_driver = drivers_sorted[1] %}
+            {% set leader_ha_gia_vinto = leader.punti > (second_driver.punti + 25 * (max_races - current_race)) %}
+
             {% for driver in drivers_sorted[:10] %}
+                {% set golden = leader_ha_gia_vinto and loop.index == 1 %}
             <li class="result-item-{{ driver.scuderia }}">
                 <div class="race-position-container">
-                    <div class="race-position">{{ loop.index }}</div>
+                    <div class="race-position {% if golden %}golden{% endif %}">{{ loop.index }}</div>
                     {% if driver.leaderboard_change is not none %}
                     <img src="{{ url_for('static', filename='images/others/triangle-' ~ driver.leaderboard_change ~ '.png') }}"
                          alt="{{ 'Freccia ' + driver.leaderboard_change }}"
@@ -99,8 +109,8 @@
                 </div>
                 <img src="{{ url_for('static', filename='images/logos/' ~ driver.scuderia ~ '.png') }}"
                      alt="{{ driver.logo }}" class="race-driver-logo" draggable="false">
-                <span class="race-driver-name">{{ driver.nome }}</span>
-                <span class="race-points">{{ driver.punti }}</span>
+                <span class="race-driver-name {% if golden %}golden{% endif %}">{{ driver.nome }}</span>
+                <span class="race-points {% if golden %}golden{% endif %}">{{ driver.punti }}</span>
             </li>
             {% endfor %}
         </ol>

@@ -678,11 +678,13 @@ def simulate_remaining_races():
 
     drivers_sorted = sorted(piloti, key=lambda d: d.punti, reverse=True)
 
-    return render_template('wdc-leaderboard.html', drivers_sorted=drivers_sorted)
+    return render_template('wdc-leaderboard.html', drivers_sorted=drivers_sorted,
+                           current_race=current_race_count, max_races=MAX_RACES)
 
 
 @lineup_blueprint.route("/wdc-leaderboard")
 def wdc_leaderboard():
+    global current_race_count
     global piloti
 
     # Ordina i piloti in base ai punti
@@ -693,11 +695,13 @@ def wdc_leaderboard():
                                         "down" if posizione > pilota.last_position else None
         pilota.last_position = posizione
 
-    return render_template('wdc-leaderboard.html', drivers_sorted=drivers_sorted)
+    return render_template('wdc-leaderboard.html', drivers_sorted=drivers_sorted,
+                           current_race=current_race_count, max_races=MAX_RACES)
 
 
 @lineup_blueprint.route("/wcc-leaderboard")
 def wcc_leaderboard():
+    global current_race_count
     punti_scuderie = {scuderia: scuderia.calcola_punti() for scuderia in scuderie}
 
     # Ordinamento delle scuderie per punti
@@ -711,7 +715,8 @@ def wcc_leaderboard():
             if scuderiaReal.nome == scuderia.nome:
                 scuderiaReal.aggiorna_rating_scuderia(posizione, piloti)
 
-    return render_template('wcc-leaderboard.html', teams=scuderie_ordinate)
+    return render_template('wcc-leaderboard.html', teams=scuderie_ordinate,
+                           current_race=current_race_count, max_races=MAX_RACES)
 
 
 @lineup_blueprint.route("/season-winners")

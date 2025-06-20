@@ -7,6 +7,11 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='styles/styles.css') }}">
 </head>
 <style>
+    .golden {
+        color: gold;
+        font-weight: bold;
+        text-shadow: 1px 1px 3px #b8860b;
+    }
     .race-driver,
     .team-car {
         width: 10vw;
@@ -81,10 +86,15 @@
 <div class="results-container">
     <div class="results-column">
         <ol class="race-results-wcc">
+            {% set leader_team, leader_points = teams[0] %}
+            {% set second_team, second_points = teams[1] %}
+            {% set leader_ha_gia_vinto = leader_points > (second_points + 44 * (max_races - current_race)) %}
+
             {% for team, points in teams %}
+                {% set golden = leader_ha_gia_vinto and loop.index == 1 %}
             <li class="result-item-{{ team.nome }}">
                 <div class="race-position-container">
-                    <div class="race-position">{{ loop.index }}</div>
+                    <div class="race-position {% if golden %}golden{% endif %}">{{ loop.index }}</div>
                     {% if team.leaderboard_change is not none %}
                     <img src="{{ url_for('static', filename='images/others/triangle-' ~ team.leaderboard_change ~ '.png') }}"
                          alt="{{ 'Freccia ' + team.leaderboard_change }}"
@@ -104,8 +114,10 @@
                 </div>
                 <img src="{{ url_for('static', filename='images/logos/' ~ team.nome ~ '.png') }}"
                      alt="{{ team }}" class="logo" draggable="false">
-                <span class="race-driver-name">{{ team.nome.replace('-', ' ').title() }}</span>
-                <span class="race-points">{{ points }}</span>
+                <span class="race-driver-name {% if golden %}golden{% endif %}">
+                    {{ team.nome.replace('-', ' ').title() }}
+                </span>
+                <span class="race-points {% if golden %}golden{% endif %}">{{ points }}</span>
             </li>
             {% endfor %}
         </ol>
