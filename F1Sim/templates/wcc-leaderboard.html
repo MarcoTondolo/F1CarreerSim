@@ -88,7 +88,7 @@
         <ol class="race-results-wcc">
             {% set leader_team, leader_points = teams[0] %}
             {% set second_team, second_points = teams[1] %}
-            {% set leader_ha_gia_vinto = leader_points > (second_points + 44 * (max_races - current_race)) %}
+            {% set leader_ha_gia_vinto = leader_points > (second_points + 43 * (max_races - current_race)) %}
 
             {% for team, points in teams %}
                 {% set golden = leader_ha_gia_vinto and loop.index == 1 %}
