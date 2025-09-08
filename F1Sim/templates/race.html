@@ -122,7 +122,13 @@
                     <img src="{{ url_for('static', filename='images/logos/' ~ driver.scuderia ~ '.png') }}"
                          alt="{{ driver.logo }}" class="race-driver-logo" draggable="false">
                     <span class="race-driver-name">{{ driver.nome }}</span>
-                    <span class="race-points">{{ driver.punti_gara }}</span>
+                    <span class="race-points">
+                        {% if driver.last_race_position == "DNF" %}
+                            DNF
+                        {% else %}
+                            {{ driver.punti_gara }}
+                        {% endif %}
+                    </span>
                 </li>
                 {% endfor %}
             </ol>

@@ -137,6 +137,13 @@ class Pilota:
 
     def aggiorna_rating(self, posizione):
         incremento = 0
+
+        # Se il pilota ha fatto DNF, non aggiorniamo il rating
+        if posizione is None or posizione == "DNF":
+            self.rating -= self.temp_rating  # rimuovo la variazione temporanea
+            return
+
+        # Bonus/malus in base alla posizione finale
         if posizione <= 3:
             incremento += random.randint(-1, 3)
         elif posizione <= 10:
@@ -144,19 +151,24 @@ class Pilota:
         else:
             incremento -= random.randint(-2, 1)
 
-        # BONUS per i piloti che migliorano molto rispetto alla gara precedente
-        if self.last_race_position:
-            miglioramento = self.last_race_position - posizione  # Se positivo, significa che è migliorato
+        # BONUS per miglioramento rispetto alla gara precedente
+        if (
+                self.last_race_position is not None
+                and isinstance(self.last_race_position, int)
+                and isinstance(posizione, int)
+        ):
+            miglioramento = self.last_race_position - posizione  # positivo = migliorato
             if miglioramento > 5:
-                incremento += random.randint(2, 4)  # Ricompensa extra se ha guadagnato molte posizioni
+                incremento += random.randint(2, 4)
             elif miglioramento > 2:
                 incremento += random.randint(1, 3)
 
         self.rating += incremento
 
+        # Rimuovo l’effetto temporaneo
         self.rating -= self.temp_rating
 
-        # Il rating non può andare sotto 50 o sopra 100
+        # Il rating non può andare sotto 80 o sopra 100
         self.rating = max(80, min(self.rating, 100))
 
     def resetta_punti(self):
@@ -194,21 +206,24 @@ class Scuderia:
 
         # Somma le posizioni dei piloti con bilanciamento
         for pilota in piloti:
-            last_position_int = int(pilota.posizione_finale)
-            if last_position_int == 1:
-                punteggio += 18  # Ridotto per evitare sbilanciamenti
-            elif last_position_int == 2:
-                punteggio += 14
-            elif last_position_int == 3:
-                punteggio += 12
-            elif 4 <= last_position_int <= 7:
-                punteggio += 8
-            elif 8 <= last_position_int <= 10:
-                punteggio += 5
-            elif 11 <= last_position_int <= 15:
-                punteggio += 3
-            elif 16 <= last_position_int <= 20:
-                punteggio += 1
+            if pilota.posizione_finale is not None:
+                last_position_int = int(pilota.posizione_finale)
+                if last_position_int == 1:
+                    punteggio += 18  # Ridotto per evitare sbilanciamenti
+                elif last_position_int == 2:
+                    punteggio += 14
+                elif last_position_int == 3:
+                    punteggio += 12
+                elif 4 <= last_position_int <= 7:
+                    punteggio += 8
+                elif 8 <= last_position_int <= 10:
+                    punteggio += 5
+                elif 11 <= last_position_int <= 15:
+                    punteggio += 3
+                elif 16 <= last_position_int <= 20:
+                    punteggio += 1
+            else:
+                punteggio -= 3
 
         # Bonus per miglioramento con bilanciamento delle fasce
         if self.last_position:
@@ -321,33 +336,56 @@ def calcola_trofei_scuderia(scuderia):
 
 
 # Funzione per simulare una gara
-def simula_gara(piloti, gp_name):
+import random
+
+def simula_gara(piloti, gp_name, prob_dnf=0.05):
+    """
+    Simula una gara con possibilità di DNF.
+    :param piloti: lista di oggetti Pilota
+    :param gp_name: nome del Gran Premio
+    :param prob_dnf: probabilità che un pilota non finisca (default 10%)
+    """
     # Aggiungiamo casualità ai rating
-    # Ogni pilota riceve un fattore casuale che modifica leggermente il suo rating
     for pilota in piloti:
         variazione_random = random.randint(-5, 5)
         pilota.add_temp_rating(variazione_random)
 
-    # Ordina i piloti in base al rating modificato, i migliori avranno un vantaggio
-    piloti.sort(key=lambda p: p.rating, reverse=True)
+    # Determina chi va in DNF
+    dnf_list = [p for p in piloti if random.random() < prob_dnf]
 
-    # Simula la gara con un po' di casualità per ogni posizione
-    for posizione, pilota in enumerate(piloti, 1):
+    # Separiamo i piloti che hanno finito la gara da quelli in DNF
+    arrivati = [p for p in piloti if p not in dnf_list]
+
+    # Ordina solo i piloti arrivati
+    arrivati.sort(key=lambda p: p.rating, reverse=True)
+
+    # Assegna posizioni e punti solo a chi è arrivato
+    for posizione, pilota in enumerate(arrivati, 1):
         pilota.posizione_finale = posizione
         pilota.guadagna_punti(posizione)
-        pilota.aggiorna_rating(posizione)  # Aggiorna il rating dopo la gara
+        pilota.aggiorna_rating(posizione)
         pilota.last_race_position = posizione
 
-    # Aggiorna il vincitore della gara
-    piloti[0].race_wins +=1
+    # Gestisci i DNF → niente punti, niente update rating
+    for pilota in dnf_list:
+        pilota.posizione_finale = None   # o len(piloti)+1 se ti serve un ordinamento
+        pilota.last_race_position = "DNF"
+        pilota.punti_gara = 0  # forza a 0
+
+    # Aggiorna vincitore se c’è almeno un arrivato
+    arrivati[0].race_wins += 1
     races[gp_name] = {
-        "winner_name": piloti[0].nome,
-        "winner_image": piloti[0].image,
-        "winner_team": piloti[0].scuderia,
+        "winner_name": arrivati[0].nome,
+        "winner_image": arrivati[0].image,
+        "winner_team": arrivati[0].scuderia,
     }
 
-    # Restituisce i piloti ordinati per posizione finale
-    return sorted(piloti, key=lambda x: x.posizione_finale)
+    # Restituisce piloti ordinati: arrivati in ordine + DNF in fondo
+    return sorted(
+        piloti,
+        key=lambda x: (x.posizione_finale if x.posizione_finale else len(piloti)+1)
+    )
+
 
 
 def crea_offerte(giocatore, probabilita_offerta_giocatore):
