@@ -223,9 +223,12 @@ def index():
     if os.path.exists(filename) and os.stat(filename).st_size > 0:
         try:
             carica_dati(filename)
-            piloti[:] = rimuovi_duplicati(piloti)
+
+            tutti_piloti = rimuovi_duplicati(piloti + piloti_svincolati)
+            piloti[:] = [p for p in tutti_piloti if p.get("scuderia")]
+            piloti_svincolati[:] = [p for p in tutti_piloti if not p.get("scuderia")]
             scuderie[:] = rimuovi_duplicati(scuderie)
-            piloti_svincolati[:] = rimuovi_duplicati(piloti_svincolati)
+
             return redirect(url_for('lineup.lineup'))
         except Exception:
             reset_simulazione()
