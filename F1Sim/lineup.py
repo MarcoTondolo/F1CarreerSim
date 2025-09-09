@@ -343,7 +343,7 @@ def simula_gara(piloti, gp_name, prob_dnf=0.05):
     Simula una gara con possibilità di DNF.
     :param piloti: lista di oggetti Pilota
     :param gp_name: nome del Gran Premio
-    :param prob_dnf: probabilità che un pilota non finisca (default 10%)
+    :param prob_dnf: probabilità che un pilota non finisca (default 5%)
     """
     # Aggiungiamo casualità ai rating
     for pilota in piloti:
@@ -355,6 +355,12 @@ def simula_gara(piloti, gp_name, prob_dnf=0.05):
 
     # Separiamo i piloti che hanno finito la gara da quelli in DNF
     arrivati = [p for p in piloti if p not in dnf_list]
+
+    # Se nessuno è arrivato → forziamo almeno un pilota
+    if not arrivati:
+        scelto = random.choice(dnf_list)
+        dnf_list.remove(scelto)
+        arrivati.append(scelto)
 
     # Ordina solo i piloti arrivati
     arrivati.sort(key=lambda p: p.rating, reverse=True)
