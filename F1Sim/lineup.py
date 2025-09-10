@@ -129,11 +129,15 @@ class Pilota:
         # Aggiorna il rating del pilota
         self.rating += self.temp_rating
 
-    def guadagna_punti(self, position):
+    def guadagna_punti(self, position, red_flag):
         """Calcola i punti assegnati in base alla posizione finale della gara."""
         points_distribution = {1: 25, 2: 18, 3: 15, 4: 12, 5: 10, 6: 8, 7: 6, 8: 4, 9: 2, 10: 1}
-        self.punti_gara = points_distribution.get(position, 0)  # 0 punti per oltre la 10° posizione
+        self.punti_gara = points_distribution.get(position, 0) / 2 if red_flag else points_distribution.get(position, 0)  # 0 punti per oltre la 10° posizione
+        if self.punti_gara.is_integer():
+            self.punti_gara = int(self.punti_gara)
         self.punti += self.punti_gara
+        if isinstance(self.punti, float) and self.punti.is_integer():
+            self.punti = int(self.punti)
 
     def aggiorna_rating(self, posizione):
         incremento = 0
@@ -186,7 +190,11 @@ class Scuderia:
         self.leaderboard_change = None
 
     def calcola_punti(self):
-        return sum([pilota.punti for pilota in self.piloti])
+        totale = sum([pilota.punti for pilota in self.piloti])
+        # se il totale è x.0 → converto in intero
+        if isinstance(totale, float) and totale.is_integer():
+            totale = int(totale)
+        return totale
 
     def reset_rating_scuderia(self):
         self.rating = randint(50, 100)
@@ -345,13 +353,22 @@ def simula_gara(piloti, gp_name, prob_dnf=0.05):
     :param gp_name: nome del Gran Premio
     :param prob_dnf: probabilità che un pilota non finisca (default 5%)
     """
+
+    red_flag = False
+
     # Aggiungiamo casualità ai rating
     for pilota in piloti:
         variazione_random = random.randint(-5, 5)
         pilota.add_temp_rating(variazione_random)
 
     # Determina chi va in DNF
-    dnf_list = [p for p in piloti if random.random() < prob_dnf]
+    dnf_list = []
+
+    for p in piloti:
+        if random.random() < prob_dnf and len(dnf_list) < 10:
+            dnf_list.append(p)
+        elif len(dnf_list) >= 10:
+            red_flag = True
 
     # Separiamo i piloti che hanno finito la gara da quelli in DNF
     arrivati = [p for p in piloti if p not in dnf_list]
@@ -368,7 +385,7 @@ def simula_gara(piloti, gp_name, prob_dnf=0.05):
     # Assegna posizioni e punti solo a chi è arrivato
     for posizione, pilota in enumerate(arrivati, 1):
         pilota.posizione_finale = posizione
-        pilota.guadagna_punti(posizione)
+        pilota.guadagna_punti(posizione, red_flag)
         pilota.aggiorna_rating(posizione)
         pilota.last_race_position = posizione
 
@@ -376,7 +393,6 @@ def simula_gara(piloti, gp_name, prob_dnf=0.05):
     for pilota in dnf_list:
         pilota.posizione_finale = None   # o len(piloti)+1 se ti serve un ordinamento
         pilota.last_race_position = "DNF"
-        pilota.punti_gara = 0  # forza a 0
 
     # Aggiorna vincitore se c’è almeno un arrivato
     arrivati[0].race_wins += 1
