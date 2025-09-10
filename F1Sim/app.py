@@ -219,9 +219,11 @@ def reset():
 def index():
     filename = "dati_f1.json"
     if not os.path.exists(filename):
+        print(f"Not in path. Joining folder ${folder}")
         filename = os.path.join(folder, filename)
     if os.path.exists(filename) and os.stat(filename).st_size > 0:
         try:
+            print("File found!")
             carica_dati(filename)
 
             tutti_piloti = rimuovi_duplicati(piloti + piloti_svincolati)
