@@ -144,7 +144,7 @@ class Pilota:
 
         # Se il pilota ha fatto DNF, non aggiorniamo il rating
         if posizione is None or posizione == "DNF":
-            self.rating -= self.temp_rating  # rimuovo la variazione temporanea
+            self.rating -= self.temp_rating -1  # rimuovo la variazione temporanea
             return
 
         # Bonus/malus in base alla posizione finale
@@ -192,7 +192,7 @@ class Scuderia:
     def calcola_punti(self):
         totale = sum([pilota.punti for pilota in self.piloti])
         # se il totale è x.0 → converto in intero
-        if isinstance(totale, float) and totale.is_integer():
+        if totale.is_integer():
             totale = int(totale)
         return totale
 
