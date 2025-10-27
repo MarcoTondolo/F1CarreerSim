@@ -200,7 +200,7 @@ class Scuderia:
     def calcola_punti(self):
         totale = sum([pilota.punti for pilota in self.piloti])
         # se il totale è x.0 → converto in intero
-        if totale.is_integer():
+        if isinstance(totale, float) and totale.is_integer():
             totale = int(totale)
         return totale
 
