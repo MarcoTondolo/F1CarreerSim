@@ -30,7 +30,7 @@ current_season = 2026
 
 def reset_year():
     global current_season
-    current_season = datetime.datetime.now().year
+    current_season = 2026
 
 
 def set_year(year):
@@ -147,41 +147,12 @@ class Pilota:
         if isinstance(self.punti, float) and self.punti.is_integer():
             self.punti = int(self.punti)
 
-    def aggiorna_rating(self, posizione):
-        incremento = 0
-
-        # Se il pilota ha fatto DNF, non aggiorniamo il rating
-        if posizione is None or posizione == "DNF":
-            self.rating -= self.temp_rating -1  # rimuovo la variazione temporanea
-            return
-
-        # Bonus/malus in base alla posizione finale
-        if posizione <= 3:
-            incremento += random.randint(-1, 3)
-        elif posizione <= 10:
-            incremento += random.randint(-1, 2)
-        else:
-            incremento -= random.randint(-2, 1)
-
-        # BONUS per miglioramento rispetto alla gara precedente
-        if (
-                self.last_race_position is not None
-                and isinstance(self.last_race_position, int)
-                and isinstance(posizione, int)
-        ):
-            miglioramento = self.last_race_position - posizione  # positivo = migliorato
-            if miglioramento > 5:
-                incremento += random.randint(2, 4)
-            elif miglioramento > 2:
-                incremento += random.randint(1, 3)
-
-        self.rating += incremento
-
-        # Rimuovo l’effetto temporaneo
+    def rimuovi_temp_rating(self):
         self.rating -= self.temp_rating
 
-        # Il rating non può andare sotto 80 o sopra 100
-        self.rating = max(80, min(self.rating, 100))
+    def aggiorna_rating(self):
+        self.rating += random.randint(-10, 10)
+        self.rating = max(50, min(self.rating, 100))
 
     def resetta_punti(self):
         self.punti = 0
@@ -394,7 +365,7 @@ def simula_gara(piloti, gp_name, prob_dnf=0.05):
     for posizione, pilota in enumerate(arrivati, 1):
         pilota.posizione_finale = posizione
         pilota.guadagna_punti(posizione, red_flag, gp_name)
-        pilota.aggiorna_rating(posizione)
+        pilota.rimuovi_temp_rating()
         pilota.last_race_position = posizione
 
     # Gestisci i DNF → niente punti, niente update rating
@@ -710,6 +681,7 @@ def lineup():
                 pilota.last_position = None
                 pilota.leaderboard_change = None
                 pilota.last_race_position = None
+                pilota.aggiorna_rating()
     salva_dati(scuderie, giocatore)
     return render_template('lineup.html', teams=scuderie, year=current_season)
 

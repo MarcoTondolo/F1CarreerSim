@@ -57,11 +57,10 @@
             "nome": "Lando Norris",
             "team": "mclaren",
             "WDC": [],
-            "WDC_anni": [],
             "WCC": [
                 {
                     "team": "mclaren",
-                    "anni": [2024]
+                    "anni": [2024, 2025]
                 }
             ],
             "race_wins": 4
@@ -69,12 +68,13 @@
         {
             "nome": "Oscar Piastri",
             "team": "mclaren",
-            "WDC": [],
-            "WDC_anni": [],
+            "WDC": [
+                { "anno": 2025, "team": "mclaren" }
+            ],
             "WCC": [
                 {
                     "team": "mclaren",
-                    "anni": [2024]
+                    "anni": [2024, 2025]
                 }
             ],
             "race_wins": 2
@@ -340,7 +340,8 @@
                 1990,
                 1991,
                 1998,
-                2024
+                2024,
+                2025
             ]
         },
         {
