@@ -141,7 +141,7 @@ class Pilota:
             self.punti_gara = points_distribution.get(position, 0) / 2 if red_flag else points_sprint.get(position, 0)  # 0 punti per oltre l'8° posizione
         else:
             self.punti_gara = points_distribution.get(position, 0) / 2 if red_flag else points_distribution.get(position, 0)  # 0 punti per oltre la 10° posizione
-        if self.punti_gara.is_integer():
+        if isinstance(self.punti_gara, float) and self.punti_gara.is_integer():
             self.punti_gara = int(self.punti_gara)
         self.punti += self.punti_gara
         if isinstance(self.punti, float) and self.punti.is_integer():
