@@ -84,7 +84,7 @@
             {% set second_driver = drivers_sorted[1] %}
             {% set leader_ha_gia_vinto = leader.punti > (second_driver.punti + 25 * (max_races - current_race)) %}
 
-            {% for driver in drivers_sorted[:10] %}
+            {% for driver in drivers_sorted[:11] %}
                 {% set golden = leader_ha_gia_vinto and loop.index == 1 %}
             <li class="result-item-{{ driver.scuderia }}">
                 <div class="race-position-container">
@@ -119,10 +119,10 @@
     <!-- Ultime 10 posizioni -->
     <div class="results-column">
         <ol class="race-results">
-            {% for driver in drivers_sorted[10:20] %}
+            {% for driver in drivers_sorted[11:22] %}
             <li class="result-item-{{ driver.scuderia }}">
                 <div class="race-position-container">
-                    <div class="race-position">{{ loop.index + 10 }}</div>
+                    <div class="race-position">{{ loop.index + 11 }}</div>
                     {% if driver.leaderboard_change is not none %}
                     <img src="{{ url_for('static', filename='images/others/triangle-' ~ driver.leaderboard_change ~ '.png') }}"
                          alt="{{ 'Freccia ' + driver.leaderboard_change }}"
