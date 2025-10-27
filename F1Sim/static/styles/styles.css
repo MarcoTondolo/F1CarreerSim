@@ -295,6 +295,10 @@ a {
     color: #1be600;
 }
 
+.cadillac .driver-name {
+    background-color: #000000;
+}
+
 .racing-bulls .driver-name {
     background-color: #253bb8;
 }
@@ -393,6 +397,7 @@ a {
 .result-item-alpine,
 .result-item-aston-martin,
 .result-item-sauber,
+.result-item-cadillac,
 .result-item-transfer {
     display: flex;
     align-items: center;
@@ -411,6 +416,7 @@ a {
 .result-item-alpine { background-color: #29374a; }
 .result-item-aston-martin { background-color: #2e5744; }
 .result-item-sauber { background-color: #000000; }
+.result-item-cadillac { background-color: #000000; }
 .result-item-transfer { background-color: #29374a; }
 
 .race-driver {

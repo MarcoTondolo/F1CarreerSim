@@ -90,10 +90,10 @@
     <div class="results-container-final">
         <div class="results-column">
             <ol class="race-results">
-                {% for gp, winner_data in races[:8] %}
+                {% for gp, winner_data in races[:10] %}
                 <li class="result-item-{{ winner_data.winner_team }}">
                     <div class="race-gp-name">{{ gp }}</div>
-                    <img src="{{ url_for('static', filename='images/tracks/' ~ gp ~ '.png') }}"
+                    <img src="{{ url_for('static', filename='images/tracks/' ~ gp.replace('Sprint ', '') ~ '.png') }}"
                          alt="{{ gp }}" class="race-track" draggable="false">
                     <div class="race-driver">
                         <img src="{{ url_for('static', filename='images/drivers/' ~ winner_data.winner_image ~ '.png') }}"
@@ -111,10 +111,10 @@
 
         <div class="results-column">
             <ol class="race-results">
-                {% for gp, winner_data in races[8:16] %}
+                {% for gp, winner_data in races[10:20] %}
                 <li class="result-item-{{ winner_data.winner_team }}">
                     <div class="race-gp-name">{{ gp }}</div>
-                    <img src="{{ url_for('static', filename='images/tracks/' ~ gp ~ '.png') }}"
+                    <img src="{{ url_for('static', filename='images/tracks/' ~ gp.replace('Sprint ', '') ~ '.png') }}"
                          alt="{{ gp }}" class="race-track" draggable="false">
                     <div class="race-driver">
                         <img src="{{ url_for('static', filename='images/drivers/' ~ winner_data.winner_image ~ '.png') }}"
@@ -132,10 +132,10 @@
 
         <div class="results-column">
             <ol class="race-results">
-                {% for gp, winner_data in races[16:24] %}
+                {% for gp, winner_data in races[20:30] %}
                 <li class="result-item-{{ winner_data.winner_team }}">
                     <div class="race-gp-name">{{ gp }}</div>
-                    <img src="{{ url_for('static', filename='images/tracks/' ~ gp ~ '.png') }}"
+                    <img src="{{ url_for('static', filename='images/tracks/' ~ gp.replace('Sprint ', '') ~ '.png') }}"
                          alt="{{ gp }}" class="race-track" draggable="false">
                     <div class="race-driver">
                         <img src="{{ url_for('static', filename='images/drivers/' ~ winner_data.winner_image ~ '.png') }}"

@@ -202,6 +202,30 @@
             "WDC_anni": [],
             "WCC": [],
             "race_wins": 0
+        },
+        {
+            "nome": "Sergio Perez",
+            "WDC": [],
+            "WDC_anni": [],
+            "WCC": [
+                {
+                    "team": "red-bull",
+                    "anni": [2022, 2023]
+                }
+            ],
+            "race_wins": 4
+        },
+        {
+            "nome": "Valtteri Bottas",
+            "WDC": [],
+            "WDC_anni": [],
+            "WCC": [
+                {
+                    "team": "mercedes",
+                    "anni": [2017, 2018, 2019, 2020, 2021]
+                }
+            ],
+            "race_wins": 10
         }
     ],
     "piloti_svincolati": [
@@ -281,30 +305,6 @@
             "WDC_anni": [],
             "WCC": [],
             "race_wins": 0
-        },
-        {
-            "nome": "Sergio Perez",
-            "WDC": [],
-            "WDC_anni": [],
-            "WCC": [
-                {
-                    "team": "red-bull",
-                    "anni": [2022, 2023]
-                }
-            ],
-            "race_wins": 4
-        },
-        {
-            "nome": "Valtteri Bottas",
-            "WDC": [],
-            "WDC_anni": [],
-            "WCC": [
-                {
-                    "team": "mercedes",
-                    "anni": [2017, 2018, 2019, 2020, 2021]
-                }
-            ],
-            "race_wins": 10
         }
     ],
     "team": [
@@ -402,6 +402,10 @@
         },
         {
             "nome": "racing-bulls",
+            "WCC": []
+        },
+        {
+            "nome": "cadillac",
             "WCC": []
         }
     ]

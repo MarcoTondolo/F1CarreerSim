@@ -1,7 +1,6 @@
 import os
 from random import randint
 from flask import Blueprint, render_template, request, session
-import datetime
 import json
 
 lineup_blueprint = Blueprint('lineup', __name__)
@@ -14,17 +13,20 @@ offerte_giocatore = None
 regulation_changes = 4
 
 gp_names = [
-    "Australia", "Cina", "Giappone", "Bahrain", "Arabia Saudita", "Miami",
+    "Australia", "Sprint Cina", "Cina", "Giappone", "Bahrain", "Arabia Saudita", "Sprint Miami", "Miami",
     "Emilia Romagna", "Monaco", "Spagna", "Canada", "Austria", "Gran Bretagna",
-    "Belgio", "Ungheria", "Olanda", "Italia", "Azerbaijan", "Singapore", "Stati Uniti",
-    "Messico", "Brasile", "Las Vegas", "Qatar", "Abu Dhabi"
+    "Sprint Belgio", "Belgio", "Ungheria", "Olanda", "Italia", "Azerbaijan", "Singapore", "Sprint Stati Uniti", "Stati Uniti",
+    "Messico", "Sprint Brasile", "Brasile", "Las Vegas", "Sprint Qatar", "Qatar", "Abu Dhabi"
 ]
 
 races = {gp: {"winner_name": "", "winner_team": ""} for gp in gp_names}
 
-MAX_RACES = len(gp_names)  # Utilizza direttamente la lunghezza di gp_names
+MAX_RACES = len(gp_names) # Utilizza direttamente la lunghezza di gp_names
 current_race_count = 0  # Inizializzazione globale
-current_season = datetime.datetime.now().year
+numero_gara = 0
+gare_totali = 24
+incrementato = False
+current_season = 2026
 
 def reset_year():
     global current_season
@@ -41,7 +43,7 @@ import datetime
 # Lista dei piloti svincolati
 nomi_piloti_svincolati_iniziali = [
     "Logan Sargeant", "Jack Doohan", "Kevin Magnussen", "Daniel Ricciardo", "Guanyu Zhou",
-    "Sergio Perez", "Valtteri Bottas", "Sebastian Vettel", "Kimi Raikkonen", "Nico Rosberg",
+    "Sebastian Vettel", "Kimi Raikkonen", "Nico Rosberg",
 ]
 piloti_svincolati = []
 scuderie = []
@@ -58,7 +60,8 @@ scuderie_piloti = {
     "alpine": ["Pierre Gasly", "Franco Colapinto"],
     "williams": ["Carlos Sainz", "Alexander Albon"],
     "sauber": ["Gabriel Bortoleto", "Nico Hulkenberg"],
-    "aston-martin": ["Fernando Alonso", "Lance Stroll"]
+    "aston-martin": ["Fernando Alonso", "Lance Stroll"],
+    "cadillac": ["Sergio Perez", "Valtteri Bottas"]
 }
 
 posizione_giocatore = 0
@@ -68,6 +71,7 @@ probabilita_offerta = [
     0.75, 0.70, 0.65, 0.06, 0.55,
     0.50, 0.45, 0.40, 0.35, 0.30,
     0.25, 0.20, 0.15, 0.10, 0.05,
+    0.05, 0.05,
 ]
 
 # Sistema di punteggio F1
@@ -129,10 +133,14 @@ class Pilota:
         # Aggiorna il rating del pilota
         self.rating += self.temp_rating
 
-    def guadagna_punti(self, position, red_flag):
+    def guadagna_punti(self, position, red_flag, gp_name):
         """Calcola i punti assegnati in base alla posizione finale della gara."""
         points_distribution = {1: 25, 2: 18, 3: 15, 4: 12, 5: 10, 6: 8, 7: 6, 8: 4, 9: 2, 10: 1}
-        self.punti_gara = points_distribution.get(position, 0) / 2 if red_flag else points_distribution.get(position, 0)  # 0 punti per oltre la 10° posizione
+        points_sprint = {1: 8, 2: 7, 3: 6, 4: 5, 5: 4, 6: 3, 7: 2, 8: 1}
+        if "Sprint" in gp_name:
+            self.punti_gara = points_distribution.get(position, 0) / 2 if red_flag else points_sprint.get(position, 0)  # 0 punti per oltre l'8° posizione
+        else:
+            self.punti_gara = points_distribution.get(position, 0) / 2 if red_flag else points_distribution.get(position, 0)  # 0 punti per oltre la 10° posizione
         if self.punti_gara.is_integer():
             self.punti_gara = int(self.punti_gara)
         self.punti += self.punti_gara
@@ -385,7 +393,7 @@ def simula_gara(piloti, gp_name, prob_dnf=0.05):
     # Assegna posizioni e punti solo a chi è arrivato
     for posizione, pilota in enumerate(arrivati, 1):
         pilota.posizione_finale = posizione
-        pilota.guadagna_punti(posizione, red_flag)
+        pilota.guadagna_punti(posizione, red_flag, gp_name)
         pilota.aggiorna_rating(posizione)
         pilota.last_race_position = posizione
 
@@ -685,9 +693,10 @@ def calculate_points(position):
 
 @lineup_blueprint.route("/lineup")
 def lineup():
-    global current_race_count, current_season, regulation_changes
+    global current_race_count, current_season, regulation_changes, numero_gara
     if current_race_count >= MAX_RACES:
         current_race_count = 0
+        numero_gara = 0
         current_season += 1
         if regulation_changes == 4:
             regulation_changes = 0
@@ -707,18 +716,28 @@ def lineup():
 
 @lineup_blueprint.route("/race")
 def race():
-    global current_race_count
-    global current_season
-    global giocatore
+    global current_race_count, current_season, giocatore, numero_gara, gare_totali, incrementato
 
     if current_race_count < MAX_RACES:
         race_name = gp_names[current_race_count]
         race_results = simula_gara(piloti, race_name)
 
-        current_race_count += 1  # Incrementa dopo aver simulato la gara
+        # --- Gestione incremento ---
+        if "Sprint " in race_name:
+            # Gara Sprint → incremento extra
+            numero_gara += 1
+            incrementato = True
+        elif incrementato:
+            # Questa è la gara successiva alla Sprint → non incrementare
+            incrementato = False
+        else:
+            # Gara normale → incremento standard
+            numero_gara += 1
+
+        current_race_count += 1  # dopo la gestione numero_gara
 
         return render_template('race.html', race_results=race_results, race_name=race_name,
-                               current_race=current_race_count, max_races=MAX_RACES)
+                               current_race=numero_gara, max_races=gare_totali)
     else:
         races_list = list(races.items())
         return render_template('race-wins.html', races=races_list, current_season=current_season)
