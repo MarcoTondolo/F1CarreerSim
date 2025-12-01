@@ -56,7 +56,9 @@
         {
             "nome": "Lando Norris",
             "team": "mclaren",
-            "WDC": [],
+            "WDC": [
+                { "anno": 2025, "team": "mclaren" }
+            ],
             "WCC": [
                 {
                     "team": "mclaren",
@@ -68,9 +70,7 @@
         {
             "nome": "Oscar Piastri",
             "team": "mclaren",
-            "WDC": [
-                { "anno": 2025, "team": "mclaren" }
-            ],
+            "WDC": [],
             "WCC": [
                 {
                     "team": "mclaren",

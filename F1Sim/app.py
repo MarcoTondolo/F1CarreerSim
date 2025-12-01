@@ -68,7 +68,7 @@ def inizializza_simulazione(nome_giocatore, nome_team):
     giocatore.race_wins = 0
     giocatore.wdc = []
     giocatore.wcc = []
-    giocatore.rating = random.randint(50,70)
+    giocatore.rating = random.randint(50,100)
     team_iniziale.piloti.append(giocatore)
     team_iniziale.piloti.remove(pilota_sostituito)
     piloti.append(giocatore)
