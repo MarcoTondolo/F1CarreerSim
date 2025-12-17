@@ -14,7 +14,7 @@ regulation_changes = 4
 
 gp_names = [
     "Australia", "Sprint Cina", "Cina", "Giappone", "Bahrain", "Arabia Saudita", "Sprint Miami", "Miami",
-    "Emilia Romagna", "Monaco", "Spagna", "Canada", "Austria", "Gran Bretagna",
+    "Madrid", "Monaco", "Spagna", "Canada", "Austria", "Gran Bretagna",
     "Sprint Belgio", "Belgio", "Ungheria", "Olanda", "Italia", "Azerbaijan", "Singapore", "Sprint Stati Uniti", "Stati Uniti",
     "Messico", "Sprint Brasile", "Brasile", "Las Vegas", "Sprint Qatar", "Qatar", "Abu Dhabi"
 ]
@@ -43,7 +43,7 @@ import datetime
 # Lista dei piloti svincolati
 nomi_piloti_svincolati_iniziali = [
     "Logan Sargeant", "Jack Doohan", "Kevin Magnussen", "Daniel Ricciardo", "Guanyu Zhou",
-    "Sebastian Vettel", "Kimi Raikkonen", "Nico Rosberg",
+    "Sebastian Vettel", "Kimi Raikkonen", "Nico Rosberg", "Yuki Tsunoda",
 ]
 piloti_svincolati = []
 scuderie = []
@@ -51,15 +51,15 @@ piloti = []
 
 # Scuderie e piloti
 scuderie_piloti = {
-    "red-bull": ["Max Verstappen", "Yuki Tsunoda"],
+    "red-bull": ["Max Verstappen", "Isack Hadjar"],
     "ferrari": ["Charles Leclerc", "Lewis Hamilton"],
     "mclaren": ["Lando Norris", "Oscar Piastri"],
-    "racing-bulls": ["Liam Lawson", "Isack Hadjar"],
+    "racing-bulls": ["Liam Lawson", "Arvid Lindblad"],
     "haas": ["Oliver Bearman", "Esteban Ocon"],
     "mercedes": ["George Russell", "Kimi Antonelli"],
     "alpine": ["Pierre Gasly", "Franco Colapinto"],
     "williams": ["Carlos Sainz", "Alexander Albon"],
-    "sauber": ["Gabriel Bortoleto", "Nico Hulkenberg"],
+    "audi": ["Gabriel Bortoleto", "Nico Hulkenberg"],
     "aston-martin": ["Fernando Alonso", "Lance Stroll"],
     "cadillac": ["Sergio Perez", "Valtteri Bottas"]
 }

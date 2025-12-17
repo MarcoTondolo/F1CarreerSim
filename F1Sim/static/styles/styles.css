@@ -290,9 +290,9 @@ a {
     color: #4c7aba;
 }
 
-.sauber .driver-name {
+.audi .driver-name {
     background-color: #000000;
-    color: #1be600;
+    color: #ff2800;
 }
 
 .cadillac .driver-name {
@@ -396,7 +396,7 @@ a {
 .result-item-williams,
 .result-item-alpine,
 .result-item-aston-martin,
-.result-item-sauber,
+.result-item-audi,
 .result-item-cadillac,
 .result-item-transfer {
     display: flex;
@@ -415,7 +415,7 @@ a {
 .result-item-williams { background-color: #0c2954; }
 .result-item-alpine { background-color: #29374a; }
 .result-item-aston-martin { background-color: #2e5744; }
-.result-item-sauber { background-color: #000000; }
+.result-item-audi { background-color: #000000; }
 .result-item-cadillac { background-color: #000000; }
 .result-item-transfer { background-color: #29374a; }
 
