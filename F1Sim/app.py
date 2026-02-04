@@ -211,6 +211,22 @@ def rimuovi_duplicati(lista):
 @app.route('/reset')
 def reset():
     reset_simulazione()
+    filename = "dati_f1.json"
+    if not os.path.exists(filename):
+        print(f"Not in path. Joining folder ${folder}")
+        filename = os.path.join(folder, filename)
+    if os.path.exists(filename) and os.stat(filename).st_size > 0:
+        try:
+            print("File found!")
+            carica_dati(filename)
+
+            tutti_piloti = rimuovi_duplicati(piloti + piloti_svincolati)
+            piloti[:] = [p for p in tutti_piloti if p.get("scuderia")]
+            piloti_svincolati[:] = [p for p in tutti_piloti if not p.get("scuderia")]
+            scuderie[:] = rimuovi_duplicati(scuderie)
+        except Exception:
+            reset_simulazione()
+            crea_piloti()
     crea_piloti()
     return render_template("index.html", anno=current_season)
 
