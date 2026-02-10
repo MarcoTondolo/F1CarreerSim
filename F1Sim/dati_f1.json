@@ -1,0 +1,724 @@
+{
+    "scuderie": [
+        {
+            "nome": "red-bull",
+            "piloti": [
+                {
+                    "nome": "Max Verstappen",
+                    "image": "verstappen",
+                    "scuderia": "red-bull",
+                    "punti_gara": 0,
+                    "punti": 0,
+                    "race_wins": 45,
+                    "rating": 97,
+                    "temp_rating": 0,
+                    "wdc": [
+                        {
+                            "scuderia": "red-bull",
+                            "anno": 2021
+                        },
+                        {
+                            "scuderia": "red-bull",
+                            "anno": 2022
+                        },
+                        {
+                            "scuderia": "red-bull",
+                            "anno": 2023
+                        },
+                        {
+                            "scuderia": "red-bull",
+                            "anno": 2024
+                        }
+                    ],
+                    "wcc": [
+                        {
+                            "scuderia": "red-bull",
+                            "anno": 2022
+                        },
+                        {
+                            "scuderia": "red-bull",
+                            "anno": 2023
+                        }
+                    ],
+                    "posizione_finale": null
+                },
+                {
+                    "nome": "Isack Hadjar",
+                    "image": "hadjar",
+                    "scuderia": "red-bull",
+                    "punti_gara": 0,
+                    "punti": 0,
+                    "race_wins": 0,
+                    "rating": 97,
+                    "temp_rating": 0,
+                    "wdc": [],
+                    "wcc": [],
+                    "posizione_finale": null
+                }
+            ],
+            "wcc": [
+                2010,
+                2011,
+                2012,
+                2013,
+                2022,
+                2023
+            ],
+            "last_position": null,
+            "leaderboard_change": null,
+            "rating": 87
+        },
+        {
+            "nome": "ferrari",
+            "piloti": [
+                {
+                    "nome": "Charles Leclerc",
+                    "image": "leclerc",
+                    "scuderia": "ferrari",
+                    "punti_gara": 0,
+                    "punti": 0,
+                    "race_wins": 5,
+                    "rating": 97,
+                    "temp_rating": 0,
+                    "wdc": [],
+                    "wcc": [],
+                    "posizione_finale": null
+                },
+                {
+                    "nome": "Lewis Hamilton",
+                    "image": "hamilton",
+                    "scuderia": "ferrari",
+                    "punti_gara": 0,
+                    "punti": 0,
+                    "race_wins": 100,
+                    "rating": 97,
+                    "temp_rating": 0,
+                    "wdc": [
+                        {
+                            "scuderia": "mclaren",
+                            "anno": 2008
+                        },
+                        {
+                            "scuderia": "mercedes",
+                            "anno": 2014
+                        },
+                        {
+                            "scuderia": "mercedes",
+                            "anno": 2015
+                        },
+                        {
+                            "scuderia": "mercedes",
+                            "anno": 2017
+                        },
+                        {
+                            "scuderia": "mercedes",
+                            "anno": 2018
+                        },
+                        {
+                            "scuderia": "mercedes",
+                            "anno": 2019
+                        },
+                        {
+                            "scuderia": "mercedes",
+                            "anno": 2020
+                        }
+                    ],
+                    "wcc": [
+                        {
+                            "scuderia": "mercedes",
+                            "anno": 2014
+                        },
+                        {
+                            "scuderia": "mercedes",
+                            "anno": 2015
+                        },
+                        {
+                            "scuderia": "mercedes",
+                            "anno": 2017
+                        },
+                        {
+                            "scuderia": "mercedes",
+                            "anno": 2018
+                        },
+                        {
+                            "scuderia": "mercedes",
+                            "anno": 2019
+                        },
+                        {
+                            "scuderia": "mercedes",
+                            "anno": 2020
+                        }
+                    ],
+                    "posizione_finale": null
+                }
+            ],
+            "wcc": [
+                1961,
+                1964,
+                1975,
+                1976,
+                1977,
+                1979,
+                1982,
+                1983,
+                1999,
+                2000,
+                2001,
+                2002,
+                2003,
+                2004,
+                2007,
+                2008
+            ],
+            "last_position": null,
+            "leaderboard_change": null,
+            "rating": 87
+        },
+        {
+            "nome": "mclaren",
+            "piloti": [
+                {
+                    "nome": "Lando Norris",
+                    "image": "norris",
+                    "scuderia": "mclaren",
+                    "punti_gara": 0,
+                    "punti": 0,
+                    "race_wins": 4,
+                    "rating": 97,
+                    "temp_rating": 0,
+                    "wdc": [
+                        {
+                            "scuderia": "mclaren",
+                            "anno": 2025
+                        }
+                    ],
+                    "wcc": [
+                        {
+                            "scuderia": "mclaren",
+                            "anno": 2024
+                        },
+                        {
+                            "scuderia": "mclaren",
+                            "anno": 2025
+                        }
+                    ],
+                    "posizione_finale": null
+                },
+                {
+                    "nome": "Oscar Piastri",
+                    "image": "piastri",
+                    "scuderia": "mclaren",
+                    "punti_gara": 0,
+                    "punti": 0,
+                    "race_wins": 2,
+                    "rating": 97,
+                    "temp_rating": 0,
+                    "wdc": [],
+                    "wcc": [
+                        {
+                            "scuderia": "mclaren",
+                            "anno": 2024
+                        },
+                        {
+                            "scuderia": "mclaren",
+                            "anno": 2025
+                        }
+                    ],
+                    "posizione_finale": null
+                }
+            ],
+            "wcc": [
+                1974,
+                1984,
+                1985,
+                1988,
+                1989,
+                1990,
+                1991,
+                1998,
+                2024,
+                2025
+            ],
+            "last_position": null,
+            "leaderboard_change": null,
+            "rating": 87
+        },
+        {
+            "nome": "racing-bulls",
+            "piloti": [
+                {
+                    "nome": "Liam Lawson",
+                    "image": "lawson",
+                    "scuderia": "racing-bulls",
+                    "punti_gara": 0,
+                    "punti": 0,
+                    "race_wins": 0,
+                    "rating": 97,
+                    "temp_rating": 0,
+                    "wdc": [],
+                    "wcc": [],
+                    "posizione_finale": null
+                },
+                {
+                    "nome": "Arvid Lindblad",
+                    "image": "lindblad",
+                    "scuderia": "racing-bulls",
+                    "punti_gara": 0,
+                    "punti": 0,
+                    "race_wins": 0,
+                    "rating": 97,
+                    "temp_rating": 0,
+                    "wdc": [],
+                    "wcc": [],
+                    "posizione_finale": null
+                }
+            ],
+            "wcc": [],
+            "last_position": null,
+            "leaderboard_change": null,
+            "rating": 87
+        },
+        {
+            "nome": "haas",
+            "piloti": [
+                {
+                    "nome": "Oliver Bearman",
+                    "image": "bearman",
+                    "scuderia": "haas",
+                    "punti_gara": 0,
+                    "punti": 0,
+                    "race_wins": 1,
+                    "rating": 97,
+                    "temp_rating": 0,
+                    "wdc": [],
+                    "wcc": [],
+                    "posizione_finale": null
+                },
+                {
+                    "nome": "Esteban Ocon",
+                    "image": "ocon",
+                    "scuderia": "haas",
+                    "punti_gara": 0,
+                    "punti": 0,
+                    "race_wins": 1,
+                    "rating": 97,
+                    "temp_rating": 0,
+                    "wdc": [],
+                    "wcc": [],
+                    "posizione_finale": null
+                }
+            ],
+            "wcc": [],
+            "last_position": null,
+            "leaderboard_change": null,
+            "rating": 87
+        },
+        {
+            "nome": "mercedes",
+            "piloti": [
+                {
+                    "nome": "George Russell",
+                    "image": "russell",
+                    "scuderia": "mercedes",
+                    "punti_gara": 0,
+                    "punti": 0,
+                    "race_wins": 3,
+                    "rating": 97,
+                    "temp_rating": 0,
+                    "wdc": [],
+                    "wcc": [
+                        {
+                            "scuderia": "mercedes",
+                            "anno": 2021
+                        }
+                    ],
+                    "posizione_finale": null
+                },
+                {
+                    "nome": "Kimi Antonelli",
+                    "image": "antonelli",
+                    "scuderia": "mercedes",
+                    "punti_gara": 0,
+                    "punti": 0,
+                    "race_wins": 0,
+                    "rating": 97,
+                    "temp_rating": 0,
+                    "wdc": [],
+                    "wcc": [],
+                    "posizione_finale": null
+                }
+            ],
+            "wcc": [
+                2014,
+                2015,
+                2016,
+                2017,
+                2018,
+                2019,
+                2020,
+                2021
+            ],
+            "last_position": null,
+            "leaderboard_change": null,
+            "rating": 87
+        },
+        {
+            "nome": "alpine",
+            "piloti": [
+                {
+                    "nome": "Pierre Gasly",
+                    "image": "gasly",
+                    "scuderia": "alpine",
+                    "punti_gara": 0,
+                    "punti": 0,
+                    "race_wins": 1,
+                    "rating": 97,
+                    "temp_rating": 0,
+                    "wdc": [],
+                    "wcc": [],
+                    "posizione_finale": null
+                },
+                {
+                    "nome": "Franco Colapinto",
+                    "image": "colapinto",
+                    "scuderia": "alpine",
+                    "punti_gara": 0,
+                    "punti": 0,
+                    "race_wins": 0,
+                    "rating": 97,
+                    "temp_rating": 0,
+                    "wdc": [],
+                    "wcc": [],
+                    "posizione_finale": null
+                }
+            ],
+            "wcc": [
+                2005,
+                2006
+            ],
+            "last_position": null,
+            "leaderboard_change": null,
+            "rating": 87
+        },
+        {
+            "nome": "williams",
+            "piloti": [
+                {
+                    "nome": "Carlos Sainz",
+                    "image": "sainz",
+                    "scuderia": "williams",
+                    "punti_gara": 0,
+                    "punti": 0,
+                    "race_wins": 0,
+                    "rating": 97,
+                    "temp_rating": 0,
+                    "wdc": [],
+                    "wcc": [],
+                    "posizione_finale": null
+                },
+                {
+                    "nome": "Marco Tondolo",
+                    "image": "tbd",
+                    "scuderia": "williams",
+                    "punti_gara": 12,
+                    "punti": 0,
+                    "race_wins": 0,
+                    "rating": 83,
+                    "temp_rating": 6,
+                    "wdc": [],
+                    "wcc": [],
+                    "posizione_finale": null
+                }
+            ],
+            "wcc": [
+                1980,
+                1981,
+                1986,
+                1987,
+                1992,
+                1993,
+                1994,
+                1996,
+                1997
+            ],
+            "last_position": null,
+            "leaderboard_change": null,
+            "rating": 87
+        },
+        {
+            "nome": "audi",
+            "piloti": [
+                {
+                    "nome": "Gabriel Bortoleto",
+                    "image": "bortoleto",
+                    "scuderia": "audi",
+                    "punti_gara": 0,
+                    "punti": 0,
+                    "race_wins": 0,
+                    "rating": 97,
+                    "temp_rating": 0,
+                    "wdc": [],
+                    "wcc": [],
+                    "posizione_finale": null
+                },
+                {
+                    "nome": "Nico Hulkenberg",
+                    "image": "hulkenberg",
+                    "scuderia": "audi",
+                    "punti_gara": 0,
+                    "punti": 0,
+                    "race_wins": 0,
+                    "rating": 97,
+                    "temp_rating": 0,
+                    "wdc": [],
+                    "wcc": [],
+                    "posizione_finale": null
+                }
+            ],
+            "wcc": [],
+            "last_position": null,
+            "leaderboard_change": null,
+            "rating": 87
+        },
+        {
+            "nome": "aston-martin",
+            "piloti": [
+                {
+                    "nome": "Fernando Alonso",
+                    "image": "alonso",
+                    "scuderia": "aston-martin",
+                    "punti_gara": 0,
+                    "punti": 0,
+                    "race_wins": 32,
+                    "rating": 97,
+                    "temp_rating": 0,
+                    "wdc": [
+                        {
+                            "scuderia": "alpine",
+                            "anno": 2005
+                        },
+                        {
+                            "scuderia": "alpine",
+                            "anno": 2006
+                        }
+                    ],
+                    "wcc": [
+                        {
+                            "scuderia": "alpine",
+                            "anno": 2005
+                        },
+                        {
+                            "scuderia": "alpine",
+                            "anno": 2006
+                        }
+                    ],
+                    "posizione_finale": null
+                },
+                {
+                    "nome": "Lance Stroll",
+                    "image": "stroll",
+                    "scuderia": "aston-martin",
+                    "punti_gara": 0,
+                    "punti": 0,
+                    "race_wins": 0,
+                    "rating": 97,
+                    "temp_rating": 0,
+                    "wdc": [],
+                    "wcc": [],
+                    "posizione_finale": null
+                }
+            ],
+            "wcc": [],
+            "last_position": null,
+            "leaderboard_change": null,
+            "rating": 87
+        },
+        {
+            "nome": "cadillac",
+            "piloti": [
+                {
+                    "nome": "Sergio Perez",
+                    "image": "perez",
+                    "scuderia": "cadillac",
+                    "punti_gara": 0,
+                    "punti": 0,
+                    "race_wins": 4,
+                    "rating": 97,
+                    "temp_rating": 0,
+                    "wdc": [],
+                    "wcc": [
+                        {
+                            "scuderia": "red-bull",
+                            "anno": 2022
+                        },
+                        {
+                            "scuderia": "red-bull",
+                            "anno": 2023
+                        }
+                    ],
+                    "posizione_finale": null
+                },
+                {
+                    "nome": "Valtteri Bottas",
+                    "image": "bottas",
+                    "scuderia": "cadillac",
+                    "punti_gara": 0,
+                    "punti": 0,
+                    "race_wins": 10,
+                    "rating": 97,
+                    "temp_rating": 0,
+                    "wdc": [],
+                    "wcc": [
+                        {
+                            "scuderia": "mercedes",
+                            "anno": 2017
+                        },
+                        {
+                            "scuderia": "mercedes",
+                            "anno": 2018
+                        },
+                        {
+                            "scuderia": "mercedes",
+                            "anno": 2019
+                        },
+                        {
+                            "scuderia": "mercedes",
+                            "anno": 2020
+                        },
+                        {
+                            "scuderia": "mercedes",
+                            "anno": 2021
+                        }
+                    ],
+                    "posizione_finale": null
+                }
+            ],
+            "wcc": [],
+            "last_position": null,
+            "leaderboard_change": null,
+            "rating": 87
+        }
+    ],
+    "piloti_svincolati": [
+        {
+            "nome": "Jack Doohan",
+            "image": "doohan",
+            "scuderia": "Svincolato",
+            "punti_gara": 0,
+            "punti": 0,
+            "race_wins": 0,
+            "rating": 63,
+            "temp_rating": 0,
+            "wdc": [],
+            "wcc": [],
+            "posizione_finale": null
+        },
+        {
+            "nome": "Daniel Ricciardo",
+            "image": "ricciardo",
+            "scuderia": "Svincolato",
+            "punti_gara": 0,
+            "punti": 0,
+            "race_wins": 0,
+            "rating": 63,
+            "temp_rating": 0,
+            "wdc": [],
+            "wcc": [],
+            "posizione_finale": null
+        },
+        {
+            "nome": "Nico Rosberg",
+            "image": "rosberg",
+            "scuderia": "Svincolato",
+            "punti_gara": 0,
+            "punti": 0,
+            "race_wins": 23,
+            "rating": 63,
+            "temp_rating": 0,
+            "wdc": [
+                {
+                    "scuderia": "mercedes",
+                    "anno": 2016
+                }
+            ],
+            "wcc": [
+                {
+                    "scuderia": "mercedes",
+                    "anno": 2014
+                },
+                {
+                    "scuderia": "mercedes",
+                    "anno": 2015
+                },
+                {
+                    "scuderia": "mercedes",
+                    "anno": 2016
+                }
+            ],
+            "posizione_finale": null
+        },
+        {
+            "nome": "Isack Hadjar",
+            "image": "hadjar",
+            "scuderia": "Svincolato",
+            "punti_gara": 0,
+            "punti": 79,
+            "race_wins": 0,
+            "rating": 67,
+            "temp_rating": 0,
+            "wdc": [],
+            "wcc": [
+                {
+                    "scuderia": "red-bull",
+                    "anno": 2027
+                }
+            ],
+            "posizione_finale": null
+        },
+        {
+            "nome": "Charles Leclerc",
+            "image": "leclerc",
+            "scuderia": "Svincolato",
+            "punti_gara": 0,
+            "punti": 1,
+            "race_wins": 5,
+            "rating": 57,
+            "temp_rating": 4,
+            "wdc": [],
+            "wcc": [],
+            "posizione_finale": null
+        },
+        {
+            "nome": "George Russell",
+            "image": "russell",
+            "scuderia": "Svincolato",
+            "punti_gara": 0,
+            "punti": 2,
+            "race_wins": 4,
+            "rating": 65,
+            "temp_rating": -5,
+            "wdc": [],
+            "wcc": [
+                {
+                    "scuderia": "mercedes",
+                    "anno": 2021
+                }
+            ],
+            "posizione_finale": null
+        }
+    ],
+    "giocatore": {
+        "nome": "Marco Tondolo",
+        "image": "tbd",
+        "scuderia": "williams",
+        "punti_gara": 12,
+        "punti": 0,
+        "race_wins": 0,
+        "rating": 83,
+        "temp_rating": 6,
+        "wdc": [],
+        "wcc": [],
+        "posizione_finale": 4
+    },
+    "current_season": 2026
+}

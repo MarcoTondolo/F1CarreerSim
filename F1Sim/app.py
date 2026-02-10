@@ -197,16 +197,6 @@ def carica_dati(filename):
 
     print("Dati caricati con successo.")
 
-def rimuovi_duplicati(lista):
-    unici = []
-    nomi_visti = set()
-    for item in lista:
-        if item.nome not in nomi_visti:
-            unici.append(item)
-            nomi_visti.add(item.nome)
-    return unici
-
-
 
 @app.route('/reset')
 def reset():
@@ -219,15 +209,11 @@ def reset():
         try:
             print("File found!")
             carica_dati(filename)
-
-            tutti_piloti = rimuovi_duplicati(piloti + piloti_svincolati)
-            piloti[:] = [p for p in tutti_piloti if p.get("scuderia")]
-            piloti_svincolati[:] = [p for p in tutti_piloti if not p.get("scuderia")]
-            scuderie[:] = rimuovi_duplicati(scuderie)
         except Exception:
             reset_simulazione()
             crea_piloti()
-    crea_piloti()
+    else:
+        crea_piloti()
     return render_template("index.html", anno=current_season)
 
 
@@ -241,12 +227,6 @@ def index():
         try:
             print("File found!")
             carica_dati(filename)
-
-            tutti_piloti = rimuovi_duplicati(piloti + piloti_svincolati)
-            piloti[:] = [p for p in tutti_piloti if p.get("scuderia")]
-            piloti_svincolati[:] = [p for p in tutti_piloti if not p.get("scuderia")]
-            scuderie[:] = rimuovi_duplicati(scuderie)
-
             return redirect(url_for('lineup.lineup'))
         except Exception:
             reset_simulazione()
