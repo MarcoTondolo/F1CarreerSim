@@ -82,21 +82,7 @@ def inizializza_simulazione(nome_giocatore, nome_team):
 
 
 def scegli_scuderia():
-    scuderie_diverse = False
-    scuderie_scelte = random.sample(scuderie, 3)
-    while not scuderie_diverse:
-        if scuderie_scelte[0].nome != scuderie_scelte[1].nome:
-            if scuderie_scelte[0].nome != scuderie_scelte[2].nome:
-                if scuderie_scelte[1].nome != scuderie_scelte[2].nome:
-                    scuderie_diverse = True
-                else:
-                    scuderie_scelte[2] = random.choice(scuderie)
-            else:
-                scuderie_scelte[2] = random.choice(scuderie)
-        else:
-            scuderie_scelte[1] = random.choice(scuderie)
-
-    return scuderie_scelte
+    return random.sample(scuderie, 3)
 
 
 def crea_piloti():
@@ -201,19 +187,7 @@ def carica_dati(filename):
 @app.route('/reset')
 def reset():
     reset_simulazione()
-    filename = "dati_f1.json"
-    if not os.path.exists(filename):
-        print(f"Not in path. Joining folder ${folder}")
-        filename = os.path.join(folder, filename)
-    if os.path.exists(filename) and os.stat(filename).st_size > 0:
-        try:
-            print("File found!")
-            carica_dati(filename)
-        except Exception:
-            reset_simulazione()
-            crea_piloti()
-    else:
-        crea_piloti()
+    crea_piloti()
     return render_template("index.html", anno=current_season)
 
 
@@ -226,6 +200,7 @@ def index():
     if os.path.exists(filename) and os.stat(filename).st_size > 0:
         try:
             print("File found!")
+            reset_simulazione()
             carica_dati(filename)
             return redirect(url_for('lineup.lineup'))
         except Exception:
