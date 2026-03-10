@@ -1,31 +1,30 @@
 @font-face {
     font-family: 'formula1display-bold';
-    src:
-            url('../public/static/fonts/formula1-bold-webfont.woff2') format('woff2'),
-            url('../public/static/fonts/formula1-bold-webfont.woff') format('woff');
+    src: 
+        local('formula1display-bold'),
+        url('/static/fonts/formula1-bold-webfont.woff2') format('woff2'),
+        url('/static/fonts/formula1-bold-webfont.woff') format('woff');
     font-weight: bold;
     font-style: normal;
 }
 
 @font-face {
     font-family: 'formula1display-wide';
-    src:
-            url('../public/static/fonts/formula1-wide-webfont.woff2') format('woff2'),
-            url('../public/static/fonts/formula1-wide-webfont.woff') format('woff');
+    src: 
+        url('/static/fonts/formula1-wide-webfont.woff2') format('woff2'),
+        url('/static/fonts/formula1-wide-webfont.woff') format('woff');
     font-weight: normal;
     font-style: normal;
 }
 
 @font-face {
     font-family: 'formula1display-regular';
-    src:
-            url('../public/static/fonts/formula1-regular-webfont.woff2') format('woff2'),
-            url('../public/static/fonts/formula1-regular-webfont.woff') format('woff');
+    src: 
+        url('/static/fonts/formula1-regular-webfont.woff2') format('woff2'),
+        url('/static/fonts/formula1-regular-webfont.woff') format('woff');
     font-weight: normal;
     font-style: normal;
 }
-
-
 
 .main-container {
     max-width: 1200px;
@@ -35,14 +34,15 @@
 body, p, h3 {
     font-family: 'formula1display-bold', 'formula1display-regular', 'formula1display-wide', Arial, sans-serif;
     color: #ffffff;
+    margin: 0;
     padding: 0;
     text-align: center;
     background-position: center center;
-    background-image: url('../public/static/images/background/background1.jpg');
+    background-image: url('../images/background/background1.jpg');
     background-repeat: no-repeat;
     background-size: cover;
     background-attachment: fixed;
-    margin: 0 0 -3px;
+    margin-bottom: -3px;
 }
 
 a {
@@ -56,13 +56,14 @@ a {
 }
 
 .footer-bar {
-    z-index: 1;
+    z-index: 2;
     position: fixed;
     bottom: 0;
     left: 0;
     width: 100%;
     background-color: #242424;
-    padding: 40px 10px 10px;
+    padding: 10px;
+    padding-top: 40px;
     display: flex;
     justify-content: flex-end;
     box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.2); /* Ombra per effetto di elevazione */
@@ -71,14 +72,14 @@ a {
 .grid-container {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
-    gap: 3%;
+    gap: 5px;
     padding: 10px;
     max-width: 750px;
     margin: 0 auto;
 }
 
 .grid-item {
-    padding: 0;
+    padding: 0px;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -89,14 +90,12 @@ a {
 .team-logo {
     display: flex;
     justify-content: center;
-    align-items: center; /* Centra le immagini anche verticalmente */
-    margin-bottom: -20%;
+    margin-bottom: -60px;
 }
 
 .team-logo img {
-    width: 40%; /* Imposta una larghezza fissa */
-    height: auto; /* Mantiene la proporzione */
-    object-fit: cover; /* Assicura che l'immagine copra il contenitore senza distorsioni */
+    width: 5vh;
+    height: auto;
 }
 
 .driver-info {
@@ -106,15 +105,17 @@ a {
 }
 
 .driver {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
     width: 50%;
     position: relative;
 }
 
-.driver-image, .jacket img {
-    width: 50%; /* Imposta una larghezza fissa */
-    height: auto; /* Mantiene la proporzione */
-    object-fit: cover; /* Assicura che l'immagine copra il contenitore senza distorsioni */
-    margin-bottom: -1%;
+.driver-image, .jacket img{
+    width: 40%;
+    height: auto;
+    object-fit: cover;
 }
 
 .driver-name {
@@ -124,7 +125,6 @@ a {
     font-size: 1em;
     color: #ffffff;
     width: 80%;
-    height: 20%;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -177,9 +177,9 @@ a {
   right: 0;
   z-index: -1;
   background-color: #ffffff;
-   box-shadow:inset 2px 2px 2px 0 rgba(255,255,255,.5),
-   7px 7px 20px 0 rgba(0,0,0,.1),
-   4px 4px 5px 0 rgba(0,0,0,.1);
+   box-shadow:inset 2px 2px 2px 0px rgba(255,255,255,.5),
+   7px 7px 20px 0px rgba(0,0,0,.1),
+   4px 4px 5px 0px rgba(0,0,0,.1);
   transition: all 0.3s ease;
 }
 .next-button:hover {
@@ -229,9 +229,9 @@ a {
   right: 0;
   z-index: -1;
   background-color: #ffffff;
-   box-shadow:inset 2px 2px 2px 0 rgba(255,255,255,.5),
-   7px 7px 20px 0 rgba(0,0,0,.1),
-   4px 4px 5px 0 rgba(0,0,0,.1);
+   box-shadow:inset 2px 2px 2px 0px rgba(255,255,255,.5),
+   7px 7px 20px 0px rgba(0,0,0,.1),
+   4px 4px 5px 0px rgba(0,0,0,.1);
   transition: all 0.3s ease;
 }
 .back-button:hover {
@@ -248,9 +248,15 @@ a {
 
 .jacket {
     position: absolute;
-    top: -5%;
-    left: -5%;
-    width: 110%;
+    top: 0;
+    left: -50;
+}
+
+.driver-jacket {
+    width: 100px;
+    height: 100px;
+    object-fit: cover;
+    z-index: 1;
 }
 
 .red-bull .driver-name {
@@ -284,9 +290,13 @@ a {
     color: #4c7aba;
 }
 
-.sauber .driver-name {
+.audi .driver-name {
     background-color: #000000;
-    color: #1be600;
+    color: #ff2800;
+}
+
+.cadillac .driver-name {
+    background-color: #000000;
 }
 
 .racing-bulls .driver-name {
@@ -294,7 +304,7 @@ a {
 }
 
 .haas .driver-name {
-    background-color: #ff2800;
+    background-color: #9C9FA2;
 }
 
 
@@ -386,7 +396,8 @@ a {
 .result-item-williams,
 .result-item-alpine,
 .result-item-aston-martin,
-.result-item-sauber,
+.result-item-audi,
+.result-item-cadillac,
 .result-item-transfer {
     display: flex;
     align-items: center;
@@ -396,7 +407,7 @@ a {
 }
 
 .result-item-ferrari { background-color: #ff2800; }
-.result-item-haas { background-color: #ff2800; }
+.result-item-haas { background-color: #9C9FA2; }
 .result-item-racing-bulls { background-color: #253bb8; }
 .result-item-red-bull { background-color: #120c33; }
 .result-item-mclaren { background-color: #fa9302; }
@@ -404,7 +415,8 @@ a {
 .result-item-williams { background-color: #0c2954; }
 .result-item-alpine { background-color: #29374a; }
 .result-item-aston-martin { background-color: #2e5744; }
-.result-item-sauber { background-color: #000000; }
+.result-item-audi { background-color: #000000; }
+.result-item-cadillac { background-color: #000000; }
 .result-item-transfer { background-color: #29374a; }
 
 .race-driver {
@@ -427,7 +439,7 @@ a {
     width: 50px;
     height: 50px;
     top: 0;
-    left: -10px;
+    left: -10;
     object-fit: cover;
     z-index: 2;  /* La giacca sarà davanti alla testa */
 }
@@ -462,8 +474,17 @@ a {
     padding: 10px;
 }
 
+
+
+$primary: #11998e;
+$secondary: #38ef7d;
+$white: #fff;
+$gray: #9b9b9b;
+
 body {
-  max-height: 100vh;       /* Altezza minima 100% della viewport */
+  display: flex;
+  height: 99vh;       /* Altezza minima 100% della viewport */
+  font-size: 1.5rem;
   background-color: #222222;
 }
 
@@ -480,7 +501,7 @@ body {
   font-family: inherit;
   width: 100%;
   border: 0;
-  border-bottom: 2px solid #9b9b9b;
+  border-bottom: 2px solid $gray;
   outline: 0;
   font-size: 1.3rem;
   color: #ffffff; /* Colore del testo dell'input */
@@ -515,13 +536,14 @@ body {
     display: block;
     transition: 0.2s;
     font-size: 0.9rem; /* Riduce la dimensione del font */
-    color: #11998e;
+    color: $primary;
     font-weight: 700;
   }
   padding-bottom: 6px;
   font-weight: 700;
   border-width: 3px;
-  border-image: linear-gradient(to right, #11998e, #38ef7d);
+  border-image: linear-gradient(to right, $primary, $secondary);
+  border-image-slice: 1;
 }
 
 /* reset input */
@@ -574,9 +596,6 @@ a img {
 
 /* Modifica la visualizzazione della classifica in un'unica colonna su dispositivi mobili */
 @media (max-width: 768px) {
-        .jacket {
-            top: -2%;
-        }
         h1, h3, p, div {
             font-size: 1.1rem;
         }
@@ -597,6 +616,7 @@ a img {
 
         .driver-info {
             display: flex;
+            width: 25vw;
             height: auto;
             align-items: center; /* Centra verticalmente, se necessario */
             gap: 10px; /* Spazio tra immagine e nome */
@@ -608,8 +628,6 @@ a img {
             width: 25vw;
             height: auto;
             object-fit: contain; /* Impedisce deformazioni nelle immagini */
-            padding-top: 15%;
-            margin-bottom: -3%;
         }
 
         .driver-name {
@@ -642,10 +660,10 @@ a img {
         }
         .next-button {
             padding-right: 10%;
-            align-items: flex-end;
+            align-items: right;
         }
         .back-button {
-            align-items: flex-start;
+            align-items: left;
         }
         .results-container {
             display: flex;
@@ -688,8 +706,8 @@ a img {
             overflow-y: auto; /* Abilita lo scroll se il contenuto è troppo lungo */
             overflow-x: hidden;
             width: 100%;
-            height: 85vh;
-            padding-left: 2%;
+            height: 80vh;
+            padding-top: 2vh;
         }
 
         /* Footer bar fissa in basso */

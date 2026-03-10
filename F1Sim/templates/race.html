@@ -68,7 +68,8 @@
         .result-item-williams,
         .result-item-alpine,
         .result-item-aston-martin,
-        .result-item-sauber,
+        .result-item-audi,
+        .result-item-cadillac,
         .result-item-transfer {
             display: flex;
             border-radius: 5px;
@@ -79,7 +80,7 @@
 <body>
     <div class="race-header">
         <h1 id="title">Risultati del GP {{ race_name }} ({{ current_race }}/{{ max_races }})</h1>
-        <img src="{{ url_for('static', filename='images/tracks/' ~ race_name ~ '.png') }}"
+        <img src="{{ url_for('static', filename='images/tracks/' ~ race_name.replace('Sprint ', '') ~ '.png') }}"
              alt="{{ race_name }}" class="race-track" draggable="false">
     </div>
 
@@ -89,7 +90,7 @@
         <!-- Prime 10 posizioni -->
         <div class="results-column">
             <ol class="race-results">
-                {% for driver in race_results[:10] %}
+                {% for driver in race_results[:11] %}
                 <li class="result-item-{{ driver.scuderia }}">
                     <div class="race-position">{{ loop.index }}</div>
                     <div class="race-driver">
@@ -110,9 +111,9 @@
         <!-- Ultime 10 posizioni -->
         <div class="results-column">
             <ol class="race-results">
-                {% for driver in race_results[10:20] %}
+                {% for driver in race_results[11:22] %}
                 <li class="result-item-{{ driver.scuderia }}">
-                    <div class="race-position">{{ loop.index +10 }}</div>
+                    <div class="race-position">{{ loop.index +11 }}</div>
                     <div class="race-driver">
                         <img src="{{ url_for('static', filename='images/drivers/' ~ driver.image ~ '.png') }}"
                              alt="{{ driver.nome }}" class="race-driver-image" draggable="false">
@@ -122,7 +123,13 @@
                     <img src="{{ url_for('static', filename='images/logos/' ~ driver.scuderia ~ '.png') }}"
                          alt="{{ driver.logo }}" class="race-driver-logo" draggable="false">
                     <span class="race-driver-name">{{ driver.nome }}</span>
-                    <span class="race-points">{{ driver.punti_gara }}</span>
+                    <span class="race-points">
+                        {% if driver.last_race_position == "DNF" %}
+                            DNF
+                        {% else %}
+                            {{ driver.punti_gara }}
+                        {% endif %}
+                    </span>
                 </li>
                 {% endfor %}
             </ol>
