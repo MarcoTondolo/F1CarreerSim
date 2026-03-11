@@ -113,7 +113,10 @@ def reset_simulazione():
     reset_year()
 
     filename = "dati_f1.json"
-    if os.path.exists(filename):
+    if not os.path.exists(filename):
+        print(f"Not in path. Joining folder ${folder}")
+        filename = os.path.join(folder, filename)
+    if os.path.exists(filename) and os.stat(filename).st_size > 0:
         with open(filename, "w", encoding="utf-8"):
             pass
 
