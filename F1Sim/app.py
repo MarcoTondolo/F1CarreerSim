@@ -187,18 +187,6 @@ def carica_dati(filename):
 @app.route('/reset')
 def reset():
     reset_simulazione()
-    filename = "dati_f1.json"
-    if not os.path.exists(filename):
-        print(f"Not in path. Joining folder {folder}")
-        filename = os.path.join(folder, filename)
-    if os.path.exists(filename):
-        try:
-            with open(filename, "w", encoding="utf-8") as file:
-                file.write("")
-        except Exception as e:
-            print("Errore durante il reset:", e)
-            reset_simulazione()
-            crea_piloti()
     crea_piloti()
     return render_template("index.html", anno=current_season)
 
@@ -212,7 +200,6 @@ def index():
     if os.path.exists(filename) and os.stat(filename).st_size > 0:
         try:
             print("File found!")
-            reset_simulazione()
             carica_dati(filename)
             return redirect(url_for('lineup.lineup'))
         except Exception:
